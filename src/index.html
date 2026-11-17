@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#122c43" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="description"
+      content="Privates, lokales Wetter für Österreich. Prognosen, Modellvergleiche und Wetterrückblick."
+    />
+    <meta name="wettra-version" content="{{VERSION}}" />
+    <title>Wettra</title>
+    <style>
+      /* APP_CSS */
+    </style>
+  </head>
+  <body data-theme="auto">
+    <header>
+      <div>
+        <div class="brand">
+          Wettra <span class="small">v{{VERSION}}</span>
+        </div>
+        <h1 id="locationTitle">Graz</h1>
+      </div>
+      <div class="header-actions">
+        <button class="iconbutton" id="gps" aria-label="Use my location">
+          ⌖</button
+        ><button class="iconbutton" id="refresh" aria-label="Refresh weather">
+          ↻
+        </button>
+      </div>
+    </header>
+    <div id="status" class="status" role="status" aria-live="polite">
+      Opening your weather…
+    </div>
+    <main class="page" id="main"></main>
+    <nav aria-label="Main navigation" id="nav"></nav>
+    <dialog id="locationHelp" aria-labelledby="locationHelpTitle" aria-describedby="locationHelpReason">
+      <h2 id="locationHelpTitle">Enable your location</h2>
+      <p id="locationHelpReason">Follow these steps, then tap Try location again.</p>
+      <p>The browser controls the permission prompt. If access is denied, Wettra cannot force a new prompt or change your settings.</p>
+      <h3>On iPhone or iPad</h3>
+      <ol>
+        <li>Open <strong>Settings → Privacy &amp; Security → Location Services</strong> and turn Location Services on.</li>
+        <li>In that list, check <strong>Safari Websites</strong> (and <strong>Wettra</strong>, if listed). Allow access while using it. German labels: <strong>Datenschutz &amp; Sicherheit → Ortungsdienste → Safari-Websites → Beim Verwenden der App</strong>.</li>
+        <li>Open this site in <strong>Safari</strong>. Open the page menu beside the address bar, then <strong>Website Settings → Location → Ask or Allow</strong>. You may need to tap <strong>…</strong> first. German: <strong>Website-Einstellungen → Standort → Fragen oder Erlauben</strong>.</li>
+        <li>Tap the location button in Safari. If that works, reopen the Home Screen app and retry there. Browser and installed-app permissions may differ.</li>
+      </ol>
+      <h3>Firefox on iOS</h3>
+      <p>Check <strong>Settings → Privacy &amp; Security → Location Services → Firefox → While Using the App</strong>, if Firefox is listed. Reopen Firefox and tap the location button on this site. Allow any website prompt too. Granting access to Brave does not grant access to Firefox or the installed Home Screen app.</p>
+      <p><a href="https://support.mozilla.org/en-US/kb/how-does-firefox-ios-use-permissions-it-requests" target="_blank" rel="noopener noreferrer">Mozilla’s iOS permissions guide ↗</a></p>
+      <p class="footnote">There is no supported direct iOS Settings link available to this web app. Open Settings manually. The browser link below opens a new window; if it stays inside the app, copy the address into Safari.</p>
+      <div class="actions">
+        <a class="help-link" href="https://boon018.github.io/Wettra/?location-help=1" target="_blank" rel="noopener noreferrer">Open in browser ↗</a>
+        <a class="help-link" href="https://support.apple.com/de-at/102647" target="_blank" rel="noopener noreferrer">Apple’s location settings guide ↗</a>
+      </div>
+      <details><summary>Android or desktop browser</summary><p>Open the browser’s site permissions for this address and allow Location. Also check your device’s location privacy settings, then retry.</p></details>
+      <div class="actions"><button data-action="retryGPS">Try location again</button><button data-action="closeLocationHelp">Use postcode instead</button></div>
+    </dialog>
+
+    <script>
+      /* APP_JS */
+    </script>
+  </body>
+</html>

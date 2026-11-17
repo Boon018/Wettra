@@ -1,0 +1,24 @@
+{
+  "name": "wettra",
+  "version": "1.4.0",
+  "private": true,
+  "description": "Local-first weather application for Austria",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test.cjs && node tests/regressions.cjs && node tests/modules.cjs && node tests/storage-compat.cjs && node tests/radar.mjs && node tests/validation.mjs && node tests/geolocation.mjs && node tests/conditions.mjs && npm run test:widget",
+    "build": "node scripts/build.mjs && npm run build:widget",
+    "check:artifact": "node scripts/check-artifact.mjs",
+    "test:browser": "playwright test",
+    "build:widget": "node scripts/build-widget.mjs",
+    "test:widget": "node tests/widget.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "acorn": "8.19.0",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.10"
+  }
+}

@@ -1,0 +1,58 @@
+name: Test and deploy Wettra
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pinned development tools
+        run: npm ci
+
+      - name: Install browser test engines
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Build production artifacts
+        run: npm run build
+
+      - name: Verify standalone artifact and storage-safe paths
+        run: npm run check:artifact
+      - name: Run regression tests
+        run: npm test
+      - name: Run browser tests
+        run: npm run test:browser
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Package static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify the public release
+        run: node scripts/smoke-deployment.mjs "${{ steps.deployment.outputs.page_url }}"

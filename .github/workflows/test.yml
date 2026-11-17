@@ -1,0 +1,38 @@
+name: Wettra tests
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install pinned development tools
+        run: npm ci
+      - name: Install browser test engines
+        run: npx playwright install --with-deps chromium webkit
+      - name: Build standalone artifacts
+        run: npm run build
+      - name: Check generated artifact parity
+        run: npm run check:artifact
+      - name: Run regression suites
+        run: npm test
+      - name: Test phone, tablet and desktop layouts
+        run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failure-traces
+          path: test-results/
