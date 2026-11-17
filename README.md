@@ -23,6 +23,6 @@ Node.js 22: `npm ci`, `npm run build`, `npm test`, `npm run check:artifact`, `np
 
 ## Veröffentlichungsadresse und Lizenz
 
-GitHub Pages: <https://boon018.github.io/Wettra/>. Der Pages-Build wird über GitHub Actions bereitgestellt; der bestehende öffentliche Pfad bleibt `/Wettra/`.
+GitHub Pages: <https://boon018.github.io/Wettra/>. Einmalig unter **Repository → Settings → Pages → Build and deployment → Source** „GitHub Actions“ auswählen. Danach veröffentlicht der Pages-Workflow nach jedem erfolgreichen Push auf `main`; der öffentliche Pfad bleibt `/Wettra/`.
 
 Die Projektlizenz liegt in [LICENSE.md](LICENSE.md). Sie erlaubt kostenlose Nutzung, Änderung und kostenlose Weitergabe, untersagt aber den Verkauf ohne vorherige schriftliche Erlaubnis. Wetter- und Kartendaten unterliegen weiterhin ihren jeweiligen Drittanbieterbedingungen und Namensnennungspflichten.
