@@ -53,15 +53,21 @@ const code = fs.readFileSync('dist/wettra-widget.js','utf8');
 assert.ok(code.length < 100000);
 for (const family of ['small','medium','large','extraLarge']) for (const fail of [false,true]) {
  const texts=[]; let rendered=false, complete=false;
- class Stack { addText(v){texts.push(v);return {}} addStack(){return new Stack()} addSpacer(){} layoutVertically(){} centerAlignContent(){} }
+ class Stack { addText(v){const node={text:String(v),font:null};texts.push(node);return node} addStack(){return new Stack()} addSpacer(){} layoutVertically(){} centerAlignContent(){} }
  class Widget extends Stack {setPadding(){} async presentMedium(){}}
  const files=new Map();
  const fm={joinPath:(a,b)=>a+'/'+b,libraryDirectory:()=>'/local',fileExists:p=>files.has(p),createDirectory(){},writeString:(p,v)=>files.set(p,v),readString:p=>files.get(p),remove:p=>files.delete(p),move:(a,b)=>{files.set(b,files.get(a));files.delete(a)}};
- const context={console, Intl, Date, ListWidget:Widget, Font:{systemFont:()=>({})},Color:class{},
+ const context={console, Intl, Date, ListWidget:Widget, Font:{systemFont:size=>({size})},Color:class{},
    args:{widgetParameter:JSON.stringify(units)},config:{runsInWidget:true,widgetFamily:family},FileManager:{local:()=>fm},
    Request:class{constructor(url){this.url=url;this.response={statusCode:200}}async loadJSON(){if(fail)throw Error();return raw(new URL(this.url).searchParams.get('models'))}},
    Script:{setWidget(w){rendered=true;assert.equal(new URL(w.url).searchParams.get('name'),'Graz');assert.ok(w.refreshAfterDate.getTime()>=Date.now()+29*60000)},complete(){complete=true}}};
  await vm.runInNewContext('(async()=>{'+code+'})()',context);
- assert.ok(rendered && complete);assert.ok(texts.some(t=>t.includes(fail?'Wetter nicht verfügbar':'Graz')));
+ assert.ok(rendered && complete);assert.ok(texts.some(t=>t.text.includes(fail?'Wetter nicht verfügbar':'Graz')));
+ if (family==='medium' && !fail) {
+   assert.ok(texts.some(t=>t.text==='Bedeckt · 30 % Regen'), 'medium header combines sky and rain chance');
+   assert.ok(texts.some(t=>t.text.includes('Open-Meteo · Widget 0.2.0')), 'medium footer combines date/time and provider');
+   assert.ok(texts.some(t=>t.font?.size===20), 'medium hourly weather symbols use the larger font');
+   assert.ok(texts.some(t=>t.font?.size===13), 'medium hourly temperatures have their own readable row');
+ }
 }
 console.log('PASS widget: shared consensus/icons, parameters, cache, partial/offline failures, expiry, quota and bundled Scriptable host smoke');

@@ -350,13 +350,21 @@ function text(parent, label, size = 12, muted = false) {
   t.minimumScaleFactor = 0.65;
   return t;
 }
-function shell(location, small = false) {
+function shell(location, small = false, summary = "") {
   const w = new ListWidget();
   w.backgroundColor = new Color("102A3B");
   w.setPadding(13, 14, 12, 14);
   w.url = widgetAppURL(location);
   w.refreshAfterDate = new Date(Date.now() + 30 * 6e4);
-  text(w, small ? location.name : "WETTRA \xB7 " + location.name, 12, true);
+  if (small || !summary) text(w, small ? location.name : "WETTRA \xB7 " + location.name, 12, true);
+  else {
+    const header = w.addStack();
+    header.centerAlignContent();
+    header.spacing = 5;
+    text(header, "WETTRA \xB7 " + location.name, 11, true);
+    header.addSpacer();
+    text(header, summary, 10, true);
+  }
   return w;
 }
 function footer(w, data, location, small) {
@@ -364,16 +372,21 @@ function footer(w, data, location, small) {
   const age = Date.now() - data.savedAt;
   const status = data.offline ? "Offline \xB7 " : age > 36e5 ? "Veraltet \xB7 " : data.storageError ? "Nicht gespeichert \xB7 " : data.failures?.length ? "Teilweise \xB7 " : "";
   const stamp = new Intl.DateTimeFormat("de-AT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: location.timezone }).format(new Date(data.savedAt));
-  text(w, status + stamp, 9, true);
-  if (small) text(w, "Open-Meteo", 8, true);
-  else text(w, "Open-Meteo \xB7 Widget " + VERSION, 9, true);
+  if (small) {
+    text(w, status + stamp, 9, true);
+    text(w, "Open-Meteo", 8, true);
+  } else {
+    text(w, status + stamp + " \xB7 Open-Meteo \xB7 Widget " + VERSION, 8, true);
+  }
 }
 function renderWidget(data, location, family = "medium") {
   const small = family === "small", large = ["large", "extraLarge"].includes(family);
-  const w = shell(location, small);
   const { current, hours } = widgetRows(data);
   const summary = todaySummary(data, location.timezone);
   const condition2 = forecastCondition(current || {});
+  const chance = Number.isFinite(current?.precipitation_probability) ? value(current.precipitation_probability, " % Regen") : "";
+  const headline = !small && !large ? [labels[condition2[1]], chance].filter(Boolean).join(" \xB7 ") : "";
+  const w = shell(location, small, headline);
   const row = w.addStack();
   row.centerAlignContent();
   row.spacing = 10;
@@ -388,8 +401,6 @@ function renderWidget(data, location, family = "medium") {
   row.addSpacer();
   const info = row.addStack();
   info.layoutVertically();
-  text(info, labels[condition2[1]], 11, true);
-  text(info, value(current?.precipitation_probability, " % Regen"), 12);
   text(info, rainfall(current?.precipitation, location), 12, true);
   if (large) {
     text(w, "Heute  \u2191 " + temperature(summary.high, location) + "  \u2193 " + temperature(summary.low, location), 15);
@@ -405,7 +416,13 @@ function renderWidget(data, location, family = "medium") {
     col.spacing = large ? 5 : 2;
     const r = hours[i];
     text(col, clock(r.time, location), 10, true);
-    text(col, forecastCondition(r)[0] + " " + temperature(r.temperature_2m, location), 12);
+    if (large) {
+      text(col, forecastCondition(r)[0], 23);
+      text(col, temperature(r.temperature_2m, location), 14);
+    } else {
+      text(col, forecastCondition(r)[0], 20);
+      text(col, temperature(r.temperature_2m, location), 13);
+    }
     text(col, value(r.precipitation_probability, "%"), 11, true);
     if (large) text(col, rainfall(r.precipitation, location), 10, true);
   }

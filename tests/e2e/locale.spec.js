@@ -4,8 +4,12 @@ test("German is the first-run language and English preference persists", async (
   await page.goto("./");
   await expect(page.locator("html")).toHaveAttribute("lang", "de");
   await expect(page.locator("#nav")).toContainText("Wetter");
+  await page.locator('#nav [data-view="locations"]').click();
+  await expect(page.locator("#searchForm button")).toHaveText("Suchen");
+  await expect(page.locator("main")).not.toContainText(/findenen/i);
   await page.locator('#nav [data-view="settings"]').click();
   await expect(page.locator("#language")).toHaveValue("de");
+  await expect(page.locator("main")).toContainText("RainViewer");
   await page.locator("#language").selectOption("en");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.locator("#nav")).toContainText("Weather");

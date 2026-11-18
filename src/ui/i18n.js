@@ -17,7 +17,7 @@ const pairs = [
   ["Android or desktop browser", "Android- oder Desktop-Browser"],
   ["Your places", "Deine Orte"], ["Town, postcode or lat, lon", "Ort, Postleitzahl oder Breitengrad, Längengrad"],
   ["Town, city or postcode", "Ort, Stadt oder Postleitzahl"], ["Location search", "Ortssuche"],
-  ["Search locations", "Orte suchen"], ["Find", "Finden"], ["Search", "Suchen"],
+  ["Search locations", "Orte suchen"], ["Find", "Suchen"], ["Search", "Suche"],
   ["Saved places", "Gespeicherte Orte"], ["Saved locations", "Gespeicherte Orte"],
   ["Save place", "Ort speichern"], ["Save current", "Aktuellen Ort speichern"],
   ["Use my current location", "Meinen aktuellen Standort verwenden"], ["Use last selected", "Zuletzt ausgewählten Ort verwenden"],
@@ -105,7 +105,12 @@ const locale = () => settings.language === "en" ? "en" : "de";
 function translate(value, lang = locale()) {
   let output = String(value);
   const entries = [...(lang === "de" ? de : en)].sort((a, b) => b[0].length - a[0].length);
-  for (const [from, to] of entries) output = output.replaceAll(from, to);
+  for (const [from, to] of entries) {
+    const left = /^[A-Za-z0-9_]/.test(from) ? "(^|[^A-Za-z0-9_])" : "";
+    const right = /[A-Za-z0-9_]$/.test(from) ? "(?![A-Za-z0-9_])" : "";
+    const expression = new RegExp(left + from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + right, "g");
+    output = output.replace(expression, (...match) => left ? match[1] + to : to);
+  }
   return output;
 }
 export function localizeDOM(root = document.body) {
