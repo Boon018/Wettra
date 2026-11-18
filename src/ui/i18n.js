@@ -17,7 +17,7 @@ const pairs = [
   ["Android or desktop browser", "Android- oder Desktop-Browser"],
   ["Your places", "Deine Orte"], ["Town, postcode or lat, lon", "Ort, Postleitzahl oder Breitengrad, Längengrad"],
   ["Town, city or postcode", "Ort, Stadt oder Postleitzahl"], ["Location search", "Ortssuche"],
-  ["Search locations", "Orte suchen"], ["Find", "Suchen"], ["Search", "Suche"],
+  ["Search locations", "Orte suchen"], ["Find", "Suchen"], ["Search", "Suchen"],
   ["Saved places", "Gespeicherte Orte"], ["Saved locations", "Gespeicherte Orte"],
   ["Save place", "Ort speichern"], ["Save current", "Aktuellen Ort speichern"],
   ["Use my current location", "Meinen aktuellen Standort verwenden"], ["Use last selected", "Zuletzt ausgewählten Ort verwenden"],
