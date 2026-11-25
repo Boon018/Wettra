@@ -18,7 +18,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
@@ -54,5 +54,16 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - name: Wait before retrying Pages deploy
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 10
+      - name: Retry Pages deploy once
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Fail if both Pages deploy attempts failed
+        if: always() && steps.deployment.outcome == 'failure' && steps.deployment_retry.outcome == 'failure'
+        run: exit 1
       - name: Verify the public release
-        run: node scripts/smoke-deployment.mjs "${{ steps.deployment.outputs.page_url }}"
+        run: node scripts/smoke-deployment.mjs "${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}"

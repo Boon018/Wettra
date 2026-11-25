@@ -3,7 +3,7 @@ import { providers } from "./fixtures.js";
 test.beforeEach(async ({ page }) => providers(page));
 test('quick-start defaults are Graz and Vienna only',async({page})=>{
   await page.goto('./');
-  await page.locator('[data-view="locations"]').click();
+  await page.locator('#nav [data-view="locations"]').click();
   const quick=page.locator('[data-quick]');
   await expect(quick).toHaveCount(2);
   await expect(quick.nth(0)).toHaveText('Graz');
