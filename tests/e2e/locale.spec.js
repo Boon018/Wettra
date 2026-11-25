@@ -107,7 +107,11 @@ test("radar failures use the selected language", async ({ page }) => {
     "Radar konnte nicht geladen werden",
   );
   await expect(page.locator("main")).not.toContainText(
-    "The map is still usable",
+    "Zoom out",
+  );
+  await expect(page.locator(".map-surface")).toHaveAttribute(
+    "aria-label",
+    /Radarkarte/,
   );
 });
 

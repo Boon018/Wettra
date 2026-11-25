@@ -118,7 +118,7 @@ test("GPS selection centers the map", async ({ page, context }) => {
   await expect
     .poll(() => page.evaluate(() => window.Alpen.state.location.latitude))
     .toBe(48.2082);
-  await page.getByRole("button", { name: "Load radar", exact: true }).click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await expect(page.locator("#radarLabel")).toContainText("Radar tiles loaded");
   const center = JSON.parse(
     await page.locator(".map-surface").getAttribute("data-center"),

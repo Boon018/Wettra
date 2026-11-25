@@ -16,13 +16,13 @@ import {
   finite,
 } from "./format.js";
 import { warningsCard } from "../api/geoSphere.js";
-import { radar, radarContent } from "../ui/radarView.js";
+import { radarContent } from "../ui/radarView.js";
 export function weatherView() {
   if (!state.data)
     return (
       locationControls() +
       empty() +
-      '<section class="card"><h2>Weather radar</h2><button data-action="radar">Load radar</button>' +
+      '<section class="card radar-entry"><h2>Weather radar</h2>' +
       radarContent() +
       "</section>"
     );
@@ -57,9 +57,7 @@ export function weatherView() {
     hourstrip(rs.slice(0, 24)) +
     "<small>Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.</small></section>" +
     warningsCard() +
-    '<section class="card"><div class="sectionhead"><h2>Weather radar</h2><button data-action="radar">' +
-    (state.radarBusy ? "Loading…" : state.radar ? "Refresh" : "Load radar") +
-    "</button></div>" +
+    '<section class="card radar-entry"><div class="sectionhead"><h2>Weather radar</h2></div>' +
     radarContent() +
     '</section></div><div><section class="card days"><div class="sectionhead"><h2>' +
     days.length +

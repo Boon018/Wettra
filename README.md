@@ -1,4 +1,4 @@
-# Wettra 1.5.0
+# Wettra 1.6.0
 
 [Wettra öffnen](https://boon018.github.io/Wettra/) · [Eigenständige HTML-Datei](https://boon018.github.io/Wettra/standalone.html) · [Scriptable-Widget einrichten](https://boon018.github.io/Wettra/widget.html)
 
@@ -9,7 +9,7 @@ Wettra ist eine lokale, kontofreie Wetter-PWA für Österreich. Die Standardspra
 - Aktuelles Wetter, stündliche und 16-tägige Prognose, Regenmengen pro Stunde und Wahrscheinlichkeiten.
 - Konsens aus DWD ICON, ECMWF IFS und NOAA GFS; historische ERA5-Daten, Modellvergleich und lokale Prognoseauswertung.
 - Ortssuche inklusive österreichischer Postleitzahlen, GPS auf unterstützten Browsern und Favoriten.
-- GeoSphere-Warnungen und interaktive RainViewer-Radaransicht.
+- GeoSphere-Warnungen und eine eigene RainViewer-Radaransicht mit Zeitachse.
 - Lokale Einstellungen, gespeicherte Orte und Wettercache; kein App-Backend, Konto, Tracking oder Analytics.
 - Optionales Scriptable-Widget für iPhone und iPad. iOS steuert den tatsächlichen Widget-Aktualisierungszeitpunkt; Wettra fordert jeweils eine erneute Aktualisierung nach 30 Minuten an.
 

@@ -118,6 +118,71 @@
   outline: 3px solid var(--accent);
   outline-offset: -4px;
 }
+.radar-screen {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.radar-screen .radar-heading {
+  align-items: flex-start;
+}
+.radar-screen .radar-heading h2,
+.radar-screen .radar-heading p {
+  margin: 0;
+}
+.radar-screen .radar-heading p {
+  margin-top: 3px;
+}
+.radar-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+}
+.radar-screen .radar-widget .radarbox {
+  height: clamp(280px, 72vw, 620px);
+  max-height: 65svh;
+  aspect-ratio: auto;
+  margin: 10px auto;
+}
+.radar-screen .radar-widget .radar-controls {
+  gap: 12px;
+}
+.radar-screen .radar-widget .radar-play {
+  min-width: 96px;
+  min-height: 44px;
+}
+.radar-timeline-head,
+.radar-timeline-ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.radar-timeline-head {
+  margin-top: 14px;
+}
+.radar-timeline-ends {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.radar-screen #radarTime {
+  width: 100%;
+  min-height: 34px;
+  margin: 3px 0 0;
+}
+.radar-screen #radarLabel {
+  min-height: 24px;
+  margin: 10px 0;
+}
+.radar-source {
+  text-align: center;
+}
+.radar-entry .radar-open {
+  width: 100%;
+  min-height: 48px;
+}
 .weather-columns > div {
   min-width: 0;
 }

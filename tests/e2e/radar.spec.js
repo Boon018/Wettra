@@ -4,25 +4,53 @@ test.beforeEach(async ({ page }) => providers(page));
 async function open(page) {
   await page.goto("./");
   await expect(page.locator(".temperature")).toBeVisible();
-  await page.getByRole("button", { name: "Load radar", exact: true }).click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await expect(page.locator("#radarLabel")).toContainText("Radar tiles loaded");
 }
 async function center(page, lat, lon) {
-  const result = await page.locator(".map-surface").evaluate((el) => ({
-    center: JSON.parse(el.dataset.center),
-    w: el.clientWidth,
-    h: el.clientHeight,
-    left: parseFloat(el.querySelector(".map-marker").style.left),
-    top: parseFloat(el.querySelector(".map-marker").style.top),
-  }));
-  expect(result.center.x).toBeCloseTo((lon + 180) / 360, 8);
-  expect(result.center.y).toBeCloseTo(
-    (1 - Math.asinh(Math.tan((lat * Math.PI) / 180)) / Math.PI) / 2,
-    8,
-  );
-  expect(result.left).toBeCloseTo(result.w / 2, 5);
-  expect(result.top).toBeCloseTo(result.h / 2, 5);
+  const surface = page.locator(".map-surface");
+  const x = (lon + 180) / 360;
+  const y = (1 - Math.asinh(Math.tan((lat * Math.PI) / 180)) / Math.PI) / 2;
+  await expect
+    .poll(() => surface.evaluate((el) => JSON.parse(el.dataset.center).x))
+    .toBeCloseTo(x, 5);
+  await expect
+    .poll(() => surface.evaluate((el) => JSON.parse(el.dataset.center).y))
+    .toBeCloseTo(y, 5);
+  await expect
+    .poll(() =>
+      surface.evaluate((el) =>
+        Math.abs(parseFloat(el.querySelector(".map-marker").style.left) - el.clientWidth / 2),
+      ),
+    )
+    .toBeLessThan(1);
+  await expect
+    .poll(() =>
+      surface.evaluate((el) =>
+        Math.abs(parseFloat(el.querySelector(".map-marker").style.top) - el.clientHeight / 2),
+      ),
+    )
+    .toBeLessThan(1);
 }
+test("compact weather entry opens a dedicated radar view and stops tiles on exit", async ({
+  page,
+}) => {
+  const requests = [];
+  page.on("request", (req) => {
+    if (req.url().includes("rainviewer")) requests.push(req.url());
+  });
+  await page.goto("./");
+  await expect(page.locator(".radar-entry .map-surface")).toHaveCount(0);
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
+  await expect(page.locator(".radar-screen h2")).toHaveText("Weather radar");
+  await expect(page.locator("#radarLabel")).toContainText("Radar tiles loaded");
+  await expect(page.getByText("Past radar · not a forecast")).toBeVisible();
+  await page.getByRole("button", { name: /Back to weather/ }).click();
+  await expect(page.locator("#radarMount")).toHaveCount(0);
+  const afterExit = requests.length;
+  await page.waitForTimeout(1200);
+  expect(requests.length).toBe(afterExit);
+});
 test("center, pan, zoom, reuse tiles, recenter, select location and cleanup playback", async ({
   page,
 }) => {
@@ -70,14 +98,17 @@ test("center, pan, zoom, reuse tiles, recenter, select location and cleanup play
   await page.waitForTimeout(1500);
   expect(requests.length).toBe(count);
   await page.locator('[data-view="weather"]').click();
-  await expect(page.locator(".radar-play")).toHaveText("▶ Play");
+  await expect(page.locator("#radarMount")).toHaveCount(0);
   await page.locator("#searchInput").fill("Vienna");
   await page.locator("#searchForm button").click();
   await page.locator('[data-search="0"]').click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await expect(page.locator("#radarLabel")).toContainText("Vienna");
   await center(page, 48.2082, 16.3738);
+  await page.locator('[data-view="weather"]').click();
   await page.locator("#searchInput").fill("46.5, 14.25");
   await page.locator("#searchForm button").click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await center(page, 46.5, 14.25);
   const radarRequests = requests.filter((u) => u.includes("rainviewer"));
   expect(
@@ -113,7 +144,7 @@ test("pinch simulation preserves midpoint, opacity and keyboard pan work", async
   await dispatch("pointerup", 2, x + 80);
   await expect(surface).toHaveAttribute("data-zoom", "8");
   await center(page, 47.0707, 15.4395);
-  await page.getByLabel("Radar overlay opacity").fill("35");
+  await page.locator(".radar-controls input[type=range]").fill("35");
   await expect(page.locator(".radar-tiles")).toHaveCSS("opacity", "0.35");
   await surface.focus();
   const before = await surface.getAttribute("data-center");
@@ -124,7 +155,7 @@ test("metadata and tile failures preserve the basemap", async ({ page }) => {
   await page.route("https://api.rainviewer.com/**", (route) => route.abort());
   await page.goto("./");
   await expect(page.locator(".temperature")).toBeVisible();
-  await page.getByRole("button", { name: "Load radar", exact: true }).click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await expect(page.locator("#radarLabel")).toContainText("Radar unavailable");
   await expect(page.locator(".base-tiles img").first()).toBeVisible();
   await page.reload();
@@ -132,7 +163,7 @@ test("metadata and tile failures preserve the basemap", async ({ page }) => {
   await page.route("https://tilecache.rainviewer.com/**", (route) =>
     route.abort(),
   );
-  await page.getByRole("button", { name: "Load radar", exact: true }).click();
+  await page.getByRole("button", { name: "Open radar", exact: true }).click();
   await expect(page.locator("#radarLabel")).toContainText("partly unavailable");
   await expect(page.locator(".base-tiles img").first()).toBeVisible();
 });

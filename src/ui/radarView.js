@@ -7,29 +7,43 @@ import { normalizedPoint } from "../radar/projection.js";
 import { t } from "./i18n.js";
 let widget = null;
 export function radarContent() {
-  const link =
-    '<p class="footnote"><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">Open RainViewer radar map ↗</a></p>';
-  if (!state.radarOpened)
-    return (
-      '<p class="muted">Load recent precipitation around ' +
-      esc(state.location.name) +
-      ". Map and radar providers receive tile requests only when you open this map.</p>" +
-      link
-    );
   return (
+    '<p class="muted">' +
+    t("radar.entry.description", { name: esc(state.location.name) }) +
+    '</p><button class="radar-open" data-action="radar">' +
+    t("radar.entry.open") +
+    '</button><p class="footnote">' +
+    t("radar.entry.privacy") +
+    "</p>"
+  );
+}
+export function radarScreen() {
+  return (
+    '<section class="radar-screen"><div class="sectionhead radar-heading"><div><h2>' +
+    t("radar.title") +
+    '</h2><p class="muted">' +
+    t("radar.subtitle", { name: esc(state.location.name) }) +
+    '</p></div><button type="button" data-action="radarRefresh" aria-label="' +
+    t("radar.refresh") +
+    '">↻</button></div><div class="radar-nav-actions"><button type="button" data-action="closeRadar">← ' +
+    t("radar.back") +
+    '</button><span class="tag">' +
+    t("radar.pastOnly") +
+    '</span></div>' +
     (state.radarError
       ? '<p class="notice warning" role="alert">' +
         esc(t(state.radarError)) +
         "</p>"
       : "") +
-    '<div id="radarMount"></div>' +
-    link
+    '<div id="radarMount"></div><p class="footnote radar-source">' +
+    t("radar.source") +
+    ' <a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">RainViewer ↗</a> · © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a></p></section>'
   );
 }
 export function radarImages() {
   const host = document.getElementById("radarMount");
   // VM regression harnesses intentionally do not emulate layout or DOM attachment.
-  if (!host || !host.append || !state.radarOpened) {
+  if (!host || !host.append || state.view !== "radar") {
     if (widget) {
       widget.destroy();
       widget = null;
@@ -69,6 +83,7 @@ export async function radar() {
   if (state.radarBusy) return;
   const request = ++state.radarRequest,
     locationKey = key(state.location);
+  state.view = "radar";
   state.radarOpened = true;
   state.radarBusy = true;
   state.radarError = "";
@@ -84,7 +99,7 @@ export async function radar() {
   } finally {
     if (request === state.radarRequest) {
       state.radarBusy = false;
-      if (state.view === "weather") render();
+      if (state.view === "radar") render();
     }
   }
 }

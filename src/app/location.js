@@ -14,6 +14,7 @@ export function selectLocation(l) {
     locationMessage("location.invalid");
     return;
   }
+  const radarWasVisible = state.view === "radar";
   if (cancelGPS) {
     cancelGPS();
     cancelGPS = null;
@@ -37,10 +38,10 @@ export function selectLocation(l) {
     timezone: l.timezone || "Europe/Vienna",
   };
   Store.set("location", state.location);
-  state.view = "weather";
+  state.view = radarWasVisible ? "radar" : "weather";
   state.search = [];
   loadWeather();
-  if (state.radarOpened) radar();
+  if (radarWasVisible) radar();
 }
 export function locationMessage(messageKey, helpKey = messageKey) {
   state.gpsMessage = helpKey;

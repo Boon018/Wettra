@@ -1,6 +1,7 @@
 import { settings, state } from "./state.js";
 import { $ } from "../ui/format.js";
 import { weatherView } from "../ui/weatherView.js";
+import { radarScreen } from "../ui/radarView.js";
 import { hourlyView, drawChart } from "../ui/charts.js";
 import { historyView } from "../ui/historyView.js";
 import { modelView } from "../ui/modelsView.js";
@@ -26,7 +27,9 @@ export function render() {
       '<button data-view="' +
       id +
       '" ' +
-      (state.view === id ? 'aria-current="page"' : "") +
+      ((state.view === id || (state.view === "radar" && id === "weather"))
+        ? 'aria-current="page"'
+        : "") +
       '><span aria-hidden="true">' +
       icon +
       "</span>" +
@@ -35,6 +38,7 @@ export function render() {
   ).join("");
   $("main").innerHTML = {
     weather: weatherView,
+    radar: radarScreen,
     hourly: hourlyView,
     history: historyView,
     models: modelView,
