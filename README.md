@@ -1,4 +1,4 @@
-# Wettra 1.4.1
+# Wettra 1.4.2
 
 [Wettra öffnen](https://boon018.github.io/Wettra/) · [Eigenständige HTML-Datei](https://boon018.github.io/Wettra/standalone.html) · [Scriptable-Widget einrichten](https://boon018.github.io/Wettra/widget.html)
 
