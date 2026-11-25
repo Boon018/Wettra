@@ -69,7 +69,14 @@ document.addEventListener("click", (e) => {
     render();
   }
   if (a === "compare") compareHistory();
-  if (a === "radar") radar();
+  if (a === "radar" || a === "radarRefresh") radar();
+  if (a === "closeRadar") {
+    state.radarRequest++;
+    state.radarBusy = false;
+    state.view = "weather";
+    render();
+    window.scrollTo(0, 0);
+  }
   if (a === "score") {
     b.disabled = true;
     score()

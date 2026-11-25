@@ -12,7 +12,7 @@
       name="description"
       content="Privates, lokales Wetter für Österreich. Prognosen, Modellvergleiche und Wetterrückblick."
     />
-    <meta name="wettra-version" content="1.5.0" />
+    <meta name="wettra-version" content="1.6.0" />
     <title>Wettra</title>
     <style>
       :root {
@@ -134,6 +134,71 @@
 .radar-widget .map-surface:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: -4px;
+}
+.radar-screen {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.radar-screen .radar-heading {
+  align-items: flex-start;
+}
+.radar-screen .radar-heading h2,
+.radar-screen .radar-heading p {
+  margin: 0;
+}
+.radar-screen .radar-heading p {
+  margin-top: 3px;
+}
+.radar-nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+}
+.radar-screen .radar-widget .radarbox {
+  height: clamp(280px, 72vw, 620px);
+  max-height: 65svh;
+  aspect-ratio: auto;
+  margin: 10px auto;
+}
+.radar-screen .radar-widget .radar-controls {
+  gap: 12px;
+}
+.radar-screen .radar-widget .radar-play {
+  min-width: 96px;
+  min-height: 44px;
+}
+.radar-timeline-head,
+.radar-timeline-ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.radar-timeline-head {
+  margin-top: 14px;
+}
+.radar-timeline-ends {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.radar-screen #radarTime {
+  width: 100%;
+  min-height: 34px;
+  margin: 3px 0 0;
+}
+.radar-screen #radarLabel {
+  min-height: 24px;
+  margin: 10px 0;
+}
+.radar-source {
+  text-align: center;
+}
+.radar-entry .radar-open {
+  width: 100%;
+  min-height: 48px;
 }
 .weather-columns > div {
   min-width: 0;
@@ -633,12 +698,12 @@ label {
 #locationHelp details { margin: 16px 0; }
 
     </style>
-  <meta name="wettra-build" content="23daa2a26add"></head>
+  <meta name="wettra-build" content="4fbe76337784"></head>
   <body data-theme="auto">
     <header>
       <div>
         <div class="brand">
-          Wettra <span class="small">v1.5.0</span>
+          Wettra <span class="small">v1.6.0</span>
         </div>
         <h1 id="locationTitle">Graz</h1>
       </div>
@@ -1528,187 +1593,6 @@ label {
     };
   }
 
-  // src/radar/map.js
-  var RadarMap = class {
-    constructor(view, getData, setFrame, formatTime) {
-      this.view = view;
-      this.getData = getData;
-      this.setFrame = setFrame;
-      this.formatTime = formatTime;
-      this.playing = false;
-      this.disposed = false;
-      this.raf = 0;
-      this.element = document.createElement("div");
-      this.element.className = "radar-widget";
-      this.element.innerHTML = `<div class="radarbox"><div class="map-surface" tabindex="0" role="region" aria-label="Weather radar map. Drag or use arrow keys to pan; plus and minus to zoom.">
-   <div class="map-layer base-tiles"></div><div class="map-layer radar-tiles"></div>
-   <span class="map-marker" role="img" aria-label="Selected location"></span><span class="map-compass">N \u2191</span>
-   <div class="map-tools"><button type="button" data-map="out" aria-label="Zoom out">\u2212</button><button type="button" data-map="in" aria-label="Zoom in">+</button><button type="button" data-map="center" aria-label="Center selected location">\u2316</button></div>
-   <div class="map-attribution">\xA9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> \xB7 <a href="https://www.rainviewer.com/" target="_blank" rel="noreferrer">RainViewer</a></div>
-  </div></div><div class="radar-controls actions"><button type="button" class="radar-play" aria-pressed="false">\u25B6 Play</button><label>Overlay opacity <input class="range" type="range" min="0" max="100" value="76" aria-label="Radar overlay opacity"></label></div>
-  <input id="radarTime" class="range" type="range" min="0" max="0" value="0" aria-label="Radar time">
-  <p id="radarLabel" class="small" role="status" aria-live="polite"></p>
-  <p class="footnote">Past radar, not a forecast. The timestamp identifies the composite frame; individual observations may be older. Blue/green \u2192 yellow/red: increasing reflectivity. Blank areas can mean no precipitation or missing coverage.</p>`;
-      this.surface = this.element.querySelector(".map-surface");
-      this.base = new TileLayer(
-        this.element.querySelector(".base-tiles"),
-        () => this.status(),
-        12
-      );
-      this.rain = new TileLayer(
-        this.element.querySelector(".radar-tiles"),
-        () => this.status(),
-        7
-      );
-      this.removeGestures = installGestures(
-        this.surface,
-        view,
-        () => this.schedule()
-      );
-      this.element.querySelector('[data-map="out"]').onclick = () => {
-        view.z = Math.max(3, view.z - 1);
-        this.schedule();
-      };
-      this.element.querySelector('[data-map="in"]').onclick = () => {
-        view.z = Math.min(12, view.z + 1);
-        this.schedule();
-      };
-      this.element.querySelector('[data-map="center"]').onclick = () => {
-        Object.assign(
-          view,
-          normalizedPoint(
-            this.getData().location.latitude,
-            this.getData().location.longitude
-          )
-        );
-        this.schedule();
-      };
-      this.playButton = this.element.querySelector(".radar-play");
-      this.playButton.onclick = () => this.play(!this.playing);
-      this.timeline = this.element.querySelector("#radarTime");
-      this.timeline.oninput = () => {
-        this.play(false);
-        this.setFrame(+this.timeline.value);
-        this.update();
-      };
-      const opacity = this.element.querySelector(
-        '[aria-label="Radar overlay opacity"]'
-      );
-      opacity.value = String(view.opacity ?? 76);
-      opacity.oninput = () => {
-        view.opacity = +opacity.value;
-        this.rain.element.style.opacity = String(view.opacity / 100);
-      };
-      this.visibility = () => {
-        if (document.hidden) this.play(false);
-      };
-      document.addEventListener("visibilitychange", this.visibility);
-      this.resize = new ResizeObserver(() => this.schedule());
-      this.resize.observe(this.surface);
-    }
-    attach(host) {
-      if (this.element.parentElement !== host) host.append(this.element);
-      this.update();
-    }
-    schedule() {
-      if (!this.raf && !this.disposed)
-        this.raf = requestAnimationFrame(() => {
-          this.raf = 0;
-          this.update();
-        });
-    }
-    update() {
-      if (this.disposed || !this.element.isConnected) return;
-      const { location: location2, radar: radar2, index } = this.getData();
-      const width = this.surface.clientWidth, height = this.surface.clientHeight;
-      if (!width || !height) return;
-      const frame = radar2?.frames[index];
-      this.timeline.disabled = !frame;
-      this.playButton.disabled = !frame;
-      this.timeline.max = String(Math.max(0, (radar2?.frames.length || 1) - 1));
-      this.timeline.value = String(index || 0);
-      this.base.update(
-        this.view,
-        width,
-        height,
-        (t2) => locationProtocol() === "file:" ? "" : `https://tile.openstreetmap.org/${t2.z}/${t2.x}/${t2.y}.png`
-      );
-      this.rain.update(
-        this.view,
-        width,
-        height,
-        (t2) => frame ? `${radar2.host}${frame.path}/256/${t2.z}/${t2.x}/${t2.y}/2/1_1.png` : ""
-      );
-      this.rain.element.style.opacity = String((this.view.opacity ?? 76) / 100);
-      const pixel = screenPoint(
-        normalizedPoint(location2.latitude, location2.longitude),
-        this.view,
-        width,
-        height
-      );
-      const marker = this.element.querySelector(".map-marker");
-      marker.style.left = pixel.x + "px";
-      marker.style.top = pixel.y + "px";
-      marker.title = location2.name;
-      this.surface.dataset.zoom = String(this.view.z);
-      this.surface.dataset.center = JSON.stringify({
-        x: this.view.x,
-        y: this.view.y
-      });
-      this.status();
-    }
-    status() {
-      if (this.disposed) return;
-      const { location: location2, radar: radar2, index, busy, error } = this.getData();
-      const frame = radar2?.frames[index];
-      const b = this.base.counts(), r = this.rain.counts();
-      let message = location2.name + " \xB7 ";
-      if (frame) {
-        message += this.formatTime(frame.time) + " \xB7 ";
-        if (Date.now() / 1e3 - frame.time > 1800)
-          message += "Older radar frame \xB7 ";
-      }
-      message += busy ? "Refreshing radar\u2026" : !frame ? error ? "Radar unavailable." : "No radar frame." : r.loading ? "Loading radar tiles\u2026" : r.error ? `Radar partly unavailable (${r.error} tiles).` : r.loaded ? "Radar tiles loaded." : "Radar coverage unavailable.";
-      if (b.error) message += " Basemap partly unavailable.";
-      if (locationProtocol() === "file:")
-        message += " Street map requires the HTTPS app.";
-      this.element.querySelector("#radarLabel").textContent = message;
-    }
-    play(on) {
-      clearTimeout(this.timer);
-      this.playing = on;
-      this.playButton.textContent = on ? "\u275A\u275A Pause" : "\u25B6 Play";
-      this.playButton.setAttribute("aria-pressed", String(on));
-      if (on)
-        this.timer = setTimeout(() => {
-          if (this.disposed || !this.element.isConnected || document.hidden) {
-            this.play(false);
-            return;
-          }
-          const { radar: radar2, index } = this.getData();
-          if (radar2?.frames.length && !this.rain.counts().loading) {
-            this.setFrame((index + 1) % radar2.frames.length);
-            this.update();
-          }
-          this.play(true);
-        }, 1e3);
-    }
-    destroy() {
-      this.play(false);
-      this.disposed = true;
-      cancelAnimationFrame(this.raf);
-      this.resize.disconnect();
-      this.removeGestures();
-      document.removeEventListener("visibilitychange", this.visibility);
-      this.base.destroy();
-      this.rain.destroy();
-      this.element.remove();
-    }
-  };
-  function locationProtocol() {
-    return window.location.protocol;
-  }
-
   // src/ui/messages.en.js
   var messages_en_default = {
     "legacy:Main navigation": "Main navigation",
@@ -1739,6 +1623,36 @@ label {
     "legacy:Location search": "Location search",
     "legacy:Search locations": "Search locations",
     "legacy:Find": "Find",
+    "radar.entry.description": "Open recent precipitation around {name} in an interactive map.",
+    "radar.entry.open": "Open radar",
+    "radar.entry.privacy": "Radar imagery loads only while this view is open.",
+    "radar.title": "Weather radar",
+    "radar.subtitle": "Past precipitation around {name}",
+    "radar.refresh": "Refresh radar",
+    "radar.back": "Back to weather",
+    "radar.pastOnly": "Past radar \xB7 not a forecast",
+    "radar.source": "Radar data",
+    "radar.map.label": "Radar map. Drag or use arrow keys to pan; plus and minus to zoom.",
+    "radar.map.location": "Selected location",
+    "radar.map.zoomOut": "Zoom out",
+    "radar.map.zoomIn": "Zoom in",
+    "radar.map.recenter": "Center selected location",
+    "radar.play": "Play",
+    "radar.pause": "Pause",
+    "radar.opacity": "Overlay opacity",
+    "radar.timeline": "Radar time",
+    "radar.legend": "Past radar, not a forecast. The timestamp identifies the composite frame; individual observations may be older. Blue/green to yellow/red indicates increasing reflectivity. Blank areas can mean no precipitation or missing coverage.",
+    "radar.locationStatus": "{name}",
+    "radar.olderFrame": "Older radar frame",
+    "radar.refreshing": "Refreshing radar\u2026",
+    "radar.unavailable": "Radar unavailable.",
+    "radar.noFrame": "No radar frame.",
+    "radar.loadingTiles": "Loading radar tiles\u2026",
+    "radar.partialTiles": "Radar partly unavailable ({count} tiles).",
+    "radar.tilesLoaded": "Radar tiles loaded.",
+    "radar.coverageUnavailable": "Radar coverage unavailable.",
+    "radar.basemapPartial": "Basemap partly unavailable.",
+    "radar.httpsRequired": "Street map requires the HTTPS app.",
     "legacy:Search": "Search",
     "legacy:Saved places": "Saved places",
     "legacy:Saved locations": "Saved locations",
@@ -2057,6 +1971,36 @@ label {
     "legacy:Location search": "Ortssuche",
     "legacy:Search locations": "Orte suchen",
     "legacy:Find": "Suchen",
+    "radar.entry.description": "\xD6ffne den Niederschlag rund um {name} in einer interaktiven Karte.",
+    "radar.entry.open": "Radar \xF6ffnen",
+    "radar.entry.privacy": "Radarbilder werden nur geladen, solange diese Ansicht ge\xF6ffnet ist.",
+    "radar.title": "Wetterradar",
+    "radar.subtitle": "Vergangener Niederschlag rund um {name}",
+    "radar.refresh": "Radar aktualisieren",
+    "radar.back": "Zur\xFCck zum Wetter",
+    "radar.pastOnly": "Vergangenes Radar \xB7 keine Prognose",
+    "radar.source": "Radardaten",
+    "radar.map.label": "Radarkarte. Zum Verschieben ziehen oder Pfeiltasten verwenden; mit Plus und Minus zoomen.",
+    "radar.map.location": "Ausgew\xE4hlter Standort",
+    "radar.map.zoomOut": "Verkleinern",
+    "radar.map.zoomIn": "Vergr\xF6\xDFern",
+    "radar.map.recenter": "Ausgew\xE4hlten Standort zentrieren",
+    "radar.play": "Abspielen",
+    "radar.pause": "Pause",
+    "radar.opacity": "Deckkraft des Overlays",
+    "radar.timeline": "Radarzeit",
+    "radar.legend": "Vergangenes Radar, keine Prognose. Der Zeitstempel bezeichnet das zusammengesetzte Bild; einzelne Messungen k\xF6nnen \xE4lter sein. Blau/Gr\xFCn bis Gelb/Rot zeigt zunehmende Reflektivit\xE4t. Leere Bereiche k\xF6nnen keinen Niederschlag oder fehlende Abdeckung bedeuten.",
+    "radar.locationStatus": "{name}",
+    "radar.olderFrame": "\xC4lteres Radarbild",
+    "radar.refreshing": "Radar wird aktualisiert \u2026",
+    "radar.unavailable": "Radar nicht verf\xFCgbar.",
+    "radar.noFrame": "Kein Radarbild verf\xFCgbar.",
+    "radar.loadingTiles": "Radar-Kacheln werden geladen \u2026",
+    "radar.partialTiles": "Radar teilweise nicht verf\xFCgbar ({count} Kacheln).",
+    "radar.tilesLoaded": "Radar-Kacheln geladen.",
+    "radar.coverageUnavailable": "Radarabdeckung nicht verf\xFCgbar.",
+    "radar.basemapPartial": "Basiskarte teilweise nicht verf\xFCgbar.",
+    "radar.httpsRequired": "Die Stra\xDFenkarte ben\xF6tigt die HTTPS-App.",
     "legacy:Search": "Suchen",
     "legacy:Saved places": "Gespeicherte Orte",
     "legacy:Saved locations": "Gespeicherte Orte",
@@ -2424,17 +2368,208 @@ label {
   }
   var observer;
 
+  // src/radar/map.js
+  var RadarMap = class {
+    constructor(view, getData, setFrame, formatTime) {
+      this.view = view;
+      this.getData = getData;
+      this.setFrame = setFrame;
+      this.formatTime = formatTime;
+      this.playing = false;
+      this.disposed = false;
+      this.raf = 0;
+      this.element = document.createElement("div");
+      this.element.className = "radar-widget";
+      this.element.innerHTML = `<div class="radarbox"><div class="map-surface" tabindex="0" role="region" aria-label="${t("radar.map.label")}">
+   <div class="map-layer base-tiles"></div><div class="map-layer radar-tiles"></div>
+   <span class="map-marker" role="img" aria-label="${t("radar.map.location")}"></span><span class="map-compass" aria-hidden="true">N \u2191</span>
+   <div class="map-tools"><button type="button" data-map="out" aria-label="${t("radar.map.zoomOut")}">\u2212</button><button type="button" data-map="in" aria-label="${t("radar.map.zoomIn")}">+</button><button type="button" data-map="center" aria-label="${t("radar.map.recenter")}">\u2316</button></div>
+   <div class="map-attribution">\xA9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> \xB7 <a href="https://www.rainviewer.com/" target="_blank" rel="noreferrer">RainViewer</a></div>
+  </div></div><div class="radar-controls actions"><button type="button" class="radar-play" aria-pressed="false">\u25B6 ${t("radar.play")}</button><label>${t("radar.opacity")} <input class="range" type="range" min="0" max="100" value="76" aria-label="${t("radar.opacity")}"></label></div>
+  <div class="radar-timeline-head"><strong>${t("radar.timeline")}</strong><time id="radarSelectedTime"></time></div>
+  <input id="radarTime" class="range" type="range" min="0" max="0" value="0" aria-label="${t("radar.timeline")}">
+  <div class="radar-timeline-ends"><span id="radarFirstTime"></span><span id="radarLastTime"></span></div>
+  <p id="radarLabel" class="small" role="status" aria-live="polite"></p>
+  <p class="footnote">${t("radar.legend")}</p>`;
+      this.surface = this.element.querySelector(".map-surface");
+      this.base = new TileLayer(
+        this.element.querySelector(".base-tiles"),
+        () => this.status(),
+        12
+      );
+      this.rain = new TileLayer(
+        this.element.querySelector(".radar-tiles"),
+        () => this.status(),
+        7
+      );
+      this.removeGestures = installGestures(
+        this.surface,
+        view,
+        () => this.schedule()
+      );
+      this.element.querySelector('[data-map="out"]').onclick = () => {
+        view.z = Math.max(3, view.z - 1);
+        this.schedule();
+      };
+      this.element.querySelector('[data-map="in"]').onclick = () => {
+        view.z = Math.min(12, view.z + 1);
+        this.schedule();
+      };
+      this.element.querySelector('[data-map="center"]').onclick = () => {
+        Object.assign(
+          view,
+          normalizedPoint(
+            this.getData().location.latitude,
+            this.getData().location.longitude
+          )
+        );
+        this.schedule();
+      };
+      this.playButton = this.element.querySelector(".radar-play");
+      this.playButton.onclick = () => this.play(!this.playing);
+      this.timeline = this.element.querySelector("#radarTime");
+      this.timeline.oninput = () => {
+        this.play(false);
+        this.setFrame(+this.timeline.value);
+        this.update();
+      };
+      const opacity = this.element.querySelector(
+        '[aria-label="' + t("radar.opacity") + '"]'
+      );
+      opacity.value = String(view.opacity ?? 76);
+      opacity.oninput = () => {
+        view.opacity = +opacity.value;
+        this.rain.element.style.opacity = String(view.opacity / 100);
+      };
+      this.visibility = () => {
+        if (document.hidden) this.play(false);
+      };
+      document.addEventListener("visibilitychange", this.visibility);
+      this.resize = new ResizeObserver(() => this.schedule());
+      this.resize.observe(this.surface);
+    }
+    attach(host) {
+      if (this.element.parentElement !== host) host.append(this.element);
+      this.update();
+    }
+    schedule() {
+      if (!this.raf && !this.disposed)
+        this.raf = requestAnimationFrame(() => {
+          this.raf = 0;
+          this.update();
+        });
+    }
+    update() {
+      if (this.disposed || !this.element.isConnected) return;
+      const { location: location2, radar: radar2, index } = this.getData();
+      const width = this.surface.clientWidth, height = this.surface.clientHeight;
+      if (!width || !height) return;
+      const frame = radar2?.frames[index];
+      const frames = radar2?.frames || [];
+      this.timeline.disabled = !frame;
+      this.playButton.disabled = !frame;
+      this.timeline.max = String(Math.max(0, frames.length - 1));
+      this.timeline.value = String(index || 0);
+      this.timeline.setAttribute(
+        "aria-valuetext",
+        frame ? this.formatTime(frame.time) : t("radar.noFrame")
+      );
+      this.element.querySelector("#radarSelectedTime").textContent = frame ? this.formatTime(frame.time) : t("radar.noFrame");
+      this.element.querySelector("#radarFirstTime").textContent = frames.length ? this.formatTime(frames[0].time) : "";
+      this.element.querySelector("#radarLastTime").textContent = frames.length ? this.formatTime(frames[frames.length - 1].time) : "";
+      this.base.update(
+        this.view,
+        width,
+        height,
+        (t2) => locationProtocol() === "file:" ? "" : `https://tile.openstreetmap.org/${t2.z}/${t2.x}/${t2.y}.png`
+      );
+      this.rain.update(
+        this.view,
+        width,
+        height,
+        (t2) => frame ? `${radar2.host}${frame.path}/256/${t2.z}/${t2.x}/${t2.y}/2/1_1.png` : ""
+      );
+      this.rain.element.style.opacity = String((this.view.opacity ?? 76) / 100);
+      const pixel = screenPoint(
+        normalizedPoint(location2.latitude, location2.longitude),
+        this.view,
+        width,
+        height
+      );
+      const marker = this.element.querySelector(".map-marker");
+      marker.style.left = pixel.x + "px";
+      marker.style.top = pixel.y + "px";
+      marker.title = location2.name;
+      this.surface.dataset.zoom = String(this.view.z);
+      this.surface.dataset.center = JSON.stringify({
+        x: this.view.x,
+        y: this.view.y
+      });
+      this.status();
+    }
+    status() {
+      if (this.disposed) return;
+      const { location: location2, radar: radar2, index, busy, error } = this.getData();
+      const frame = radar2?.frames[index];
+      const b = this.base.counts(), r = this.rain.counts();
+      let message = t("radar.locationStatus", { name: location2.name }) + " \xB7 ";
+      if (frame) {
+        message += this.formatTime(frame.time) + " \xB7 ";
+        if (Date.now() / 1e3 - frame.time > 1800)
+          message += t("radar.olderFrame") + " \xB7 ";
+      }
+      message += busy ? t("radar.refreshing") : !frame ? error ? t("radar.unavailable") : t("radar.noFrame") : r.loading ? t("radar.loadingTiles") : r.error ? t("radar.partialTiles", { count: r.error }) : r.loaded ? t("radar.tilesLoaded") : t("radar.coverageUnavailable");
+      if (b.error) message += " " + t("radar.basemapPartial");
+      if (locationProtocol() === "file:")
+        message += " " + t("radar.httpsRequired");
+      this.element.querySelector("#radarLabel").textContent = message;
+    }
+    play(on) {
+      clearTimeout(this.timer);
+      this.playing = on;
+      this.playButton.textContent = on ? "\u275A\u275A " + t("radar.pause") : "\u25B6 " + t("radar.play");
+      this.playButton.setAttribute("aria-pressed", String(on));
+      if (on)
+        this.timer = setTimeout(() => {
+          if (this.disposed || !this.element.isConnected || document.hidden) {
+            this.play(false);
+            return;
+          }
+          const { radar: radar2, index } = this.getData();
+          if (radar2?.frames.length && !this.rain.counts().loading) {
+            this.setFrame((index + 1) % radar2.frames.length);
+            this.update();
+          }
+          this.play(true);
+        }, 1e3);
+    }
+    destroy() {
+      this.play(false);
+      this.disposed = true;
+      cancelAnimationFrame(this.raf);
+      this.resize.disconnect();
+      this.removeGestures();
+      document.removeEventListener("visibilitychange", this.visibility);
+      this.base.destroy();
+      this.rain.destroy();
+      this.element.remove();
+    }
+  };
+  function locationProtocol() {
+    return window.location.protocol;
+  }
+
   // src/ui/radarView.js
   var widget = null;
   function radarContent() {
-    const link = '<p class="footnote"><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">Open RainViewer radar map \u2197</a></p>';
-    if (!state.radarOpened)
-      return '<p class="muted">Load recent precipitation around ' + esc(state.location.name) + ". Map and radar providers receive tile requests only when you open this map.</p>" + link;
-    return (state.radarError ? '<p class="notice warning" role="alert">' + esc(t(state.radarError)) + "</p>" : "") + '<div id="radarMount"></div>' + link;
+    return '<p class="muted">' + t("radar.entry.description", { name: esc(state.location.name) }) + '</p><button class="radar-open" data-action="radar">' + t("radar.entry.open") + '</button><p class="footnote">' + t("radar.entry.privacy") + "</p>";
+  }
+  function radarScreen() {
+    return '<section class="radar-screen"><div class="sectionhead radar-heading"><div><h2>' + t("radar.title") + '</h2><p class="muted">' + t("radar.subtitle", { name: esc(state.location.name) }) + '</p></div><button type="button" data-action="radarRefresh" aria-label="' + t("radar.refresh") + '">\u21BB</button></div><div class="radar-nav-actions"><button type="button" data-action="closeRadar">\u2190 ' + t("radar.back") + '</button><span class="tag">' + t("radar.pastOnly") + "</span></div>" + (state.radarError ? '<p class="notice warning" role="alert">' + esc(t(state.radarError)) + "</p>" : "") + '<div id="radarMount"></div><p class="footnote radar-source">' + t("radar.source") + ' <a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">RainViewer \u2197</a> \xB7 \xA9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a></p></section>';
   }
   function radarImages() {
     const host = document.getElementById("radarMount");
-    if (!host || !host.append || !state.radarOpened) {
+    if (!host || !host.append || state.view !== "radar") {
       if (widget) {
         widget.destroy();
         widget = null;
@@ -2473,6 +2608,7 @@ label {
   async function radar() {
     if (state.radarBusy) return;
     const request = ++state.radarRequest, locationKey = key(state.location);
+    state.view = "radar";
     state.radarOpened = true;
     state.radarBusy = true;
     state.radarError = "";
@@ -2488,7 +2624,7 @@ label {
     } finally {
       if (request === state.radarRequest) {
         state.radarBusy = false;
-        if (state.view === "weather") render();
+        if (state.view === "radar") render();
       }
     }
   }
@@ -2496,10 +2632,10 @@ label {
   // src/ui/weatherView.js
   function weatherView() {
     if (!state.data)
-      return locationControls() + empty() + '<section class="card"><h2>Weather radar</h2><button data-action="radar">Load radar</button>' + radarContent() + "</section>";
+      return locationControls() + empty() + '<section class="card radar-entry"><h2>Weather radar</h2>' + radarContent() + "</section>";
     const data = state.data, rs = upcoming(), h = rs[0] || {}, c = data.current || h, days = daily(data.rows), today = days.find((d) => d.date === dateKey(Date.now() / 1e3)) || days[0], co = forecastCondition(data.current ? currentDisplayRow(c, data.rows) : c);
     const ai = data.astro?.time?.findIndex((t2) => dateKey(t2) === today?.date) ?? -1;
-    return locationControls() + '<div class="weather-columns"><div><section class="hero"><div class="condition-icon">' + co[0] + '</div><div class="temperature">' + temp(c.temperature_2m) + '</div><div class="condition">' + co[1] + '</div><p class="muted">Feels like ' + temp(c.apparent_temperature) + " \xB7 H " + temp(today?.high) + " / L " + temp(today?.low) + '</p><div class="pill">' + (data.current ? "Current model estimate \xB7 " + time(c.time) : "Hourly consensus estimate") + '</div></section><section class="card"><div class="sectionhead"><h2>Next 24 hours</h2><button data-view="hourly">Details</button></div>' + hourstrip(rs.slice(0, 24)) + "<small>Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.</small></section>" + warningsCard() + '<section class="card"><div class="sectionhead"><h2>Weather radar</h2><button data-action="radar">' + (state.radarBusy ? "Loading\u2026" : state.radar ? "Refresh" : "Load radar") + "</button></div>" + radarContent() + '</section></div><div><section class="card days"><div class="sectionhead"><h2>' + days.length + '-day outlook</h2><span class="tag">Tap a day</span></div>' + days.map(
+    return locationControls() + '<div class="weather-columns"><div><section class="hero"><div class="condition-icon">' + co[0] + '</div><div class="temperature">' + temp(c.temperature_2m) + '</div><div class="condition">' + co[1] + '</div><p class="muted">Feels like ' + temp(c.apparent_temperature) + " \xB7 H " + temp(today?.high) + " / L " + temp(today?.low) + '</p><div class="pill">' + (data.current ? "Current model estimate \xB7 " + time(c.time) : "Hourly consensus estimate") + '</div></section><section class="card"><div class="sectionhead"><h2>Next 24 hours</h2><button data-view="hourly">Details</button></div>' + hourstrip(rs.slice(0, 24)) + "<small>Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.</small></section>" + warningsCard() + '<section class="card radar-entry"><div class="sectionhead"><h2>Weather radar</h2></div>' + radarContent() + '</section></div><div><section class="card days"><div class="sectionhead"><h2>' + days.length + '-day outlook</h2><span class="tag">Tap a day</span></div>' + days.map(
       (d, i) => '<details><summary class="dayrow"><span>' + esc(
         d.date === dateKey(Date.now() / 1e3) ? "Today" : time(d.time, { weekday: "short", day: "numeric" })
       ) + "</span><span>" + forecastCondition(dailyDisplayRow(d))[0] + '</span><div><div class="bar"></div><small class="blue">' + rain(d.precip) + '</small></div><span class="daytemp"><span class="muted">' + temp(d.low) + "</span> " + temp(d.high) + '</span></summary><div class="dayextra"><p>Rain chance ' + fmt(d.prob) + "% \xB7 Wind " + wind(d.wind) + " \xB7 Gusts " + wind(d.gust) + '</p><p class="footnote">' + (i >= 7 ? "Long-range trend: lower confidence. " : "") + (d.complete ? "" : "Partial day. ") + "Daily rain chance is the maximum hourly probability.</p>" + hourstrip(d.rows) + "</div></details>"
@@ -2930,7 +3066,7 @@ label {
   }
 
   // src/app/version.js
-  var APP_VERSION = false ? "development" : "1.5.0";
+  var APP_VERSION = false ? "development" : "1.6.0";
 
   // src/weather/widgetConfig.js
   var WIDGET_DEFAULT = { name: "Graz", latitude: 47.0707, longitude: 15.4395, timezone: "Europe/Vienna" };
@@ -3251,6 +3387,7 @@ label {
       locationMessage("location.invalid");
       return;
     }
+    const radarWasVisible = state.view === "radar";
     if (cancelGPS) {
       cancelGPS();
       cancelGPS = null;
@@ -3274,10 +3411,10 @@ label {
       timezone: l.timezone || "Europe/Vienna"
     };
     Store.set("location", state.location);
-    state.view = "weather";
+    state.view = radarWasVisible ? "radar" : "weather";
     state.search = [];
     loadWeather();
-    if (state.radarOpened) radar();
+    if (radarWasVisible) radar();
   }
   function locationMessage(messageKey, helpKey = messageKey) {
     state.gpsMessage = helpKey;
@@ -3438,10 +3575,11 @@ label {
     $("locationTitle").textContent = state.location.name;
     $("nav").setAttribute("aria-label", t("nav.main"));
     $("nav").innerHTML = NAV.map(
-      ([id, icon, title]) => '<button data-view="' + id + '" ' + (state.view === id ? 'aria-current="page"' : "") + '><span aria-hidden="true">' + icon + "</span>" + t(title) + "</button>"
+      ([id, icon, title]) => '<button data-view="' + id + '" ' + (state.view === id || state.view === "radar" && id === "weather" ? 'aria-current="page"' : "") + '><span aria-hidden="true">' + icon + "</span>" + t(title) + "</button>"
     ).join("");
     $("main").innerHTML = {
       weather: weatherView,
+      radar: radarScreen,
       hourly: hourlyView,
       history: historyView,
       models: modelView,
@@ -3525,7 +3663,14 @@ label {
       render();
     }
     if (a === "compare") compareHistory();
-    if (a === "radar") radar();
+    if (a === "radar" || a === "radarRefresh") radar();
+    if (a === "closeRadar") {
+      state.radarRequest++;
+      state.radarBusy = false;
+      state.view = "weather";
+      render();
+      window.scrollTo(0, 0);
+    }
     if (a === "score") {
       b.disabled = true;
       score().catch(() => {
