@@ -12,7 +12,7 @@
       name="description"
       content="Privates, lokales Wetter für Österreich. Prognosen, Modellvergleiche und Wetterrückblick."
     />
-    <meta name="wettra-version" content="1.4.1" />
+    <meta name="wettra-version" content="1.4.2" />
     <title>Wettra</title>
     <style>
       :root {
@@ -633,12 +633,12 @@ label {
 #locationHelp details { margin: 16px 0; }
 
     </style>
-  <meta name="wettra-build" content="08d33c2e2e61"></head>
+  <meta name="wettra-build" content="50ff57e38cd3"></head>
   <body data-theme="auto">
     <header>
       <div>
         <div class="brand">
-          Wettra <span class="small">v1.4.1</span>
+          Wettra <span class="small">v1.4.2</span>
         </div>
         <h1 id="locationTitle">Graz</h1>
       </div>
@@ -1124,8 +1124,11 @@ label {
         date,
         rows: rs,
         time: rs[0].time,
-        low: Math.min(...ts),
-        high: Math.max(...ts),
+        // A day may contain forecast rows while every temperature value is
+        // missing. Keep that state explicit instead of leaking +/-Infinity to
+        // the UI and Scriptable consumers.
+        low: ts.length ? Math.min(...ts) : null,
+        high: ts.length ? Math.max(...ts) : null,
         precip: ps.length === rs.length ? ps.reduce((a, b) => a + b, 0) : null,
         prob: max("precipitation_probability"),
         wind: max("wind_speed_10m"),
@@ -2213,7 +2216,7 @@ label {
   }
 
   // src/app/version.js
-  var APP_VERSION = false ? "development" : "1.4.1";
+  var APP_VERSION = false ? "development" : "1.4.2";
 
   // src/weather/widgetConfig.js
   var WIDGET_DEFAULT = { name: "Graz", latitude: 47.0707, longitude: 15.4395, timezone: "Europe/Vienna" };

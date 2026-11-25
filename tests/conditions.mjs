@@ -4,6 +4,8 @@ import {
   currentDisplayRow,
   dailyDisplayRow,
 } from "../src/weather/conditions.js";
+import { daily } from "../src/weather/consensus.js";
+import { state } from "../src/app/state.js";
 const dry = {
   weather_code: 61,
   precipitation: 0,
@@ -73,6 +75,20 @@ assert.equal(
   61,
 );
 assert.equal(dry.weather_code, 61);
+state.location.timezone = "Europe/Vienna";
+const dayStart = Date.UTC(2026, 5, 1) / 1000;
+const dailyTemps = daily([
+  { time: dayStart, temperature_2m: null, precipitation: 0 },
+  { time: dayStart + 3600, temperature_2m: 12.5, precipitation: null },
+  { time: dayStart + 7200, temperature_2m: null, precipitation: 0.4 },
+  { time: dayStart + 86400, temperature_2m: null, precipitation: 0 },
+  { time: dayStart + 90000, temperature_2m: null, precipitation: 0 },
+]);
+assert.equal(dailyTemps[0].low, 12.5, "daily low ignores missing hours");
+assert.equal(dailyTemps[0].high, 12.5, "daily high ignores missing hours");
+assert.equal(dailyTemps[0].precip, null, "incomplete daily precipitation stays unknown");
+assert.equal(dailyTemps[1].low, null, "all-missing daily temperatures stay unknown");
+assert.equal(dailyTemps[1].high, null, "no Infinity values escape aggregation");
 assert.equal(
   displayWeatherCode(
     currentDisplayRow({ ...current, time: 12700, precipitation: 0 }, [

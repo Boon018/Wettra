@@ -28,11 +28,19 @@ test("weather, favorites, views, search, history and offline reload", async ({
   await page.locator("#searchForm button").click();
   await page.locator('[data-search="0"]').click();
   await expect(page.locator("#locationTitle")).toHaveText("Vienna");
+  await expect(page.locator("#status")).toContainText("Updated");
   // Fail only providers: a cached page shell is a separate PWA concern.
-  await page.route("https://**/*", (route) => route.abort());
+  let abortedRequests = 0;
+  await page.route("https://**/*", async (route) => {
+    abortedRequests++;
+    await route.abort();
+  });
   await page.reload();
   await expect(page.locator(".temperature")).toHaveText("12°");
+  await expect(page.locator("#refresh")).toBeEnabled();
+  const beforeRefresh = abortedRequests;
   await page.locator("#refresh").click();
+  await expect.poll(() => abortedRequests).toBeGreaterThan(beforeRefresh);
   await expect(page.locator("#status")).toContainText(
     "Saved forecast retained",
   );

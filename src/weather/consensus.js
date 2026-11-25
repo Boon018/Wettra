@@ -16,8 +16,11 @@ export function daily(rows) {
       date,
       rows: rs,
       time: rs[0].time,
-      low: Math.min(...ts),
-      high: Math.max(...ts),
+      // A day may contain forecast rows while every temperature value is
+      // missing. Keep that state explicit instead of leaking +/-Infinity to
+      // the UI and Scriptable consumers.
+      low: ts.length ? Math.min(...ts) : null,
+      high: ts.length ? Math.max(...ts) : null,
       precip: ps.length === rs.length ? ps.reduce((a, b) => a + b, 0) : null,
       prob: max("precipitation_probability"),
       wind: max("wind_speed_10m"),
