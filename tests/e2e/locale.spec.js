@@ -81,7 +81,7 @@ test("GPS errors and location help use the selected language", async ({
   await page.goto("./");
   await expect
     .poll(() => page.locator("#status").textContent())
-    .toMatch(/Aktualisiert|Wetterdienste|Offline/);
+    .toMatch(/Aktualisiert|Wetterdienste|Offline/i);
   await page.locator('#nav [data-view="locations"]').click();
   await page.locator('[data-action="gps"]').click();
   await expect(page.locator("#locationMessage")).toContainText(
