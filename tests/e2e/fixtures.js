@@ -18,6 +18,18 @@ function forecast() {
     },
   };
 }
+function history() {
+  return {
+    timezone: "Europe/Vienna",
+    hourly: {
+      time: Array.from({ length: 24 }, (_, i) => time + i * 3600),
+      temperature_2m: Array(24).fill(12),
+      precipitation: Array(24).fill(2.5),
+      precipitation_probability: Array(24).fill(70),
+      weather_code: Array(24).fill(61),
+    },
+  };
+}
 export async function providers(page, adjustForecast = (data) => data) {
   // Existing functional UI tests use their original English assertions. A
   // dedicated locale suite separately verifies Wettra's German first-run UI.
@@ -32,7 +44,8 @@ export async function providers(page, adjustForecast = (data) => data) {
   await page.route("https://**/*", async (route) => {
     const u = new URL(route.request().url());
     let body;
-    if (u.hostname.includes("open-meteo"))
+    if (u.hostname === "archive-api.open-meteo.com") body = history();
+    else if (u.hostname.includes("open-meteo"))
       body = u.hostname.includes("geocoding")
         ? {
             results: [
