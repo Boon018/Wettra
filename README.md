@@ -1,4 +1,4 @@
-# Wettra 1.4.2
+# Wettra 1.5.0
 
 [Wettra öffnen](https://boon018.github.io/Wettra/) · [Eigenständige HTML-Datei](https://boon018.github.io/Wettra/standalone.html) · [Scriptable-Widget einrichten](https://boon018.github.io/Wettra/widget.html)
 
@@ -18,6 +18,8 @@ Jeder Browser und jedes Gerät speichert seine Daten separat. Wetter- und Ortsdi
 ## Entwicklung und Tests
 
 Node.js 22: `npm ci`, `npm run build`, `npm test`, `npm run check:artifact`, `npx playwright install --with-deps chromium webkit`, danach `npm run test:browser`. Die GitHub-Actions-Workflows installieren ihre Browser auf frischen GitHub-hosted Ubuntu-Runnern.
+
+UI-Nachrichten liegen getrennt in `src/ui/messages.de.js` und `src/ui/messages.en.js`. Neue dynamische Texte verwenden `t(key, params)` mit stabilen Schlüsseln. Ein Übergangsadapter deckt noch nicht migrierte HTML-Vorlagen ab; Änderungen an bestehenden Speicherformaten sind dafür nicht nötig.
 
 `src/` ist die maßgebliche Codebasis. `index.html`, `dist/` und das Widget-Skript sind generierte Ausgaben. Der Pages-Workflow testet und baut zuerst, veröffentlicht anschließend ausschließlich `dist/` und prüft die ausgelieferte Website.
 

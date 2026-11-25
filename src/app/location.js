@@ -7,10 +7,11 @@ import { $ } from "../ui/format.js";
 import { validLocation } from "../storage/validate.js";
 import { requestLocation } from "../api/geolocation.js";
 import { showLocationHelp, closeLocationHelp } from "../ui/locationHelp.js";
+import { t } from "../ui/i18n.js";
 let cancelGPS = null;
 export function selectLocation(l) {
   if (!validLocation(l)) {
-    locationMessage("This location is invalid. Choose another place.");
+    locationMessage("location.invalid");
     return;
   }
   if (cancelGPS) {
@@ -41,23 +42,20 @@ export function selectLocation(l) {
   loadWeather();
   if (state.radarOpened) radar();
 }
-export function locationMessage(text) {
-  state.gpsMessage = text;
-  status(text, true);
-  if ($("locationMessage")) $("locationMessage").textContent = text;
+export function locationMessage(messageKey, helpKey = messageKey) {
+  state.gpsMessage = helpKey;
+  const message = t(messageKey);
+  status(messageKey, true);
+  if ($("locationMessage")) $("locationMessage").textContent = message;
 }
 export function gps() {
   closeLocationHelp();
   if (cancelGPS) cancelGPS();
   if (!navigator.geolocation || location.protocol === "file:") {
-    locationMessage(
-      "Location is unavailable here. Open the HTTPS app or search a town/postcode.",
-    );
+    locationMessage("location.unavailable");
     return;
   }
-  locationMessage(
-    "Requesting your location… Allow the location prompt; this can take up to a minute.",
-  );
+  locationMessage("location.requesting");
   const request = ++state.gpsRequest,
     epoch = state.locationEpoch;
   const current = () =>
@@ -87,16 +85,10 @@ export function gps() {
       pending = false;
       cancelGPS = null;
       const reason =
-        e.code === 1
-          ? "Location permission is denied."
-          : e.code === 3
-            ? "Location did not respond within a minute."
-            : "Your device could not obtain a location.";
-      locationMessage(
-        reason +
-          " Open Location help for iOS/Safari settings, or search a postcode.",
-      );
-      showLocationHelp(reason);
+        e.code === 1 ? "denied" : e.code === 3 ? "timeout" : "failure";
+      locationMessage(`location.error.${reason}`, `location.${reason}`);
+      const reasonKey = `location.${reason}`;
+      showLocationHelp(reasonKey);
     },
   );
   cancelGPS = pending ? cancel : null;
@@ -106,8 +98,6 @@ if (typeof document.addEventListener === "function")
     if (document.hidden && cancelGPS) {
       cancelGPS();
       cancelGPS = null;
-      locationMessage(
-        "Location request paused when the app was hidden. Tap the location button to retry.",
-      );
+      locationMessage("location.paused");
     }
   });

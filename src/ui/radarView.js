@@ -4,6 +4,7 @@ import { render } from "../app/navigation.js";
 import { radarMetadata } from "../api/rainViewer.js";
 import { RadarMap } from "../radar/map.js";
 import { normalizedPoint } from "../radar/projection.js";
+import { t } from "./i18n.js";
 let widget = null;
 export function radarContent() {
   const link =
@@ -18,7 +19,7 @@ export function radarContent() {
   return (
     (state.radarError
       ? '<p class="notice warning" role="alert">' +
-        esc(state.radarError) +
+        esc(t(state.radarError)) +
         "</p>"
       : "") +
     '<div id="radarMount"></div>' +
@@ -79,9 +80,7 @@ export async function radar() {
     state.radar = { ...data, locationKey };
     state.radarIndex = data.frames.length - 1;
   } catch {
-    if (request === state.radarRequest)
-      state.radarError =
-        "Radar could not load. The map is still usable; try again later. Existing frames may be old.";
+    if (request === state.radarRequest) state.radarError = "radar.failure";
   } finally {
     if (request === state.radarRequest) {
       state.radarBusy = false;

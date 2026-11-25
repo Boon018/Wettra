@@ -9,6 +9,7 @@ import { getHistory } from "../weather/history.js";
 import { render } from "./navigation.js";
 import { drawChart } from "../ui/charts.js";
 import { radarImages } from "../ui/radarView.js";
+import { t } from "../ui/i18n.js";
 let searchRequest = 0;
 export function bind() {
   if ($("savedLocation"))
@@ -39,13 +40,12 @@ export function bind() {
           });
           return;
         }
-        $("searchMessage").textContent =
-          "Coordinates must be latitude −90 to 90, longitude −180 to 180.";
+        $("searchMessage").textContent = t("search.coordinatesInvalid");
         return;
       }
       const button = form.querySelector("button");
       button.disabled = true;
-      $("searchMessage").textContent = "Searching…";
+      $("searchMessage").textContent = t("search.searching");
       const request = ++searchRequest,
         locationId = key(state.location);
       const current = () =>
@@ -65,12 +65,11 @@ export function bind() {
           $("searchResults").innerHTML = searchResults();
           $("searchMessage").textContent = state.search.length
             ? ""
-            : "No locations found. Try a nearby town.";
+            : t("search.none");
         }
       } catch (e) {
         if (current() && $("searchMessage"))
-          $("searchMessage").textContent =
-            "Search unavailable. Try a saved location.";
+          $("searchMessage").textContent = t("search.unavailable");
       } finally {
         button.disabled = false;
       }

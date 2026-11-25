@@ -38,13 +38,13 @@ export async function loadWeather(force = false) {
   }
   if (!navigator.onLine) {
     state.error = cache
-      ? "Offline · showing saved forecast"
-      : "You’re offline. Search saved locations or reconnect to load weather.";
+      ? { key: "forecast.offlineSaved" }
+      : { key: "forecast.offline" };
     render();
     return;
   }
   state.busy = true;
-  status("Updating forecasts…");
+  status("forecast.updating");
   $("refresh").disabled = true;
   const ids = ["best_match", ...MODELS.map((m) => m.id)];
   const results = await Promise.allSettled(
@@ -65,9 +65,9 @@ export async function loadWeather(force = false) {
   state.busy = false;
   $("refresh").disabled = false;
   if (!successes.length) {
-    state.error =
-      (cache ? "Saved forecast retained. " : "") +
-      "Could not reach weather services. Check connection; Safari may have blocked the request.";
+    state.error = {
+      key: cache ? "forecast.failureSaved" : "forecast.failure",
+    };
     render();
     return;
   }
@@ -91,11 +91,12 @@ export async function loadWeather(force = false) {
   prune("forecast:", 8);
   saveSnapshots(l, models, state.data.savedAt);
   if (state.data.failures.length)
-    state.error =
-      "Updated with " +
-      successes.length +
-      " sources · " +
-      state.data.failures.length +
-      " unavailable. See Models.";
+    state.error = {
+      key: "forecast.partial",
+      params: {
+        available: successes.length,
+        unavailable: state.data.failures.length,
+      },
+    };
   render();
 }
