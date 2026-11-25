@@ -15,10 +15,10 @@ import { normalize } from "./weather/normalize.js";
 import { consensus, weightedMedian, daily } from "./weather/consensus.js";
 import { Provider } from "./api/openMeteo.js";
 import { hourstrip } from "./ui/components.js";
-import { showLocationHelp, closeLocationHelp } from './ui/locationHelp.js';
-import { linkedLocation } from './app/deepLink.js';
-import { copyWidgetConfig } from './ui/widgetSettings.js';
-import { localizeDOM, watchLocalization } from './ui/i18n.js';
+import { showLocationHelp, closeLocationHelp } from "./ui/locationHelp.js";
+import { linkedLocation } from "./app/deepLink.js";
+import { copyWidgetConfig } from "./ui/widgetSettings.js";
+import { localizeDOM, watchLocalization, t } from "./ui/i18n.js";
 localizeDOM(document.body);
 watchLocalization();
 document.addEventListener("click", (e) => {
@@ -52,11 +52,14 @@ document.addEventListener("click", (e) => {
       ][+b.dataset.quick],
     );
   const a = b.dataset.action;
-  if (a === 'copyWidget') copyWidgetConfig();
+  if (a === "copyWidget") copyWidgetConfig();
   if (a === "gps") gps();
-  if (a === 'locationHelp') showLocationHelp(state.gpsMessage || undefined);
-  if (a === 'retryGPS') gps();
-  if (a === 'closeLocationHelp') { closeLocationHelp(); $('searchInput')?.focus(); }
+  if (a === "locationHelp") showLocationHelp(state.gpsMessage || undefined);
+  if (a === "retryGPS") gps();
+  if (a === "closeLocationHelp") {
+    closeLocationHelp();
+    $("searchInput")?.focus();
+  }
   if (a === "cacheTest") $("cacheReport").innerHTML = cacheReport();
   if (a === "favorite") {
     const fav = Store.get("favorites", []);
@@ -95,12 +98,7 @@ document.addEventListener("click", (e) => {
     state.compare = null;
     status("Weather cache cleared. Current screen stays available.");
   }
-  if (
-    a === "clear" &&
-    confirm(
-      "Erase all Wettra settings, locations, cached weather and local scores?",
-    )
-  ) {
+  if (a === "clear" && confirm(t("dialog.eraseAll"))) {
     Store.clear();
     location.reload();
   }
@@ -125,7 +123,8 @@ setInterval(() => {
 if (
   new URLSearchParams(location.search).get("pwa") === "1" &&
   (location.protocol === "https:" ||
-    (window.isSecureContext && ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname))) &&
+    (window.isSecureContext &&
+      ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname))) &&
   "serviceWorker" in navigator
 ) {
   const link = document.createElement("link");
@@ -168,9 +167,16 @@ if (!window.__ALPEN_TEST__) {
   if (linked) {
     state.location = linked;
     const clean = new URL(location.href);
-    for (const key of ['lat','lon','name','tz']) clean.searchParams.delete(key);
-    try { history.replaceState(null, '', clean); } catch {}
+    for (const key of ["lat", "lon", "name", "tz"])
+      clean.searchParams.delete(key);
+    try {
+      history.replaceState(null, "", clean);
+    } catch {}
   }
   loadWeather();
 }
-if (!window.__ALPEN_TEST__ && new URLSearchParams(location.search).get('location-help') === '1') showLocationHelp();
+if (
+  !window.__ALPEN_TEST__ &&
+  new URLSearchParams(location.search).get("location-help") === "1"
+)
+  showLocationHelp();

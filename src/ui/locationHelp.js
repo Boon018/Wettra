@@ -1,10 +1,9 @@
 import { $ } from "./format.js";
-export function showLocationHelp(
-  reason = "Follow these steps, then tap Try location again.",
-) {
+import { t } from "./i18n.js";
+export function showLocationHelp(reason = "location.help.default") {
   const dialog = $("locationHelp");
   if (!dialog || typeof dialog.showModal !== "function") return;
-  $("locationHelpReason").textContent = reason;
+  $("locationHelpReason").textContent = t(reason);
   if (!dialog.open) dialog.showModal();
 }
 export function closeLocationHelp() {

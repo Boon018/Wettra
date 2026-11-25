@@ -23,7 +23,7 @@ function boot(disk=new Map()){
  // Radar persists through forecast-cache refresh and renders the interactive map.
  await one.A.radar();assert(one.A.state.radar);assert(one.el('main').innerHTML.includes('radarMount'));const frame=one.A.state.radar.frames[0].path;await one.A.loadWeather();assert.equal(one.A.state.radar.frames[0].path,frame);
  // Radar service failure stays next to the radar controls.
- one=boot();one.controls.fail=true;await one.A.radar();assert(one.A.state.radarError.includes('could not load'));assert(one.el('main').innerHTML.includes('Radar could not load'));one.controls.fail=false;
+ one=boot();one.controls.fail=true;await one.A.radar();assert.equal(one.A.state.radarError,'radar.failure');assert(one.el('main').innerHTML.includes('Radar konnte nicht geladen werden'));one.controls.fail=false;
  // A late radar response cannot populate a newly selected location.
  let release;one.controls.radar=()=>new Promise(r=>release=r);const pending=one.A.radar();one.A.selectLocation({name:'Vienna',latitude:48.2,longitude:16.3});release({host:'https://tilecache.rainviewer.com',radar:{past:[{time:NOW,path:'/v2/radar/old'}]}});await pending;assert(!one.A.state.radar||one.A.state.radar.locationKey==='48.200,16.300');
  assert.throws(()=>one.A.normalizeRadar({host:'https://evil.example',radar:{past:[]}}));assert.throws(()=>one.A.normalizeRadar({host:'https://tilecache.rainviewer.com',radar:{past:[]}}));

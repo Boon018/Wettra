@@ -12,7 +12,7 @@
       name="description"
       content="Privates, lokales Wetter für Österreich. Prognosen, Modellvergleiche und Wetterrückblick."
     />
-    <meta name="wettra-version" content="1.4.2" />
+    <meta name="wettra-version" content="1.5.0" />
     <title>Wettra</title>
     <style>
       :root {
@@ -633,12 +633,12 @@ label {
 #locationHelp details { margin: 16px 0; }
 
     </style>
-  <meta name="wettra-build" content="50ff57e38cd3"></head>
+  <meta name="wettra-build" content="23daa2a26add"></head>
   <body data-theme="auto">
     <header>
       <div>
         <div class="brand">
-          Wettra <span class="small">v1.4.2</span>
+          Wettra <span class="small">v1.5.0</span>
         </div>
         <h1 id="locationTitle">Graz</h1>
       </div>
@@ -1709,13 +1709,728 @@ label {
     return window.location.protocol;
   }
 
+  // src/ui/messages.en.js
+  var messages_en_default = {
+    "legacy:Main navigation": "Main navigation",
+    "legacy:Weather": "Weather",
+    "legacy:Hourly": "Hourly",
+    "legacy:History": "History",
+    "legacy:Models": "Models",
+    "legacy:Places": "Places",
+    "legacy:Settings": "Settings",
+    "legacy:Use my location": "Use my location",
+    "legacy:Refresh weather": "Refresh weather",
+    "legacy:Opening your weather\u2026": "Opening your weather\u2026",
+    "legacy:Enable your location": "Enable your location",
+    "legacy:Follow these steps, then tap Try location again.": "Follow these steps, then tap Try location again.",
+    "legacy:On iPhone or iPad": "On iPhone or iPad",
+    "legacy:Firefox on iOS": "Firefox on iOS",
+    "legacy:Try location again": "Try location again",
+    "legacy:Use postcode instead": "Use postcode instead",
+    "legacy:Open in browser \u2197": "Open in browser \u2197",
+    "legacy:Location help": "Location help",
+    "legacy:The browser controls the permission prompt. If access is denied, Wettra cannot force a new prompt or change your settings.": "The browser controls the permission prompt. If access is denied, Wettra cannot force a new prompt or change your settings.",
+    "legacy:Open the browser\u2019s site permissions for this address and allow Location. Also check your device\u2019s location privacy settings, then retry.": "Open the browser\u2019s site permissions for this address and allow Location. Also check your device\u2019s location privacy settings, then retry.",
+    "legacy:There is no supported direct iOS Settings link available to this web app. Open Settings manually. The browser link below opens a new window; if it stays inside the app, copy the address into Safari.": "There is no supported direct iOS Settings link available to this web app. Open Settings manually. The browser link below opens a new window; if it stays inside the app, copy the address into Safari.",
+    "legacy:Android or desktop browser": "Android or desktop browser",
+    "legacy:Your places": "Your places",
+    "legacy:Town, postcode or lat, lon": "Town, postcode or lat, lon",
+    "legacy:Town, city or postcode": "Town, city or postcode",
+    "legacy:Location search": "Location search",
+    "legacy:Search locations": "Search locations",
+    "legacy:Find": "Find",
+    "legacy:Search": "Search",
+    "legacy:Saved places": "Saved places",
+    "legacy:Saved locations": "Saved locations",
+    "legacy:Save place": "Save place",
+    "legacy:Save current": "Save current",
+    "legacy:Use my current location": "Use my current location",
+    "legacy:Use last selected": "Use last selected",
+    "legacy:Last selected location": "Last selected location",
+    "legacy:Startup location": "Startup location",
+    "legacy:Quick start \xB7 Austria": "Quick start \xB7 Austria",
+    "legacy:Vienna": "Vienna",
+    "legacy:Today": "Today",
+    "legacy:Weather radar": "Weather radar",
+    "legacy:Load radar": "Load radar",
+    "legacy:Refresh": "Refresh",
+    "legacy:Loading\u2026": "Loading\u2026",
+    "legacy:Tap a day": "Tap a day",
+    "legacy:Details": "Details",
+    "legacy:Next 24 hours": "Next 24 hours",
+    "legacy:At a glance": "At a glance",
+    "legacy:Current model / nearest hour": "Current model / nearest hour",
+    "legacy:Rain chance": "Rain chance",
+    "legacy:This hour \xB7 Best Match": "This hour \xB7 Best Match",
+    "legacy:Hourly precipitation": "Hourly precipitation",
+    "legacy:Hourly accumulation": "Hourly accumulation",
+    "legacy:Hour ending ": "Hour ending ",
+    "legacy:Precipitation": "Precipitation",
+    "legacy:Humidity": "Humidity",
+    "legacy:Wind speed": "Wind speed",
+    "legacy:Wind": "Wind",
+    "legacy:Gusts": "Gusts",
+    "legacy:Pressure": "Pressure",
+    "legacy:Sea level": "Sea level",
+    "legacy:Cloud cover": "Cloud cover",
+    "legacy:Visibility": "Visibility",
+    "legacy:UV index": "UV index",
+    "legacy:Nearest hour": "Nearest hour",
+    "legacy:Sunrise": "Sunrise",
+    "legacy:Sunset": "Sunset",
+    "legacy:Model spread": "Model spread",
+    "legacy:temperature range": "temperature range",
+    "legacy:Current model estimate \xB7 ": "Current model estimate \xB7 ",
+    "legacy:Hourly consensus estimate": "Hourly consensus estimate",
+    "legacy:Feels like": "Feels like",
+    "legacy:Next hour": "Next hour",
+    "legacy:Available": "Available",
+    "legacy:Unavailable": "Unavailable",
+    "legacy:Hour by hour": "Hour by hour",
+    "legacy:Local time": "Local time",
+    "legacy:Clear sky": "Clear sky",
+    "legacy:Mainly clear": "Mainly clear",
+    "legacy:Mostly clear": "Mostly clear",
+    "legacy:Partly cloudy": "Partly cloudy",
+    "legacy:Overcast": "Overcast",
+    "legacy:Fog": "Fog",
+    "legacy:Depositing rime fog": "Depositing rime fog",
+    "legacy:Drizzle": "Drizzle",
+    "legacy:Freezing drizzle": "Freezing drizzle",
+    "legacy:Rain": "Rain",
+    "legacy:Freezing rain": "Freezing rain",
+    "legacy:Snow": "Snow",
+    "legacy:Snow grains": "Snow grains",
+    "legacy:Rain showers": "Rain showers",
+    "legacy:Snow showers": "Snow showers",
+    "legacy:Thunderstorm": "Thunderstorm",
+    "legacy:Thunderstorm with hail": "Thunderstorm with hail",
+    "legacy:Unknown": "Unknown",
+    "legacy:Sky": "Sky",
+    "legacy:Rain %": "Rain %",
+    "legacy:Precip. / h": "Precip. / h",
+    "legacy:Rain / h": "Rain / h",
+    "legacy:Snow cm": "Snow cm",
+    "legacy:RH %": "RH %",
+    "legacy:From": "From",
+    "legacy:Cloud %": "Cloud %",
+    "legacy:Chart variable": "Chart variable",
+    "legacy:Chart horizon": "Chart horizon",
+    "legacy:Temperature / hour": "Temperature / hour",
+    "legacy:Temperature": "Temperature",
+    "legacy:Precipitation / hour": "Precipitation / hour",
+    "legacy:Inspect hour": "Inspect hour",
+    "legacy:Weather chart": "Weather chart",
+    "legacy:hours": "hours",
+    "legacy:A look back": "A look back",
+    "legacy:Historical date": "Historical date",
+    "legacy:Explore hourly weather since 1940.": "Explore hourly weather since 1940.",
+    "legacy:ERA5 reanalysis: reconstructed weather, not a station measurement. The latest seven days are excluded to allow for publication delay.": "ERA5 reanalysis: reconstructed weather, not a station measurement. The latest seven days are excluded to allow for publication delay.",
+    "legacy:High": "High",
+    "legacy:Low": "Low",
+    "legacy:This day in past years": "This day in past years",
+    "legacy:Compare today with the same calendar day in the previous ten years.": "Compare today with the same calendar day in the previous ten years.",
+    "legacy:Compare 10 years": "Compare 10 years",
+    "legacy:Behind the forecast": "Behind the forecast",
+    "legacy:Regional detail. Global perspective.": "Regional detail. Global perspective.",
+    "legacy:Next 24 hours \xB7 temperature": "Next 24 hours \xB7 temperature",
+    "legacy:Consensus": "Consensus",
+    "legacy:How consensus works": "How consensus works",
+    "legacy:Local forecast journal": "Local forecast journal",
+    "legacy:Evaluate mature forecasts": "Evaluate mature forecasts",
+    "legacy:Make it yours": "Make it yours",
+    "legacy:Appearance": "Appearance",
+    "legacy:Follow iPhone": "Follow iPhone",
+    "legacy:Light": "Light",
+    "legacy:Dark": "Dark",
+    "legacy:Celsius \xB7 \xB0C": "Celsius \xB7 \xB0C",
+    "legacy:Fahrenheit \xB7 \xB0F": "Fahrenheit \xB7 \xB0F",
+    "legacy:Millimetres": "Millimetres",
+    "legacy:Inches": "Inches",
+    "legacy:Refresh when app is open": "Refresh when app is open",
+    "legacy:Every 30 minutes": "Every 30 minutes",
+    "legacy:Every hour": "Every hour",
+    "legacy:Every 3 hours": "Every 3 hours",
+    "legacy:On this device": "On this device",
+    "legacy:Check local cache": "Check local cache",
+    "legacy:Export local data": "Export local data",
+    "legacy:Clear weather cache": "Clear weather cache",
+    "legacy:Erase all app data": "Erase all app data",
+    "legacy:Sources & attribution": "Sources & attribution",
+    "legacy:Complete source code": "Complete source code",
+    "legacy:Download standalone HTML": "Download standalone HTML",
+    "legacy:Open official warning map \u2197": "Open official warning map \u2197",
+    "legacy:Offline \xB7 ": "Offline \xB7 ",
+    "legacy:Cached \xB7 ": "Cached \xB7 ",
+    "legacy:Updated ": "Updated ",
+    "legacy:No locations found. Try a nearby town.": "No locations found. Try a nearby town.",
+    "legacy:Search unavailable. Try a saved location.": "Search unavailable. Try a saved location.",
+    "legacy:Searching\u2026": "Searching\u2026",
+    "legacy:Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.": "Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.",
+    "legacy:Local file: if GPS is unavailable, search above or choose a saved place.": "Local file: if GPS is unavailable, search above or choose a saved place.",
+    "legacy:Save places to switch between them quickly.": "Save places to switch between them quickly.",
+    "legacy:Location is requested only when you tap the button. Coordinates are sent to weather providers to retrieve your weather.": "Location is requested only when you tap the button. Coordinates are sent to weather providers to retrieve your weather.",
+    "legacy:Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.": "Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.",
+    "legacy:Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.": "Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.",
+    "legacy:GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.": "GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.",
+    "legacy:Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled ": "Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled ",
+    "legacy:postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.": "postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.",
+    "legacy:RainViewer radar, personal use; loaded only when requested.": "RainViewer radar, personal use; loaded only when requested.",
+    "legacy:No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, ": "No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, ",
+    "legacy:Fetching your forecast\u2026": "Fetching your forecast\u2026",
+    "legacy:Choose a location or refresh to load weather.": "Choose a location or refresh to load weather.",
+    "legacy:No hourly data in this period. Refresh when online.": "No hourly data in this period. Refresh when online.",
+    "legacy:No data for this variable": "No data for this variable",
+    "legacy:Radar could not load. The map is still usable; try again later. Existing frames may be old.": "Radar could not load. The map is still usable; try again later. Existing frames may be old.",
+    "legacy:Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.": "Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.",
+    "legacy:Delete ": "Delete ",
+    "legacy:Erase all Wettra settings, locations, cached weather and local scores?": "Erase all Wettra settings, locations, cached weather and local scores?",
+    "legacy:Weather cache cleared. Current screen stays available.": "Weather cache cleared. Current screen stays available.",
+    "legacy:Evaluation unavailable. Try later.": "Evaluation unavailable. Try later.",
+    "legacy:Saved forecast retained": "Saved forecast retained",
+    "legacy:Device storage unavailable": "Device storage unavailable",
+    "legacy:Installation & update instructions": "Installation & update instructions",
+    "legacy:Download widget script": "Download widget script",
+    "legacy:Copy widget configuration": "Copy widget configuration",
+    "legacy:iPhone & iPad widget": "iPhone & iPad widget",
+    "legacy:Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.": "Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.",
+    "legacy:Paste into Scriptable\u2019s widget Parameter field. Refresh target: 30 minutes; iOS may update later. The widget has its own local cache. Re-export to change its location or units; no automatic sync. Opening a widget location does not replace your saved default place.": "Paste into Scriptable\u2019s widget Parameter field. Refresh target: 30 minutes; iOS may update later. The widget has its own local cache. Re-export to change its location or units; no automatic sync. Opening a widget location does not replace your saved default place.",
+    "legacy:Widget parameter for ": "Widget parameter for ",
+    "legacy:Paste into Scriptable": "Paste into Scriptable",
+    "legacy:Retrieved ": "Retrieved ",
+    "legacy: \xB7 Only non-null hours contribute.": " \xB7 Only non-null hours contribute.",
+    "legacy: snapshots saved for this location. At most one per six hours; each retains the next 48 hours. Retention: 35 days, up to 36 snapshots.": " snapshots saved for this location. At most one per six hours; each retains the next 48 hours. Retention: 35 days, up to 36 snapshots.",
+    "legacy:Scores need forecasts saved at least seven days ago. Evaluation uses ERA5 as a proxy, not independent station truth. No learned weights are applied.": "Scores need forecasts saved at least seven days ago. Evaluation uses ERA5 as a proxy, not independent station truth. No learned weights are applied.",
+    "legacy:This is an experimental heuristic, not a proven improvement over any provider. Alpine terrain and thunderstorms can differ sharply within one model grid cell.": "This is an experimental heuristic, not a proven improvement over any provider. Alpine terrain and thunderstorms can differ sharply within one model grid cell.",
+    "legacy:ICON gets the most influence in the first 48 hours. ECMWF takes the lead farther out. We renormalize weights whenever a model or variable is missing.": "ICON gets the most influence in the first 48 hours. ECMWF takes the lead farther out. We renormalize weights whenever a model or variable is missing.",
+    "legacy:Temperature, pressure, wind speed and cloud cover use lead-time-weighted means. Hourly precipitation and gusts use weighted medians to limit single-model outliers. This can miss extremes; use official warnings for hazards.": "Temperature, pressure, wind speed and cloud cover use lead-time-weighted means. Hourly precipitation and gusts use weighted medians to limit single-model outliers. This can miss extremes; use official warnings for hazards.",
+    "legacy:Rain probability, weather icons, feels-like, humidity, direction, rain/snow split, UV and visibility come from Best Match. These fields are not recomputed from the consensus and may differ. Current weather is a model estimate from Best Match, not a weather station.": "Rain probability, weather icons, feels-like, humidity, direction, rain/snow split, UV and visibility come from Best Match. These fields are not recomputed from the consensus and may differ. Current weather is a model estimate from Best Match, not a weather station.",
+    "legacy:Best Match is never an additional consensus vote. When all explicit models lack a variable, Best Match fills the gap. Daily totals and highs/lows are calculated from hourly consensus; daily rain chance is the highest hourly probability.": "Best Match is never an additional consensus vote. When all explicit models lack a variable, Best Match fills the gap. Daily totals and highs/lows are calculated from hourly consensus; daily rain chance is the highest hourly probability.",
+    "legacy:Retrieval time is not model initialization time. The free forecast response does not expose a reliable run timestamp.": "Retrieval time is not model initialization time. The free forecast response does not expose a reliable run timestamp.",
+    "legacy:A small historical sample, not a 30-year climate normal. Uses ten daily ERA5 requests, cached locally.": "A small historical sample, not a 30-year climate normal. Uses ten daily ERA5 requests, cached locally.",
+    "legacy:Slide to inspect \xB7 ": "Slide to inspect \xB7 ",
+    "legacy: \xB7 Missing values appear as gaps.": " \xB7 Missing values appear as gaps.",
+    "legacy:Total precipitation in the hour ending at this time": "Total precipitation in the hour ending at this time",
+    "legacy:Chance \u2014": "Chance \u2014",
+    "legacy:% chance": "% chance",
+    "legacy:Your weather, here": "Your weather, here",
+    "legacy:Choose a location": "Choose a location",
+    "legacy:No active or upcoming warnings returned for this municipality at the last check.": "No active or upcoming warnings returned for this municipality at the last check.",
+    "legacy:Current warning status unavailable. Check the official map.": "Current warning status unavailable. Check the official map.",
+    "legacy:Official warnings": "Official warnings",
+    "legacy:Weather warning": "Weather warning",
+    "legacy:Severity:": "Severity:",
+    "legacy:None": "None",
+    "legacy:Yellow": "Yellow",
+    "legacy:Orange": "Orange",
+    "legacy:Red": "Red",
+    "legacy:Unspecified": "Unspecified",
+    "legacy:Austria local time": "Austria local time",
+    "legacy:Local weather can change between checks. This feed is not a continuous alert service.": "Local weather can change between checks. This feed is not a continuous alert service.",
+    "legacy:none yet": "none yet",
+    "legacy:Approximate locality coordinates \xB7 Austrian postcodes:": "Approximate locality coordinates \xB7 Austrian postcodes:",
+    "legacy:day outlook": "day outlook",
+    "legacy:Long-range trend: lower confidence. ": "Long-range trend: lower confidence. ",
+    "legacy:Partial day. ": "Partial day. ",
+    "legacy:Daily rain chance is the maximum hourly probability.": "Daily rain chance is the maximum hourly probability.",
+    "legacy:ICON weights: ": "ICON weights: ",
+    "legacy: before 48h, then ": " before 48h, then ",
+    "legacy:Available weights are normalized.": "Available weights are normalized.",
+    "legacy:Today  \u2191 ": "Today  \u2191 ",
+    "legacy: / L ": " / L ",
+    "legacy:Wind  ": "Wind  ",
+    "legacy: \xB7 Gusts ": " \xB7 Gusts ",
+    "legacy:snapshots saved": "snapshots saved",
+    "legacy: \xB7 Best Match": " \xB7 Best Match",
+    "legacy: hours": " hours",
+    "legacy:Open RainViewer radar map \u2197": "Open RainViewer radar map \u2197",
+    "legacy:Load recent precipitation around ": "Load recent precipitation around ",
+    "legacy:Map and radar providers receive tile requests only when you open this map.": "Map and radar providers receive tile requests only when you open this map.",
+    "legacy:Loading reanalysis\u2026": "Loading reanalysis\u2026",
+    "legacy:Loading ten past years\u2026": "Loading ten past years\u2026",
+    "legacy:Comparing saved forecasts with ERA5\u2026": "Comparing saved forecasts with ERA5\u2026",
+    "legacy:Saved status, may be outdated \xB7 ": "Saved status, may be outdated \xB7 ",
+    "legacy:Checked ": "Checked ",
+    "legacy:\xB7 Only non-null hours contribute.": "\xB7 Only non-null hours contribute.",
+    "legacy:Forecast providers:": "Forecast providers:",
+    "legacy:Historical reanalysis:": "Historical reanalysis:",
+    "legacy:Location names:": "Location names:",
+    "legacy:Free non-commercial usage terms": "Free non-commercial usage terms",
+    "legacy:Forecast documentation": "Forecast documentation",
+    "legacy:History documentation": "History documentation",
+    "legacy:personal use": "personal use",
+    "legacy:Previous ": "Previous ",
+    "legacy: minutes": " minutes",
+    "legacy:Weather data: ": "Weather data: ",
+    "legacy:All times: ": "All times: ",
+    "legacy:D2 \u2192 EU \u2192 Global \xB7 up to 7.5 days": "D2 \u2192 EU \u2192 Global \xB7 up to 7.5 days",
+    "legacy:Global \xB7 up to 15 days": "Global \xB7 up to 15 days",
+    "legacy:Global \xB7 up to 16 days": "Global \xB7 up to 16 days",
+    "legacy:ICON weights: 0.50 / 0.40 / 0.25 for <48 / 48\u2013120 / \u2265120 hours. ECMWF: 0.30 before 48h, then 0.45. GFS: 0.20 before 48h, then 0.30. Available weights are normalized.": "ICON weights: 0.50 / 0.40 / 0.25 for <48 / 48\u2013120 / \u2265120 hours. ECMWF: 0.30 before 48h, then 0.45. GFS: 0.20 before 48h, then 0.30. Available weights are normalized.",
+    "legacy:No mature forecasts yet. Revisit after at least nine days; saved 24\u201348h forecasts need time to enter ERA5.": "No mature forecasts yet. Revisit after at least nine days; saved 24\u201348h forecasts need time to enter ERA5.",
+    "legacy:No matching reanalysis hours available yet.": "No matching reanalysis hours available yet.",
+    "legacy:ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ": "ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ",
+    "legacy:N temp": "N temp",
+    "legacy:Temp MAE \xB0C": "Temp MAE \xB0C",
+    "legacy:Rain MAE mm": "Rain MAE mm",
+    "legacy:Wet/dry %": "Wet/dry %",
+    "legacy:Wind MAE km/h": "Wind MAE km/h",
+    "legacy:Pressure MAE hPa": "Pressure MAE hPa",
+    "legacy:Native metric units.": "Native metric units.",
+    "legacy:Model": "Model",
+    "legacy:Copy the selected text, then paste into the Scriptable widget Parameter field.": "Copy the selected text, then paste into the Scriptable widget Parameter field.",
+    "legacy:Copied. Paste into the Scriptable widget Parameter field.": "Copied. Paste into the Scriptable widget Parameter field.",
+    "legacy:Open Wettra again when online.": "Open Wettra again when online.",
+    "legacy:Language": "Language",
+    "legacy:Deutsch": "Deutsch",
+    "legacy:English": "English",
+    "nav.main": "Main navigation",
+    "nav.weather": "Weather",
+    "nav.hourly": "Hourly",
+    "nav.history": "History",
+    "nav.models": "Models",
+    "nav.places": "Places",
+    "nav.settings": "Settings",
+    "status.offline": "Offline",
+    "status.cached": "Cached",
+    "status.updated": "Updated {time}",
+    "status.updated.date": "{date}",
+    "status.storageUnavailable": "Device storage unavailable",
+    "search.coordinatesInvalid": "Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.",
+    "search.searching": "Searching\u2026",
+    "search.none": "No locations found. Try a nearby town.",
+    "search.unavailable": "Search unavailable. Try a saved location.",
+    "location.invalid": "This location is invalid. Choose another place.",
+    "location.unavailable": "Location is unavailable here. Open the HTTPS app or search a town/postcode.",
+    "location.requesting": "Requesting your location\u2026 Allow the location prompt; this can take up to a minute.",
+    "location.denied": "Location permission is denied.",
+    "location.timeout": "Location did not respond within a minute.",
+    "location.failure": "Your device could not obtain a location.",
+    "location.paused": "Location request paused when the app was hidden. Tap the location button to retry.",
+    "radar.failure": "Radar could not load. The map is still usable; try again later. Existing frames may be old.",
+    "dialog.eraseAll": "Erase all Wettra settings, locations, cached weather and local scores?",
+    "widget.copied": "Copied. Paste into the Scriptable widget Parameter field.",
+    "widget.copyFallback": "Copy the selected text, then paste into the Scriptable widget Parameter field.",
+    "settings.language": "Language",
+    "location.help.default": "Follow these steps, then tap Try location again.",
+    "location.error.denied": "Location permission is denied. Open Location help for iOS/Safari settings, or search a postcode.",
+    "location.error.timeout": "Location did not respond within a minute. Open Location help for iOS/Safari settings, or search a postcode.",
+    "location.error.failure": "Your device could not obtain a location. Open Location help for iOS/Safari settings, or search a postcode.",
+    "forecast.updating": "Updating forecasts\u2026",
+    "forecast.offline": "You\u2019re offline. Search saved locations or reconnect to load weather.",
+    "forecast.offlineSaved": "Offline \xB7 showing saved forecast",
+    "forecast.failure": "Could not reach weather services. Check connection; Safari may have blocked the request.",
+    "forecast.failureSaved": "Saved forecast retained. Could not reach weather services. Check connection; Safari may have blocked the request.",
+    "forecast.partial": "Updated with {available} sources \xB7 {unavailable} unavailable. See Models.",
+    "legacy:Feels": "Feels",
+    "legacy:Hour": "Hour",
+    "settings.useLocation": "Use {name} as startup location"
+  };
+
+  // src/ui/messages.de.js
+  var messages_de_default = {
+    "legacy:Main navigation": "Hauptnavigation",
+    "legacy:Weather": "Wetter",
+    "legacy:Hourly": "St\xFCndlich",
+    "legacy:History": "R\xFCckblick",
+    "legacy:Models": "Modelle",
+    "legacy:Places": "Orte",
+    "legacy:Settings": "Einstellungen",
+    "legacy:Use my location": "Meinen Standort verwenden",
+    "legacy:Refresh weather": "Wetter aktualisieren",
+    "legacy:Opening your weather\u2026": "Wetter wird geladen\u2026",
+    "legacy:Enable your location": "Standort freigeben",
+    "legacy:Follow these steps, then tap Try location again.": "Folge diesen Schritten und tippe danach erneut auf Standort versuchen.",
+    "legacy:On iPhone or iPad": "Auf iPhone oder iPad",
+    "legacy:Firefox on iOS": "Firefox unter iOS",
+    "legacy:Try location again": "Standort erneut versuchen",
+    "legacy:Use postcode instead": "Stattdessen Ort oder Postleitzahl suchen",
+    "legacy:Open in browser \u2197": "Im Browser \xF6ffnen \u2197",
+    "legacy:Location help": "Hilfe zum Standort",
+    "legacy:The browser controls the permission prompt. If access is denied, Wettra cannot force a new prompt or change your settings.": "Der Browser steuert die Standortabfrage. Wenn du den Zugriff ablehnst, kann Wettra keine neue Abfrage erzwingen und deine Einstellungen nicht \xE4ndern.",
+    "legacy:Open the browser\u2019s site permissions for this address and allow Location. Also check your device\u2019s location privacy settings, then retry.": "\xD6ffne die Website-Berechtigungen deines Browsers f\xFCr diese Adresse und erlaube den Standortzugriff. Pr\xFCfe auch die Datenschutz-Einstellungen deines Ger\xE4ts und versuche es erneut.",
+    "legacy:There is no supported direct iOS Settings link available to this web app. Open Settings manually. The browser link below opens a new window; if it stays inside the app, copy the address into Safari.": "Diese Web-App kann iOS-Einstellungen nicht direkt \xF6ffnen. \xD6ffne die Einstellungen manuell. Der Browser-Link \xF6ffnet ein neues Fenster; falls er in der App bleibt, kopiere die Adresse nach Safari.",
+    "legacy:Android or desktop browser": "Android- oder Desktop-Browser",
+    "legacy:Your places": "Deine Orte",
+    "legacy:Town, postcode or lat, lon": "Ort, Postleitzahl oder Breitengrad, L\xE4ngengrad",
+    "legacy:Town, city or postcode": "Ort, Stadt oder Postleitzahl",
+    "legacy:Location search": "Ortssuche",
+    "legacy:Search locations": "Orte suchen",
+    "legacy:Find": "Suchen",
+    "legacy:Search": "Suchen",
+    "legacy:Saved places": "Gespeicherte Orte",
+    "legacy:Saved locations": "Gespeicherte Orte",
+    "legacy:Save place": "Ort speichern",
+    "legacy:Save current": "Aktuellen Ort speichern",
+    "legacy:Use my current location": "Meinen aktuellen Standort verwenden",
+    "legacy:Use last selected": "Zuletzt ausgew\xE4hlten Ort verwenden",
+    "legacy:Last selected location": "Zuletzt ausgew\xE4hlter Ort",
+    "legacy:Startup location": "Startort",
+    "legacy:Quick start \xB7 Austria": "Schnellwahl \xB7 \xD6sterreich",
+    "legacy:Vienna": "Wien",
+    "legacy:Today": "Heute",
+    "legacy:Weather radar": "Wetterradar",
+    "legacy:Load radar": "Radar laden",
+    "legacy:Refresh": "Aktualisieren",
+    "legacy:Loading\u2026": "Wird geladen\u2026",
+    "legacy:Tap a day": "Tag antippen",
+    "legacy:Details": "Details",
+    "legacy:Next 24 hours": "N\xE4chste 24 Stunden",
+    "legacy:At a glance": "Auf einen Blick",
+    "legacy:Current model / nearest hour": "Aktuelles Modell / n\xE4chste Stunde",
+    "legacy:Rain chance": "Regenwahrscheinlichkeit",
+    "legacy:This hour \xB7 Best Match": "Diese Stunde \xB7 Best Match",
+    "legacy:Hourly precipitation": "Niederschlag pro Stunde",
+    "legacy:Hourly accumulation": "Stundensumme",
+    "legacy:Hour ending ": "Stunde bis ",
+    "legacy:Precipitation": "Niederschlag",
+    "legacy:Humidity": "Luftfeuchtigkeit",
+    "legacy:Wind speed": "Windgeschwindigkeit",
+    "legacy:Wind": "Wind",
+    "legacy:Gusts": "B\xF6en",
+    "legacy:Pressure": "Luftdruck",
+    "legacy:Sea level": "Meeresh\xF6he",
+    "legacy:Cloud cover": "Bew\xF6lkung",
+    "legacy:Visibility": "Sichtweite",
+    "legacy:UV index": "UV-Index",
+    "legacy:Nearest hour": "N\xE4chste Stunde",
+    "legacy:Sunrise": "Sonnenaufgang",
+    "legacy:Sunset": "Sonnenuntergang",
+    "legacy:Model spread": "Modellspanne",
+    "legacy:temperature range": "Temperaturspanne",
+    "legacy:Current model estimate \xB7 ": "Aktuelle Modellsch\xE4tzung \xB7 ",
+    "legacy:Hourly consensus estimate": "St\xFCndliche Konsensprognose",
+    "legacy:Feels like": "Gef\xFChlt",
+    "legacy:Next hour": "N\xE4chste Stunde",
+    "legacy:Available": "Verf\xFCgbar",
+    "legacy:Unavailable": "Nicht verf\xFCgbar",
+    "legacy:Hour by hour": "Stunde f\xFCr Stunde",
+    "legacy:Local time": "Ortszeit",
+    "legacy:Clear sky": "Klarer Himmel",
+    "legacy:Mainly clear": "\xDCberwiegend klar",
+    "legacy:Mostly clear": "\xDCberwiegend klar",
+    "legacy:Partly cloudy": "Leicht bew\xF6lkt",
+    "legacy:Overcast": "Bedeckt",
+    "legacy:Fog": "Nebel",
+    "legacy:Depositing rime fog": "Gefrierender Nebel",
+    "legacy:Drizzle": "Nieselregen",
+    "legacy:Freezing drizzle": "Gefrierender Nieselregen",
+    "legacy:Rain": "Regen",
+    "legacy:Freezing rain": "Gefrierender Regen",
+    "legacy:Snow": "Schnee",
+    "legacy:Snow grains": "Graupel",
+    "legacy:Rain showers": "Regenschauer",
+    "legacy:Snow showers": "Schneeschauer",
+    "legacy:Thunderstorm": "Gewitter",
+    "legacy:Thunderstorm with hail": "Gewitter mit Hagel",
+    "legacy:Unknown": "Unbekannt",
+    "legacy:Sky": "Himmel",
+    "legacy:Rain %": "Regen %",
+    "legacy:Precip. / h": "Niederschlag / h",
+    "legacy:Rain / h": "Regen / h",
+    "legacy:Snow cm": "Schnee cm",
+    "legacy:RH %": "Luftf. %",
+    "legacy:From": "Richtung",
+    "legacy:Cloud %": "Wolken %",
+    "legacy:Chart variable": "Diagrammwert",
+    "legacy:Chart horizon": "Diagrammzeitraum",
+    "legacy:Temperature / hour": "Temperatur / Stunde",
+    "legacy:Temperature": "Temperatur",
+    "legacy:Precipitation / hour": "Niederschlag / Stunde",
+    "legacy:Inspect hour": "Stunde ausw\xE4hlen",
+    "legacy:Weather chart": "Wetterdiagramm",
+    "legacy:hours": "Stunden",
+    "legacy:A look back": "Wetterr\xFCckblick",
+    "legacy:Historical date": "Historisches Datum",
+    "legacy:Explore hourly weather since 1940.": "St\xFCndliche Wetterdaten seit 1940 ansehen.",
+    "legacy:ERA5 reanalysis: reconstructed weather, not a station measurement. The latest seven days are excluded to allow for publication delay.": "ERA5-Reanalyse: rekonstruierte Wetterdaten, keine Stationsmessung. Die letzten sieben Tage fehlen wegen der Ver\xF6ffentlichungsverz\xF6gerung.",
+    "legacy:High": "H\xF6chstwert",
+    "legacy:Low": "Tiefstwert",
+    "legacy:This day in past years": "Dieser Tag in fr\xFCheren Jahren",
+    "legacy:Compare today with the same calendar day in the previous ten years.": "Vergleiche den heutigen Tag mit demselben Kalendertag der letzten zehn Jahre.",
+    "legacy:Compare 10 years": "10 Jahre vergleichen",
+    "legacy:Behind the forecast": "Hinter der Prognose",
+    "legacy:Regional detail. Global perspective.": "Regionale Details. Globale Perspektive.",
+    "legacy:Next 24 hours \xB7 temperature": "N\xE4chste 24 Stunden \xB7 Temperatur",
+    "legacy:Consensus": "Konsens",
+    "legacy:How consensus works": "So entsteht die Konsensprognose",
+    "legacy:Local forecast journal": "Lokales Prognosearchiv",
+    "legacy:Evaluate mature forecasts": "Abgeschlossene Prognosen auswerten",
+    "legacy:Make it yours": "Passe Wettra an",
+    "legacy:Appearance": "Darstellung",
+    "legacy:Follow iPhone": "Systemeinstellung folgen",
+    "legacy:Light": "Hell",
+    "legacy:Dark": "Dunkel",
+    "legacy:Celsius \xB7 \xB0C": "Celsius \xB7 \xB0C",
+    "legacy:Fahrenheit \xB7 \xB0F": "Fahrenheit \xB7 \xB0F",
+    "legacy:Millimetres": "Millimeter",
+    "legacy:Inches": "Zoll",
+    "legacy:Refresh when app is open": "Aktualisierung bei ge\xF6ffneter App",
+    "legacy:Every 30 minutes": "Alle 30 Minuten",
+    "legacy:Every hour": "St\xFCndlich",
+    "legacy:Every 3 hours": "Alle 3 Stunden",
+    "legacy:On this device": "Auf diesem Ger\xE4t",
+    "legacy:Check local cache": "Lokalen Cache pr\xFCfen",
+    "legacy:Export local data": "Lokale Daten exportieren",
+    "legacy:Clear weather cache": "Wettercache leeren",
+    "legacy:Erase all app data": "Alle App-Daten l\xF6schen",
+    "legacy:Sources & attribution": "Quellen & Namensnennung",
+    "legacy:Complete source code": "Vollst\xE4ndiger Quellcode",
+    "legacy:Download standalone HTML": "Eigenst\xE4ndige HTML-Datei laden",
+    "legacy:Open official warning map \u2197": "Offizielle Warnkarte \xF6ffnen \u2197",
+    "legacy:Offline \xB7 ": "Offline \xB7 ",
+    "legacy:Cached \xB7 ": "Zwischengespeichert \xB7 ",
+    "legacy:Updated ": "Aktualisiert ",
+    "legacy:No locations found. Try a nearby town.": "Keine Orte gefunden. Versuche einen Ort in der N\xE4he.",
+    "legacy:Search unavailable. Try a saved location.": "Suche nicht verf\xFCgbar. Verwende einen gespeicherten Ort.",
+    "legacy:Searching\u2026": "Suche l\xE4uft\u2026",
+    "legacy:Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.": "Koordinaten m\xFCssen Breitengrad \u221290 bis 90 und L\xE4ngengrad \u2212180 bis 180 sein.",
+    "legacy:Local file: if GPS is unavailable, search above or choose a saved place.": "Lokale Datei: Falls GPS nicht verf\xFCgbar ist, suche oben oder w\xE4hle einen gespeicherten Ort.",
+    "legacy:Save places to switch between them quickly.": "Speichere Orte, um schnell zwischen ihnen zu wechseln.",
+    "legacy:Location is requested only when you tap the button. Coordinates are sent to weather providers to retrieve your weather.": "Der Standort wird nur auf Tastendruck abgefragt. Die Koordinaten werden zur Wetterabfrage an Wetterdienste \xFCbermittelt.",
+    "legacy:Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.": "Orte, Einstellungen, Prognosen, R\xFCckblicke und Modellbewertungen bleiben in diesem Browser. Keine Analyse, Werbung oder App-Konten. Wetterdienste erhalten die angefragten Koordinaten und deine IP-Adresse; die Ortssuche erh\xE4lt deinen Suchbegriff.",
+    "legacy:Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.": "Der Cache speichert bis zu acht Orte und 40 R\xFCckblicke. iOS kann Browserdaten l\xF6schen; exportiere wichtige Prognoseverl\xE4ufe. Privates Surfen speichert Daten nur vor\xFCbergehend.",
+    "legacy:GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.": "Diese \xF6ffentliche App wird \xFCber GitHub Pages bereitgestellt. Sie hat kein Backend. Jeder Browser speichert seine Daten lokal. Lokale Dateien k\xF6nnen GPS- oder Netzwerkbeschr\xE4nkungen haben; die HTTPS-Version bietet alle Kartenfunktionen.",
+    "legacy:Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled ": "Prognosemodelle: DWD ICON, ECMWF IFS und NOAA GFS. Historische Reanalyse: Copernicus / ECMWF ERA5 \xFCber Open-Meteo. Ortsnamen: GeoNames \xFCber Open-Meteo. \xD6sterreichische Postleitzahlen: enthaltene ",
+    "legacy:postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.": "Postleitzahlendaten, CC BY 4.0 (22. Oktober 2026); ungef\xE4hre Koordinaten der Orte.",
+    "legacy:RainViewer radar, personal use; loaded only when requested.": "RainViewer-Radar zur pers\xF6nlichen Nutzung; wird nur auf Anfrage geladen.",
+    "legacy:No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, ": "Kein Hintergrund-Tracking oder Lernen. Zwischengespeichertes Wetter ist in diesem Browser verf\xFCgbar. Um die App-Oberfl\xE4che f\xFCr Offline-Aufrufe zu speichern, ",
+    "legacy:Fetching your forecast\u2026": "Wetterprognose wird abgerufen\u2026",
+    "legacy:Choose a location or refresh to load weather.": "W\xE4hle einen Ort oder aktualisiere, um das Wetter zu laden.",
+    "legacy:No hourly data in this period. Refresh when online.": "Keine Stundendaten f\xFCr diesen Zeitraum. Aktualisiere, sobald du online bist.",
+    "legacy:No data for this variable": "Keine Daten f\xFCr diesen Wert",
+    "legacy:Radar could not load. The map is still usable; try again later. Existing frames may be old.": "Radar konnte nicht geladen werden. Die Karte bleibt nutzbar; versuche es sp\xE4ter erneut. Vorhandene Bilder k\xF6nnen veraltet sein.",
+    "legacy:Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.": "Temperatur und Niederschlagsmenge: Modellkonsens. Regenwahrscheinlichkeit: Open-Meteo Best Match. Bei weniger als 0,05 mm und unter 40 % Wahrscheinlichkeit werden normale Regensymbole durch den tats\xE4chlichen Himmelszustand ersetzt.",
+    "legacy:Delete ": "L\xF6schen: ",
+    "legacy:Erase all Wettra settings, locations, cached weather and local scores?": "Alle Wettra-Einstellungen, Orte, Wetterdaten und lokalen Bewertungen l\xF6schen?",
+    "legacy:Weather cache cleared. Current screen stays available.": "Wettercache geleert. Die aktuelle Ansicht bleibt verf\xFCgbar.",
+    "legacy:Evaluation unavailable. Try later.": "Auswertung nicht verf\xFCgbar. Versuche es sp\xE4ter erneut.",
+    "legacy:Saved forecast retained": "Gespeicherte Prognose bleibt verf\xFCgbar",
+    "legacy:Device storage unavailable": "Ger\xE4tespeicher nicht verf\xFCgbar",
+    "legacy:Installation & update instructions": "Installations- und Updateanleitung",
+    "legacy:Download widget script": "Widget-Skript laden",
+    "legacy:Copy widget configuration": "Widget-Konfiguration kopieren",
+    "legacy:iPhone & iPad widget": "iPhone- & iPad-Widget",
+    "legacy:Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.": "Mit Scriptable kannst du Wettra auf dem Home-Bildschirm anzeigen. W\xE4hle zuerst unter Wetter einen Ort aus und kopiere anschlie\xDFend hier dessen Konfiguration.",
+    "legacy:Paste into Scriptable\u2019s widget Parameter field. Refresh target: 30 minutes; iOS may update later. The widget has its own local cache. Re-export to change its location or units; no automatic sync. Opening a widget location does not replace your saved default place.": "F\xFCge die Konfiguration in Scriptable in das Parameterfeld des Widgets ein. Aktualisierungsziel: 30 Minuten; iOS kann sp\xE4ter aktualisieren. Das Widget hat einen eigenen lokalen Cache. Exportiere die Konfiguration erneut, um Ort oder Einheiten zu \xE4ndern; eine automatische Synchronisierung gibt es nicht. Ein im Widget ge\xF6ffneter Ort ersetzt deinen gespeicherten Standardort nicht.",
+    "legacy:Widget parameter for ": "Widget-Parameter f\xFCr ",
+    "legacy:Paste into Scriptable": "In Scriptable einf\xFCgen",
+    "legacy:Retrieved ": "Abgerufen ",
+    "legacy: \xB7 Only non-null hours contribute.": " \xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein.",
+    "legacy: snapshots saved for this location. At most one per six hours; each retains the next 48 hours. Retention: 35 days, up to 36 snapshots.": " Prognosen f\xFCr diesen Ort gespeichert. H\xF6chstens eine alle sechs Stunden; jede enth\xE4lt die n\xE4chsten 48 Stunden. Aufbewahrung: 35 Tage, maximal 36 Prognosen.",
+    "legacy:Scores need forecasts saved at least seven days ago. Evaluation uses ERA5 as a proxy, not independent station truth. No learned weights are applied.": "F\xFCr die Bewertung werden Prognosen ben\xF6tigt, die mindestens sieben Tage alt sind. ERA5 dient als N\xE4herung, nicht als unabh\xE4ngige Stationsmessung. Die Gewichte werden dadurch nicht angepasst.",
+    "legacy:This is an experimental heuristic, not a proven improvement over any provider. Alpine terrain and thunderstorms can differ sharply within one model grid cell.": "Dies ist eine experimentelle Heuristik und keine nachgewiesene Verbesserung gegen\xFCber einem Anbieter. Im Alpenraum und bei Gewittern kann sich das Wetter innerhalb einer Modellgitterzelle stark unterscheiden.",
+    "legacy:ICON gets the most influence in the first 48 hours. ECMWF takes the lead farther out. We renormalize weights whenever a model or variable is missing.": "ICON erh\xE4lt in den ersten 48 Stunden den gr\xF6\xDFten Einfluss. F\xFCr l\xE4ngere Zeitr\xE4ume wird ECMWF st\xE4rker gewichtet. Fehlt ein Modell oder Wetterwert, werden die \xFCbrigen Gewichte neu normiert.",
+    "legacy:Temperature, pressure, wind speed and cloud cover use lead-time-weighted means. Hourly precipitation and gusts use weighted medians to limit single-model outliers. This can miss extremes; use official warnings for hazards.": "Temperatur, Luftdruck, Windgeschwindigkeit und Bew\xF6lkung verwenden nach Vorlaufzeit gewichtete Mittelwerte. F\xFCr st\xFCndlichen Niederschlag und B\xF6en werden gewichtete Mediane genutzt, um Ausrei\xDFer einzelner Modelle zu begrenzen. Extreme k\xF6nnen dabei untergehen; beachte bei Gefahren die offiziellen Warnungen.",
+    "legacy:Rain probability, weather icons, feels-like, humidity, direction, rain/snow split, UV and visibility come from Best Match. These fields are not recomputed from the consensus and may differ. Current weather is a model estimate from Best Match, not a weather station.": "Regenwahrscheinlichkeit, Wettersymbole, gef\xFChlte Temperatur, Luftfeuchtigkeit, Windrichtung, Regen-/Schneeaufteilung, UV und Sichtweite stammen von Best Match. Diese Werte werden nicht aus dem Modellkonsens berechnet und k\xF6nnen davon abweichen. Das aktuelle Wetter ist eine Modellsch\xE4tzung von Best Match, keine Stationsmessung.",
+    "legacy:Best Match is never an additional consensus vote. When all explicit models lack a variable, Best Match fills the gap. Daily totals and highs/lows are calculated from hourly consensus; daily rain chance is the highest hourly probability.": "Best Match z\xE4hlt nie als zus\xE4tzliche Stimme im Konsens. Fehlt ein Wert bei allen explizit ausgew\xE4hlten Modellen, erg\xE4nzt Best Match die L\xFCcke. Tagesmengen sowie H\xF6chst- und Tiefstwerte werden aus dem Stundenkonsens berechnet; die t\xE4gliche Regenwahrscheinlichkeit ist der h\xF6chste Stundenwert.",
+    "legacy:Retrieval time is not model initialization time. The free forecast response does not expose a reliable run timestamp.": "Der Abrufzeitpunkt ist nicht der Modellstart. Die kostenlose Prognoseantwort enth\xE4lt keinen verl\xE4sslichen Zeitstempel des Modelllaufs.",
+    "legacy:A small historical sample, not a 30-year climate normal. Uses ten daily ERA5 requests, cached locally.": "Eine kleine historische Stichprobe, kein 30-j\xE4hriges Klimamittel. Es werden zehn t\xE4gliche ERA5-Abfragen verwendet und lokal gespeichert.",
+    "legacy:Slide to inspect \xB7 ": "Zum Pr\xFCfen verschieben \xB7 ",
+    "legacy: \xB7 Missing values appear as gaps.": " \xB7 Fehlende Werte werden als L\xFCcken angezeigt.",
+    "legacy:Total precipitation in the hour ending at this time": "Niederschlagssumme der Stunde bis zu dieser Uhrzeit",
+    "legacy:Chance \u2014": "Wahrscheinlichkeit \u2014",
+    "legacy:% chance": "% Wahrscheinlichkeit",
+    "legacy:Your weather, here": "Dein Wetter hier",
+    "legacy:Choose a location": "Ort ausw\xE4hlen",
+    "legacy:No active or upcoming warnings returned for this municipality at the last check.": "Bei der letzten Abfrage wurden f\xFCr diese Gemeinde keine aktuellen oder bevorstehenden Warnungen gemeldet.",
+    "legacy:Current warning status unavailable. Check the official map.": "Der aktuelle Warnstatus ist nicht verf\xFCgbar. Pr\xFCfe die offizielle Karte.",
+    "legacy:Official warnings": "Offizielle Warnungen",
+    "legacy:Weather warning": "Wetterwarnung",
+    "legacy:Severity:": "Warnstufe:",
+    "legacy:None": "Keine",
+    "legacy:Yellow": "Gelb",
+    "legacy:Orange": "Orange",
+    "legacy:Red": "Rot",
+    "legacy:Unspecified": "Nicht angegeben",
+    "legacy:Austria local time": "\xF6sterreichische Ortszeit",
+    "legacy:Local weather can change between checks. This feed is not a continuous alert service.": "Das lokale Wetter kann sich zwischen den Abfragen \xE4ndern. Dieser Dienst ist kein kontinuierlicher Warndienst.",
+    "legacy:none yet": "noch keine",
+    "legacy:Approximate locality coordinates \xB7 Austrian postcodes:": "Ungef\xE4hre Ortskoordinaten \xB7 \xD6sterreichische Postleitzahlen:",
+    "legacy:day outlook": "Tage-Vorschau",
+    "legacy:Long-range trend: lower confidence. ": "Langfristiger Trend: geringere Sicherheit. ",
+    "legacy:Partial day. ": "Unvollst\xE4ndiger Tag. ",
+    "legacy:Daily rain chance is the maximum hourly probability.": "Die t\xE4gliche Regenwahrscheinlichkeit entspricht dem h\xF6chsten Stundenwert.",
+    "legacy:ICON weights: ": "ICON-Gewichtung: ",
+    "legacy: before 48h, then ": " vor 48 Stunden, danach ",
+    "legacy:Available weights are normalized.": "Die verf\xFCgbaren Gewichte werden normiert.",
+    "legacy:Today  \u2191 ": "Heute  \u2191 ",
+    "legacy: / L ": " / T ",
+    "legacy:Wind  ": "Wind  ",
+    "legacy: \xB7 Gusts ": " \xB7 B\xF6en ",
+    "legacy:snapshots saved": "Prognosen gespeichert",
+    "legacy: \xB7 Best Match": " \xB7 Best Match",
+    "legacy: hours": " Stunden",
+    "legacy:Open RainViewer radar map \u2197": "RainViewer-Radarkarte \xF6ffnen \u2197",
+    "legacy:Load recent precipitation around ": "Aktuelle Niederschl\xE4ge rund um ",
+    "legacy:Map and radar providers receive tile requests only when you open this map.": "Karten- und Radardienste erhalten erst beim \xD6ffnen dieser Karte Kachelanfragen.",
+    "legacy:Loading reanalysis\u2026": "Reanalyse wird geladen\u2026",
+    "legacy:Loading ten past years\u2026": "Daten der letzten zehn Jahre werden geladen\u2026",
+    "legacy:Comparing saved forecasts with ERA5\u2026": "Gespeicherte Prognosen werden mit ERA5 verglichen\u2026",
+    "legacy:Saved status, may be outdated \xB7 ": "Gespeicherter Status, m\xF6glicherweise veraltet \xB7 ",
+    "legacy:Checked ": "Gepr\xFCft ",
+    "legacy:\xB7 Only non-null hours contribute.": "\xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein.",
+    "legacy:Forecast providers:": "Prognosemodelle:",
+    "legacy:Historical reanalysis:": "Historische Reanalyse:",
+    "legacy:Location names:": "Ortsnamen:",
+    "legacy:Free non-commercial usage terms": "Nutzungsbedingungen f\xFCr die kostenlose nicht-kommerzielle Nutzung",
+    "legacy:Forecast documentation": "Prognosedokumentation",
+    "legacy:History documentation": "Dokumentation der historischen Daten",
+    "legacy:personal use": "private Nutzung",
+    "legacy:Previous ": "Vorherige ",
+    "legacy: minutes": " Minuten",
+    "legacy:Weather data: ": "Wetterdaten: ",
+    "legacy:All times: ": "Alle Zeiten: ",
+    "legacy:D2 \u2192 EU \u2192 Global \xB7 up to 7.5 days": "D2 \u2192 EU \u2192 Global \xB7 bis zu 7,5 Tage",
+    "legacy:Global \xB7 up to 15 days": "Global \xB7 bis zu 15 Tage",
+    "legacy:Global \xB7 up to 16 days": "Global \xB7 bis zu 16 Tage",
+    "legacy:ICON weights: 0.50 / 0.40 / 0.25 for <48 / 48\u2013120 / \u2265120 hours. ECMWF: 0.30 before 48h, then 0.45. GFS: 0.20 before 48h, then 0.30. Available weights are normalized.": "ICON-Gewichte: 0,50 / 0,40 / 0,25 f\xFCr <48 / 48\u2013120 / \u2265120 Stunden. ECMWF: 0,30 vor 48 Stunden, danach 0,45. GFS: 0,20 vor 48 Stunden, danach 0,30. Die verf\xFCgbaren Gewichte werden normiert.",
+    "legacy:No mature forecasts yet. Revisit after at least nine days; saved 24\u201348h forecasts need time to enter ERA5.": "Noch keine ausreichend alten Prognosen. Sieh in mindestens neun Tagen erneut nach; gespeicherte 24\u201348-Stunden-Prognosen brauchen Zeit, bis sie in ERA5 enthalten sind.",
+    "legacy:No matching reanalysis hours available yet.": "Bisher sind keine passenden Reanalyse-Stunden verf\xFCgbar.",
+    "legacy:ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ": "ERA5-N\xE4herung \xB7 24\u201348 Stunden Vorlauf \xB7 ausgewertet ",
+    "legacy:N temp": "Anz. Temp.",
+    "legacy:Temp MAE \xB0C": "Temp.-MAE \xB0C",
+    "legacy:Rain MAE mm": "Regen-MAE mm",
+    "legacy:Wet/dry %": "Nass/trocken %",
+    "legacy:Wind MAE km/h": "Wind-MAE km/h",
+    "legacy:Pressure MAE hPa": "Luftdruck-MAE hPa",
+    "legacy:Native metric units.": "Einheiten im metrischen System.",
+    "legacy:Model": "Modell",
+    "legacy:Copy the selected text, then paste into the Scriptable widget Parameter field.": "Kopiere den markierten Text und f\xFCge ihn in Scriptable im Parameterfeld des Widgets ein.",
+    "legacy:Copied. Paste into the Scriptable widget Parameter field.": "Kopiert. F\xFCge den Text im Parameterfeld des Scriptable-Widgets ein.",
+    "legacy:Open Wettra again when online.": "\xD6ffne Wettra erneut, sobald du online bist.",
+    "legacy:Language": "Sprache",
+    "legacy:Deutsch": "Deutsch",
+    "legacy:English": "English",
+    "nav.main": "Hauptnavigation",
+    "nav.weather": "Wetter",
+    "nav.hourly": "St\xFCndlich",
+    "nav.history": "R\xFCckblick",
+    "nav.models": "Modelle",
+    "nav.places": "Orte",
+    "nav.settings": "Einstellungen",
+    "status.offline": "Offline",
+    "status.cached": "Zwischengespeichert",
+    "status.updated": "Aktualisiert {time}",
+    "status.updated.date": "{date}",
+    "status.storageUnavailable": "Ger\xE4tespeicher nicht verf\xFCgbar",
+    "search.coordinatesInvalid": "Koordinaten m\xFCssen Breitengrad \u221290 bis 90 und L\xE4ngengrad \u2212180 bis 180 sein.",
+    "search.searching": "Suche l\xE4uft\u2026",
+    "search.none": "Keine Orte gefunden. Versuche einen Ort in der N\xE4he.",
+    "search.unavailable": "Suche nicht verf\xFCgbar. Verwende einen gespeicherten Ort.",
+    "location.invalid": "Dieser Standort ist ung\xFCltig. W\xE4hle einen anderen Ort.",
+    "location.unavailable": "Der Standort ist hier nicht verf\xFCgbar. \xD6ffne die HTTPS-App oder suche nach einem Ort oder einer Postleitzahl.",
+    "location.requesting": "Standort wird angefragt \u2026 Erlaube die Standortabfrage; dies kann bis zu einer Minute dauern.",
+    "location.denied": "Der Standortzugriff wurde verweigert.",
+    "location.timeout": "Der Standort hat innerhalb einer Minute nicht geantwortet.",
+    "location.failure": "Dein Ger\xE4t konnte keinen Standort ermitteln.",
+    "location.paused": "Die Standortabfrage wurde pausiert, weil die App ausgeblendet wurde. Tippe zum Wiederholen auf die Standortschaltfl\xE4che.",
+    "radar.failure": "Radar konnte nicht geladen werden. Die Karte bleibt nutzbar; versuche es sp\xE4ter erneut. Vorhandene Bilder k\xF6nnen veraltet sein.",
+    "dialog.eraseAll": "Alle Wettra-Einstellungen, Orte, Wetterdaten und lokalen Bewertungen l\xF6schen?",
+    "widget.copied": "Kopiert. F\xFCge die Konfiguration im Parameterfeld des Scriptable-Widgets ein.",
+    "widget.copyFallback": "Kopiere den markierten Text und f\xFCge ihn im Parameterfeld des Scriptable-Widgets ein.",
+    "settings.language": "Sprache",
+    "location.help.default": "Folge diesen Schritten und tippe danach erneut auf Standort versuchen.",
+    "location.error.denied": "Der Standortzugriff wurde verweigert. \xD6ffne die Standort-Hilfe f\xFCr iOS- und Safari-Einstellungen oder suche nach einer Postleitzahl.",
+    "location.error.timeout": "Der Standort hat innerhalb einer Minute nicht geantwortet. \xD6ffne die Standort-Hilfe f\xFCr iOS- und Safari-Einstellungen oder suche nach einer Postleitzahl.",
+    "location.error.failure": "Dein Ger\xE4t konnte keinen Standort ermitteln. \xD6ffne die Standort-Hilfe f\xFCr iOS- und Safari-Einstellungen oder suche nach einer Postleitzahl.",
+    "forecast.updating": "Prognosen werden aktualisiert\u2026",
+    "forecast.offline": "Du bist offline. Suche gespeicherte Orte oder stelle die Verbindung wieder her, um Wetterdaten zu laden.",
+    "forecast.offlineSaved": "Offline \xB7 gespeicherte Prognose wird angezeigt",
+    "forecast.failure": "Wetterdienste sind nicht erreichbar. Pr\xFCfe deine Verbindung; Safari k\xF6nnte die Anfrage blockiert haben.",
+    "forecast.failureSaved": "Gespeicherte Prognose bleibt verf\xFCgbar. Wetterdienste sind nicht erreichbar. Pr\xFCfe deine Verbindung; Safari k\xF6nnte die Anfrage blockiert haben.",
+    "forecast.partial": "Mit {available} Quellen aktualisiert \xB7 {unavailable} nicht verf\xFCgbar. Siehe Modelle.",
+    "legacy:Feels": "Gef\xFChlt",
+    "legacy:Hour": "Stunde",
+    "settings.useLocation": "{name} als Startort festlegen"
+  };
+
+  // src/ui/i18n.js
+  var catalogs = { en: messages_en_default, de: messages_de_default };
+  var legacyKeys = Object.keys(messages_en_default).filter((key2) => key2.startsWith("legacy:"));
+  var legacyKeysByGermanText = new Map(legacyKeys.map((key2) => [messages_de_default[key2], key2]));
+  var legacyEntries = Object.fromEntries(
+    ["de", "en"].map((language) => [
+      language,
+      legacyKeys.map((key2) => ({
+        from: language === "de" ? messages_en_default[key2] : messages_de_default[key2],
+        to: catalogs[language][key2]
+      })).filter(({ from, to }) => from && to && from !== to).sort((a, b) => b.from.length - a.from.length)
+    ])
+  );
+  var currentLanguage = () => settings.language === "en" ? "en" : "de";
+  function t(key2, params = {}) {
+    const language = currentLanguage();
+    const lookupKey = Object.prototype.hasOwnProperty.call(catalogs.en, key2) ? key2 : legacyKeysByGermanText.get(key2) ?? `legacy:${key2}`;
+    const message = catalogs[language][lookupKey] ?? catalogs.en[lookupKey] ?? key2;
+    return message.replace(
+      /\{([a-zA-Z0-9_]+)\}/g,
+      (placeholder, name) => Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : placeholder
+    );
+  }
+  function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+  function translateLegacy(value, language = currentLanguage()) {
+    let output = String(value);
+    for (const { from, to } of legacyEntries[language]) {
+      const left = /^[A-Za-z0-9_]/.test(from) ? "(^|[^A-Za-z0-9_])" : "";
+      const right = /[A-Za-z0-9_]$/.test(from) ? "(?![A-Za-z0-9_])" : "";
+      const expression = new RegExp(left + escapeRegExp(from) + right, "g");
+      output = output.replace(
+        expression,
+        (...match) => left ? match[1] + to : to
+      );
+    }
+    return output;
+  }
+  function localizeDOM(root = document.body) {
+    const language = currentLanguage();
+    if (document.documentElement) document.documentElement.lang = language;
+    if (!document.createTreeWalker || !root.querySelectorAll || typeof NodeFilter === "undefined")
+      return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return node.parentElement?.closest("script, style, textarea, code") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const value = translateLegacy(node.nodeValue, language);
+      if (value !== node.nodeValue) node.nodeValue = value;
+    }
+    for (const element of root.querySelectorAll(
+      "[aria-label], [placeholder], [title], [alt]"
+    ))
+      for (const attr of ["aria-label", "placeholder", "title", "alt"])
+        if (element.hasAttribute(attr))
+          element.setAttribute(
+            attr,
+            translateLegacy(element.getAttribute(attr), language)
+          );
+  }
+  function watchLocalization() {
+    if (observer || !document.body) return;
+    observer = new MutationObserver((changes) => {
+      const language = currentLanguage();
+      for (const change of changes)
+        for (const added of change.addedNodes) {
+          if (added.nodeType === Node.ELEMENT_NODE) localizeDOM(added);
+          else if (added.nodeType === Node.TEXT_NODE)
+            added.nodeValue = translateLegacy(added.nodeValue, language);
+        }
+    });
+    observer.observe(document.body, { subtree: true, childList: true });
+  }
+  var observer;
+
   // src/ui/radarView.js
   var widget = null;
   function radarContent() {
     const link = '<p class="footnote"><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">Open RainViewer radar map \u2197</a></p>';
     if (!state.radarOpened)
       return '<p class="muted">Load recent precipitation around ' + esc(state.location.name) + ". Map and radar providers receive tile requests only when you open this map.</p>" + link;
-    return (state.radarError ? '<p class="notice warning" role="alert">' + esc(state.radarError) + "</p>" : "") + '<div id="radarMount"></div>' + link;
+    return (state.radarError ? '<p class="notice warning" role="alert">' + esc(t(state.radarError)) + "</p>" : "") + '<div id="radarMount"></div>' + link;
   }
   function radarImages() {
     const host = document.getElementById("radarMount");
@@ -1769,8 +2484,7 @@ label {
       state.radar = { ...data, locationKey };
       state.radarIndex = data.frames.length - 1;
     } catch {
-      if (request === state.radarRequest)
-        state.radarError = "Radar could not load. The map is still usable; try again later. Existing frames may be old.";
+      if (request === state.radarRequest) state.radarError = "radar.failure";
     } finally {
       if (request === state.radarRequest) {
         state.radarBusy = false;
@@ -2216,7 +2930,7 @@ label {
   }
 
   // src/app/version.js
-  var APP_VERSION = false ? "development" : "1.4.2";
+  var APP_VERSION = false ? "development" : "1.5.0";
 
   // src/weather/widgetConfig.js
   var WIDGET_DEFAULT = { name: "Graz", latitude: 47.0707, longitude: 15.4395, timezone: "Europe/Vienna" };
@@ -2245,7 +2959,13 @@ label {
 
   // src/ui/widgetSettings.js
   function widgetSettings() {
-    const config = widgetConfig({ ...state.location, name: state.location.name.slice(0, 100), temperature: settings.temperature, wind: settings.wind, precipitation: settings.precipitation });
+    const config = widgetConfig({
+      ...state.location,
+      name: state.location.name.slice(0, 100),
+      temperature: settings.temperature,
+      wind: settings.wind,
+      precipitation: settings.precipitation
+    });
     return `<section class="card stack"><h2>iPhone & iPad widget</h2>
     <p>Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.</p>
     <p><a href="./widget.html" target="_blank" rel="noopener">Installation & update instructions</a> \xB7 <a href="./wettra-widget.js" download>Download widget script</a></p>
@@ -2260,12 +2980,12 @@ label {
     if (!field || !status2) return;
     try {
       await navigator.clipboard.writeText(field.value);
-      status2.textContent = "Copied. Paste into the Scriptable widget Parameter field.";
+      status2.textContent = t("widget.copied");
     } catch {
       field.focus();
       field.select();
       field.setSelectionRange(0, field.value.length);
-      status2.textContent = "Copy the selected text, then paste into the Scriptable widget Parameter field.";
+      status2.textContent = t("widget.copyFallback");
     }
   }
 
@@ -2278,8 +2998,11 @@ label {
   function settingsView() {
     return '<h2 class="headline">Make it yours</h2>' + widgetSettings() + '<section class="card">' + settingSelect(
       "language",
-      "Language",
-      [["de", "Deutsch"], ["en", "English"]],
+      t("settings.language"),
+      [
+        ["de", "Deutsch"],
+        ["en", "English"]
+      ],
       settings.language
     ) + settingSelect(
       "theme",
@@ -2324,7 +3047,7 @@ label {
         [180, "Every 3 hours"]
       ],
       settings.refresh
-    ) + '<div class="setting"><label>Startup location</label><p>' + esc(settings.defaultLocation?.name || "Last selected location") + '</p><div class="actions"><button data-action="default">Use ' + esc(state.location.name) + '</button><button data-action="lastLocation">Use last selected</button></div></div></section><section class="card stack"><h2>On this device</h2><button data-action="cacheTest">Check local cache</button><div id="cacheReport" role="status"></div><p>Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.</p><p>Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.</p><div class="actions"><button data-action="export">Export local data</button><button data-action="clearCache">Clear weather cache</button><button class="danger" data-action="clear">Erase all app data</button></div><p class="footnote">GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.</p></section><section class="card stack"><h2>Sources & attribution</h2><p><a href="https://github.com/Boon018/Wettra" target="_blank" rel="noreferrer">Complete source code</a> \xB7 <a href="./standalone.html" download>Download standalone HTML</a></p><p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> \xB7 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a> postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.</p><p><a href="https://open-meteo.com/en/docs" target="_blank" rel="noreferrer">Forecast documentation</a> \xB7 <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noreferrer">History documentation</a> \xB7 <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer">Free non-commercial usage terms</a></p><p><a href="https://warnungen.zamg.at/" target="_blank" rel="noreferrer">GeoSphere Austria official warnings</a>. <a href="https://www.rainviewer.com/api.html" target="_blank" rel="noreferrer">RainViewer radar</a>, personal use; loaded only when requested.</p><p class="footnote">Version ' + APP_VERSION + ' \xB7 No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, <a href="./?pwa=1">enable optional offline installation</a> while online. Your browser may later evict stored files.</p></section>';
+    ) + '<div class="setting"><label>Startup location</label><p>' + esc(settings.defaultLocation?.name || "Last selected location") + '</p><div class="actions"><button data-action="default">' + esc(t("settings.useLocation", { name: state.location.name })) + '</button><button data-action="lastLocation">Use last selected</button></div></div></section><section class="card stack"><h2>On this device</h2><button data-action="cacheTest">Check local cache</button><div id="cacheReport" role="status"></div><p>Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.</p><p>Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.</p><div class="actions"><button data-action="export">Export local data</button><button data-action="clearCache">Clear weather cache</button><button class="danger" data-action="clear">Erase all app data</button></div><p class="footnote">GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.</p></section><section class="card stack"><h2>Sources & attribution</h2><p><a href="https://github.com/Boon018/Wettra" target="_blank" rel="noreferrer">Complete source code</a> \xB7 <a href="./standalone.html" download>Download standalone HTML</a></p><p><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> \xB7 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a> postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.</p><p><a href="https://open-meteo.com/en/docs" target="_blank" rel="noreferrer">Forecast documentation</a> \xB7 <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noreferrer">History documentation</a> \xB7 <a href="https://open-meteo.com/en/terms" target="_blank" rel="noreferrer">Free non-commercial usage terms</a></p><p><a href="https://warnungen.zamg.at/" target="_blank" rel="noreferrer">GeoSphere Austria official warnings</a>. <a href="https://www.rainviewer.com/api.html" target="_blank" rel="noreferrer">RainViewer radar</a>, personal use; loaded only when requested.</p><p class="footnote">Version ' + APP_VERSION + ' \xB7 No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, <a href="./?pwa=1">enable optional offline installation</a> while online. Your browser may later evict stored files.</p></section>';
   }
   function exportData() {
     const data = Object.fromEntries(Store.keys().map((k) => [k, Store.get(k)]));
@@ -2337,348 +3060,33 @@ label {
     setTimeout(() => URL.revokeObjectURL(url), 1e3);
   }
 
-  // src/ui/i18n.js
-  var pairs = [
-    ["Main navigation", "Hauptnavigation"],
-    ["Weather", "Wetter"],
-    ["Hourly", "St\xFCndlich"],
-    ["History", "R\xFCckblick"],
-    ["Models", "Modelle"],
-    ["Places", "Orte"],
-    ["Settings", "Einstellungen"],
-    ["Use my location", "Meinen Standort verwenden"],
-    ["Refresh weather", "Wetter aktualisieren"],
-    ["Opening your weather\u2026", "Wetter wird geladen\u2026"],
-    ["Enable your location", "Standort freigeben"],
-    ["Follow these steps, then tap Try location again.", "Folge diesen Schritten und tippe danach erneut auf Standort versuchen."],
-    ["On iPhone or iPad", "Auf iPhone oder iPad"],
-    ["Firefox on iOS", "Firefox unter iOS"],
-    ["Try location again", "Standort erneut versuchen"],
-    ["Use postcode instead", "Stattdessen Ort oder Postleitzahl suchen"],
-    ["Open in browser \u2197", "Im Browser \xF6ffnen \u2197"],
-    ["Location help", "Hilfe zum Standort"],
-    ["The browser controls the permission prompt. If access is denied, Wettra cannot force a new prompt or change your settings.", "Der Browser steuert die Standortabfrage. Wenn du den Zugriff ablehnst, kann Wettra keine neue Abfrage erzwingen und deine Einstellungen nicht \xE4ndern."],
-    ["Open the browser\u2019s site permissions for this address and allow Location. Also check your device\u2019s location privacy settings, then retry.", "\xD6ffne die Website-Berechtigungen deines Browsers f\xFCr diese Adresse und erlaube den Standortzugriff. Pr\xFCfe auch die Datenschutz-Einstellungen deines Ger\xE4ts und versuche es erneut."],
-    ["There is no supported direct iOS Settings link available to this web app. Open Settings manually. The browser link below opens a new window; if it stays inside the app, copy the address into Safari.", "Diese Web-App kann iOS-Einstellungen nicht direkt \xF6ffnen. \xD6ffne die Einstellungen manuell. Der Browser-Link \xF6ffnet ein neues Fenster; falls er in der App bleibt, kopiere die Adresse nach Safari."],
-    ["Android or desktop browser", "Android- oder Desktop-Browser"],
-    ["Your places", "Deine Orte"],
-    ["Town, postcode or lat, lon", "Ort, Postleitzahl oder Breitengrad, L\xE4ngengrad"],
-    ["Town, city or postcode", "Ort, Stadt oder Postleitzahl"],
-    ["Location search", "Ortssuche"],
-    ["Search locations", "Orte suchen"],
-    ["Find", "Suchen"],
-    ["Search", "Suchen"],
-    ["Saved places", "Gespeicherte Orte"],
-    ["Saved locations", "Gespeicherte Orte"],
-    ["Save place", "Ort speichern"],
-    ["Save current", "Aktuellen Ort speichern"],
-    ["Use my current location", "Meinen aktuellen Standort verwenden"],
-    ["Use last selected", "Zuletzt ausgew\xE4hlten Ort verwenden"],
-    ["Last selected location", "Zuletzt ausgew\xE4hlter Ort"],
-    ["Startup location", "Startort"],
-    ["Quick start \xB7 Austria", "Schnellwahl \xB7 \xD6sterreich"],
-    ["Vienna", "Wien"],
-    ["Today", "Heute"],
-    ["Weather radar", "Wetterradar"],
-    ["Load radar", "Radar laden"],
-    ["Refresh", "Aktualisieren"],
-    ["Loading\u2026", "Wird geladen\u2026"],
-    ["Tap a day", "Tag antippen"],
-    ["Details", "Details"],
-    ["Next 24 hours", "N\xE4chste 24 Stunden"],
-    ["At a glance", "Auf einen Blick"],
-    ["Current model / nearest hour", "Aktuelles Modell / n\xE4chste Stunde"],
-    ["Rain chance", "Regenwahrscheinlichkeit"],
-    ["This hour \xB7 Best Match", "Diese Stunde \xB7 Best Match"],
-    ["Hourly precipitation", "Niederschlag pro Stunde"],
-    ["Hourly accumulation", "Stundensumme"],
-    ["Hour ending ", "Stunde bis "],
-    ["Precipitation", "Niederschlag"],
-    ["Humidity", "Luftfeuchtigkeit"],
-    ["Wind speed", "Windgeschwindigkeit"],
-    ["Wind", "Wind"],
-    ["Gusts", "B\xF6en"],
-    ["Pressure", "Luftdruck"],
-    ["Sea level", "Meeresh\xF6he"],
-    ["Cloud cover", "Bew\xF6lkung"],
-    ["Visibility", "Sichtweite"],
-    ["UV index", "UV-Index"],
-    ["Nearest hour", "N\xE4chste Stunde"],
-    ["Sunrise", "Sonnenaufgang"],
-    ["Sunset", "Sonnenuntergang"],
-    ["Model spread", "Modellspanne"],
-    ["temperature range", "Temperaturspanne"],
-    ["Current model estimate \xB7 ", "Aktuelle Modellsch\xE4tzung \xB7 "],
-    ["Hourly consensus estimate", "St\xFCndliche Konsensprognose"],
-    ["Feels like", "Gef\xFChlt"],
-    ["Next hour", "N\xE4chste Stunde"],
-    ["Available", "Verf\xFCgbar"],
-    ["Unavailable", "Nicht verf\xFCgbar"],
-    ["Hour by hour", "Stunde f\xFCr Stunde"],
-    ["Local time", "Ortszeit"],
-    ["Clear sky", "Klarer Himmel"],
-    ["Mainly clear", "\xDCberwiegend klar"],
-    ["Mostly clear", "\xDCberwiegend klar"],
-    ["Partly cloudy", "Leicht bew\xF6lkt"],
-    ["Overcast", "Bedeckt"],
-    ["Fog", "Nebel"],
-    ["Depositing rime fog", "Gefrierender Nebel"],
-    ["Drizzle", "Nieselregen"],
-    ["Freezing drizzle", "Gefrierender Nieselregen"],
-    ["Rain", "Regen"],
-    ["Freezing rain", "Gefrierender Regen"],
-    ["Snow", "Schnee"],
-    ["Snow grains", "Graupel"],
-    ["Rain showers", "Regenschauer"],
-    ["Snow showers", "Schneeschauer"],
-    ["Thunderstorm", "Gewitter"],
-    ["Thunderstorm with hail", "Gewitter mit Hagel"],
-    ["Unknown", "Unbekannt"],
-    ["Sky", "Himmel"],
-    ["Rain %", "Regen %"],
-    ["Precip. / h", "Niederschlag / h"],
-    ["Rain / h", "Regen / h"],
-    ["Snow cm", "Schnee cm"],
-    ["RH %", "Luftf. %"],
-    ["From", "Richtung"],
-    ["Cloud %", "Wolken %"],
-    ["Chart variable", "Diagrammwert"],
-    ["Chart horizon", "Diagrammzeitraum"],
-    ["Temperature / hour", "Temperatur / Stunde"],
-    ["Temperature", "Temperatur"],
-    ["Precipitation / hour", "Niederschlag / Stunde"],
-    ["Rain chance", "Regenwahrscheinlichkeit"],
-    ["Inspect hour", "Stunde ausw\xE4hlen"],
-    ["Weather chart", "Wetterdiagramm"],
-    ["hours", "Stunden"],
-    ["A look back", "Wetterr\xFCckblick"],
-    ["Historical date", "Historisches Datum"],
-    ["Explore hourly weather since 1940.", "St\xFCndliche Wetterdaten seit 1940 ansehen."],
-    ["ERA5 reanalysis: reconstructed weather, not a station measurement. The latest seven days are excluded to allow for publication delay.", "ERA5-Reanalyse: rekonstruierte Wetterdaten, keine Stationsmessung. Die letzten sieben Tage fehlen wegen der Ver\xF6ffentlichungsverz\xF6gerung."],
-    ["High", "H\xF6chstwert"],
-    ["Low", "Tiefstwert"],
-    ["This day in past years", "Dieser Tag in fr\xFCheren Jahren"],
-    ["Compare today with the same calendar day in the previous ten years.", "Vergleiche den heutigen Tag mit demselben Kalendertag der letzten zehn Jahre."],
-    ["Compare 10 years", "10 Jahre vergleichen"],
-    ["Behind the forecast", "Hinter der Prognose"],
-    ["Regional detail. Global perspective.", "Regionale Details. Globale Perspektive."],
-    ["Next 24 hours \xB7 temperature", "N\xE4chste 24 Stunden \xB7 Temperatur"],
-    ["Consensus", "Konsens"],
-    ["How consensus works", "So entsteht die Konsensprognose"],
-    ["Local forecast journal", "Lokales Prognosearchiv"],
-    ["Evaluate mature forecasts", "Abgeschlossene Prognosen auswerten"],
-    ["Make it yours", "Passe Wettra an"],
-    ["Appearance", "Darstellung"],
-    ["Follow iPhone", "Systemeinstellung folgen"],
-    ["Light", "Hell"],
-    ["Dark", "Dunkel"],
-    ["Celsius \xB7 \xB0C", "Celsius \xB7 \xB0C"],
-    ["Fahrenheit \xB7 \xB0F", "Fahrenheit \xB7 \xB0F"],
-    ["Millimetres", "Millimeter"],
-    ["Inches", "Zoll"],
-    ["Refresh when app is open", "Aktualisierung bei ge\xF6ffneter App"],
-    ["Every 30 minutes", "Alle 30 Minuten"],
-    ["Every hour", "St\xFCndlich"],
-    ["Every 3 hours", "Alle 3 Stunden"],
-    ["On this device", "Auf diesem Ger\xE4t"],
-    ["Check local cache", "Lokalen Cache pr\xFCfen"],
-    ["Export local data", "Lokale Daten exportieren"],
-    ["Clear weather cache", "Wettercache leeren"],
-    ["Erase all app data", "Alle App-Daten l\xF6schen"],
-    ["Sources & attribution", "Quellen & Namensnennung"],
-    ["Complete source code", "Vollst\xE4ndiger Quellcode"],
-    ["Download standalone HTML", "Eigenst\xE4ndige HTML-Datei laden"],
-    ["Open official warning map \u2197", "Offizielle Warnkarte \xF6ffnen \u2197"],
-    ["Offline \xB7 ", "Offline \xB7 "],
-    ["Cached \xB7 ", "Zwischengespeichert \xB7 "],
-    ["Updated ", "Aktualisiert "],
-    ["No locations found. Try a nearby town.", "Keine Orte gefunden. Versuche einen Ort in der N\xE4he."],
-    ["Search unavailable. Try a saved location.", "Suche nicht verf\xFCgbar. Verwende einen gespeicherten Ort."],
-    ["Searching\u2026", "Suche l\xE4uft\u2026"],
-    ["Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.", "Koordinaten m\xFCssen Breitengrad \u221290 bis 90 und L\xE4ngengrad \u2212180 bis 180 sein."],
-    ["Local file: if GPS is unavailable, search above or choose a saved place.", "Lokale Datei: Falls GPS nicht verf\xFCgbar ist, suche oben oder w\xE4hle einen gespeicherten Ort."],
-    ["Save places to switch between them quickly.", "Speichere Orte, um schnell zwischen ihnen zu wechseln."],
-    ["Location is requested only when you tap the button. Coordinates are sent to weather providers to retrieve your weather.", "Der Standort wird nur auf Tastendruck abgefragt. Die Koordinaten werden zur Wetterabfrage an Wetterdienste \xFCbermittelt."],
-    ["Places, settings, forecasts, historical queries and model scores stay in this browser. No analytics, advertising or app account. Weather providers receive requested coordinates and your IP address; location search receives your search text.", "Orte, Einstellungen, Prognosen, R\xFCckblicke und Modellbewertungen bleiben in diesem Browser. Keine Analyse, Werbung oder App-Konten. Wetterdienste erhalten die angefragten Koordinaten und deine IP-Adresse; die Ortssuche erh\xE4lt deinen Suchbegriff."],
-    ["Cache holds eight locations and 40 historical queries. Browser storage can be evicted by iOS; export your journal if it matters to you. Private Browsing is temporary.", "Der Cache speichert bis zu acht Orte und 40 R\xFCckblicke. iOS kann Browserdaten l\xF6schen; exportiere wichtige Prognoseverl\xE4ufe. Privates Surfen speichert Daten nur vor\xFCbergehend."],
-    ["GitHub Pages serves this public app. The app has no backend. Each browser keeps its own local data. Local files may have GPS or network restrictions; use the HTTPS app for the full map.", "Diese \xF6ffentliche App wird \xFCber GitHub Pages bereitgestellt. Sie hat kein Backend. Jeder Browser speichert seine Daten lokal. Lokale Dateien k\xF6nnen GPS- oder Netzwerkbeschr\xE4nkungen haben; die HTTPS-Version bietet alle Kartenfunktionen."],
-    ["Forecast providers: DWD ICON, ECMWF IFS and NOAA GFS. Historical reanalysis: Copernicus / ECMWF ERA5, via Open-Meteo. Location names: GeoNames via Open-Meteo. Austrian postcode lookup: bundled ", "Prognosemodelle: DWD ICON, ECMWF IFS und NOAA GFS. Historische Reanalyse: Copernicus / ECMWF ERA5 \xFCber Open-Meteo. Ortsnamen: GeoNames \xFCber Open-Meteo. \xD6sterreichische Postleitzahlen: enthaltene "],
-    ["postal data, CC BY 4.0 (22 October 2026); approximate locality coordinates.", "Postleitzahlendaten, CC BY 4.0 (22. Oktober 2026); ungef\xE4hre Koordinaten der Orte."],
-    ["RainViewer radar, personal use; loaded only when requested.", "RainViewer-Radar zur pers\xF6nlichen Nutzung; wird nur auf Anfrage geladen."],
-    ["No background tracking or learning. Cached weather is available in this browser. To cache the app shell for offline reopening, ", "Kein Hintergrund-Tracking oder Lernen. Zwischengespeichertes Wetter ist in diesem Browser verf\xFCgbar. Um die App-Oberfl\xE4che f\xFCr Offline-Aufrufe zu speichern, "],
-    ["Fetching your forecast\u2026", "Wetterprognose wird abgerufen\u2026"],
-    ["Choose a location or refresh to load weather.", "W\xE4hle einen Ort oder aktualisiere, um das Wetter zu laden."],
-    ["No hourly data in this period. Refresh when online.", "Keine Stundendaten f\xFCr diesen Zeitraum. Aktualisiere, sobald du online bist."],
-    ["No data for this variable", "Keine Daten f\xFCr diesen Wert"],
-    ["Radar could not load. The map is still usable; try again later. Existing frames may be old.", "Radar konnte nicht geladen werden. Die Karte bleibt nutzbar; versuche es sp\xE4ter erneut. Vorhandene Bilder k\xF6nnen veraltet sein."],
-    ["Temperature & rainfall amount: consensus. Probability: Open-Meteo Best Match. Ordinary rain icons are replaced by sky conditions when precipitation is below 0.05 mm and chance below 40%.", "Temperatur und Niederschlagsmenge: Modellkonsens. Regenwahrscheinlichkeit: Open-Meteo Best Match. Bei weniger als 0,05 mm und unter 40 % Wahrscheinlichkeit werden normale Regensymbole durch den tats\xE4chlichen Himmelszustand ersetzt."],
-    ["Delete ", "L\xF6schen: "],
-    ["Erase all Wettra settings, locations, cached weather and local scores?", "Alle Wettra-Einstellungen, Orte, Wetterdaten und lokalen Bewertungen l\xF6schen?"],
-    ["Weather cache cleared. Current screen stays available.", "Wettercache geleert. Die aktuelle Ansicht bleibt verf\xFCgbar."],
-    ["Evaluation unavailable. Try later.", "Auswertung nicht verf\xFCgbar. Versuche es sp\xE4ter erneut."],
-    ["Saved forecast retained", "Gespeicherte Prognose bleibt verf\xFCgbar"],
-    ["Device storage unavailable", "Ger\xE4tespeicher nicht verf\xFCgbar"],
-    ["Installation & update instructions", "Installations- und Updateanleitung"],
-    ["Download widget script", "Widget-Skript laden"],
-    ["Copy widget configuration", "Widget-Konfiguration kopieren"],
-    ["iPhone & iPad widget", "iPhone- & iPad-Widget"],
-    ["Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.", "Mit Scriptable kannst du Wettra auf dem Home-Bildschirm anzeigen. W\xE4hle zuerst unter Wetter einen Ort aus und kopiere anschlie\xDFend hier dessen Konfiguration."],
-    ["Paste into Scriptable\u2019s widget Parameter field. Refresh target: 30 minutes; iOS may update later. The widget has its own local cache. Re-export to change its location or units; no automatic sync. Opening a widget location does not replace your saved default place.", "F\xFCge die Konfiguration in Scriptable in das Parameterfeld des Widgets ein. Aktualisierungsziel: 30 Minuten; iOS kann sp\xE4ter aktualisieren. Das Widget hat einen eigenen lokalen Cache. Exportiere die Konfiguration erneut, um Ort oder Einheiten zu \xE4ndern; eine automatische Synchronisierung gibt es nicht. Ein im Widget ge\xF6ffneter Ort ersetzt deinen gespeicherten Standardort nicht."],
-    ["Widget parameter for ", "Widget-Parameter f\xFCr "],
-    ["Paste into Scriptable", "In Scriptable einf\xFCgen"],
-    ["Retrieved ", "Abgerufen "],
-    [" \xB7 Only non-null hours contribute.", " \xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein."],
-    [" snapshots saved for this location. At most one per six hours; each retains the next 48 hours. Retention: 35 days, up to 36 snapshots.", " Prognosen f\xFCr diesen Ort gespeichert. H\xF6chstens eine alle sechs Stunden; jede enth\xE4lt die n\xE4chsten 48 Stunden. Aufbewahrung: 35 Tage, maximal 36 Prognosen."],
-    ["Scores need forecasts saved at least seven days ago. Evaluation uses ERA5 as a proxy, not independent station truth. No learned weights are applied.", "F\xFCr die Bewertung werden Prognosen ben\xF6tigt, die mindestens sieben Tage alt sind. ERA5 dient als N\xE4herung, nicht als unabh\xE4ngige Stationsmessung. Die Gewichte werden dadurch nicht angepasst."],
-    ["This is an experimental heuristic, not a proven improvement over any provider. Alpine terrain and thunderstorms can differ sharply within one model grid cell.", "Dies ist eine experimentelle Heuristik und keine nachgewiesene Verbesserung gegen\xFCber einem Anbieter. Im Alpenraum und bei Gewittern kann sich das Wetter innerhalb einer Modellgitterzelle stark unterscheiden."],
-    ["ICON gets the most influence in the first 48 hours. ECMWF takes the lead farther out. We renormalize weights whenever a model or variable is missing.", "ICON erh\xE4lt in den ersten 48 Stunden den gr\xF6\xDFten Einfluss. F\xFCr l\xE4ngere Zeitr\xE4ume wird ECMWF st\xE4rker gewichtet. Fehlt ein Modell oder Wetterwert, werden die \xFCbrigen Gewichte neu normiert."],
-    ["Temperature, pressure, wind speed and cloud cover use lead-time-weighted means. Hourly precipitation and gusts use weighted medians to limit single-model outliers. This can miss extremes; use official warnings for hazards.", "Temperatur, Luftdruck, Windgeschwindigkeit und Bew\xF6lkung verwenden nach Vorlaufzeit gewichtete Mittelwerte. F\xFCr st\xFCndlichen Niederschlag und B\xF6en werden gewichtete Mediane genutzt, um Ausrei\xDFer einzelner Modelle zu begrenzen. Extreme k\xF6nnen dabei untergehen; beachte bei Gefahren die offiziellen Warnungen."],
-    ["Rain probability, weather icons, feels-like, humidity, direction, rain/snow split, UV and visibility come from Best Match. These fields are not recomputed from the consensus and may differ. Current weather is a model estimate from Best Match, not a weather station.", "Regenwahrscheinlichkeit, Wettersymbole, gef\xFChlte Temperatur, Luftfeuchtigkeit, Windrichtung, Regen-/Schneeaufteilung, UV und Sichtweite stammen von Best Match. Diese Werte werden nicht aus dem Modellkonsens berechnet und k\xF6nnen davon abweichen. Das aktuelle Wetter ist eine Modellsch\xE4tzung von Best Match, keine Stationsmessung."],
-    ["Best Match is never an additional consensus vote. When all explicit models lack a variable, Best Match fills the gap. Daily totals and highs/lows are calculated from hourly consensus; daily rain chance is the highest hourly probability.", "Best Match z\xE4hlt nie als zus\xE4tzliche Stimme im Konsens. Fehlt ein Wert bei allen explizit ausgew\xE4hlten Modellen, erg\xE4nzt Best Match die L\xFCcke. Tagesmengen sowie H\xF6chst- und Tiefstwerte werden aus dem Stundenkonsens berechnet; die t\xE4gliche Regenwahrscheinlichkeit ist der h\xF6chste Stundenwert."],
-    ["Retrieval time is not model initialization time. The free forecast response does not expose a reliable run timestamp.", "Der Abrufzeitpunkt ist nicht der Modellstart. Die kostenlose Prognoseantwort enth\xE4lt keinen verl\xE4sslichen Zeitstempel des Modelllaufs."],
-    ["A small historical sample, not a 30-year climate normal. Uses ten daily ERA5 requests, cached locally.", "Eine kleine historische Stichprobe, kein 30-j\xE4hriges Klimamittel. Es werden zehn t\xE4gliche ERA5-Abfragen verwendet und lokal gespeichert."],
-    ["Slide to inspect \xB7 ", "Zum Pr\xFCfen verschieben \xB7 "],
-    [" \xB7 Missing values appear as gaps.", " \xB7 Fehlende Werte werden als L\xFCcken angezeigt."],
-    ["Total precipitation in the hour ending at this time", "Niederschlagssumme der Stunde bis zu dieser Uhrzeit"],
-    ["Chance \u2014", "Wahrscheinlichkeit \u2014"],
-    ["% chance", "% Wahrscheinlichkeit"],
-    ["Your weather, here", "Dein Wetter hier"],
-    ["Choose a location", "Ort ausw\xE4hlen"],
-    ["No active or upcoming warnings returned for this municipality at the last check.", "Bei der letzten Abfrage wurden f\xFCr diese Gemeinde keine aktuellen oder bevorstehenden Warnungen gemeldet."],
-    ["Current warning status unavailable. Check the official map.", "Der aktuelle Warnstatus ist nicht verf\xFCgbar. Pr\xFCfe die offizielle Karte."],
-    ["Official warnings", "Offizielle Warnungen"],
-    ["Weather warning", "Wetterwarnung"],
-    ["Severity:", "Warnstufe:"],
-    ["None", "Keine"],
-    ["Yellow", "Gelb"],
-    ["Orange", "Orange"],
-    ["Red", "Rot"],
-    ["Unspecified", "Nicht angegeben"],
-    ["Austria local time", "\xF6sterreichische Ortszeit"],
-    ["Open official warning map \u2197", "Offizielle Warnkarte \xF6ffnen \u2197"],
-    ["Local weather can change between checks. This feed is not a continuous alert service.", "Das lokale Wetter kann sich zwischen den Abfragen \xE4ndern. Dieser Dienst ist kein kontinuierlicher Warndienst."],
-    ["Use last selected", "Zuletzt ausgew\xE4hlten Ort verwenden"],
-    ["Last selected location", "Zuletzt ausgew\xE4hlter Ort"],
-    ["none yet", "noch keine"],
-    ["Approximate locality coordinates \xB7 Austrian postcodes:", "Ungef\xE4hre Ortskoordinaten \xB7 \xD6sterreichische Postleitzahlen:"],
-    ["day outlook", "Tage-Vorschau"],
-    ["Long-range trend: lower confidence. ", "Langfristiger Trend: geringere Sicherheit. "],
-    ["Partial day. ", "Unvollst\xE4ndiger Tag. "],
-    ["Daily rain chance is the maximum hourly probability.", "Die t\xE4gliche Regenwahrscheinlichkeit entspricht dem h\xF6chsten Stundenwert."],
-    ["ICON weights: ", "ICON-Gewichtung: "],
-    [" before 48h, then ", " vor 48 Stunden, danach "],
-    ["Available weights are normalized.", "Die verf\xFCgbaren Gewichte werden normiert."],
-    ["Today  \u2191 ", "Heute  \u2191 "],
-    [" / L ", " / T "],
-    ["Wind  ", "Wind  "],
-    [" \xB7 Gusts ", " \xB7 B\xF6en "],
-    ["snapshots saved", "Prognosen gespeichert"],
-    [" \xB7 Best Match", " \xB7 Best Match"],
-    [" hours", " Stunden"],
-    ["Open RainViewer radar map \u2197", "RainViewer-Radarkarte \xF6ffnen \u2197"],
-    ["Load recent precipitation around ", "Aktuelle Niederschl\xE4ge rund um "],
-    ["Map and radar providers receive tile requests only when you open this map.", "Karten- und Radardienste erhalten erst beim \xD6ffnen dieser Karte Kachelanfragen."],
-    ["Loading reanalysis\u2026", "Reanalyse wird geladen\u2026"],
-    ["Loading ten past years\u2026", "Daten der letzten zehn Jahre werden geladen\u2026"],
-    ["Comparing saved forecasts with ERA5\u2026", "Gespeicherte Prognosen werden mit ERA5 verglichen\u2026"],
-    ["No active or upcoming warnings returned for this municipality at the last check.", "Bei der letzten Abfrage wurden f\xFCr diese Gemeinde keine aktuellen oder bevorstehenden Warnungen gemeldet."],
-    ["Saved status, may be outdated \xB7 ", "Gespeicherter Status, m\xF6glicherweise veraltet \xB7 "],
-    ["Checked ", "Gepr\xFCft "],
-    ["\xB7 Only non-null hours contribute.", "\xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein."],
-    ["Forecast providers:", "Prognosemodelle:"],
-    ["Historical reanalysis:", "Historische Reanalyse:"],
-    ["Location names:", "Ortsnamen:"],
-    ["Free non-commercial usage terms", "Nutzungsbedingungen f\xFCr die kostenlose nicht-kommerzielle Nutzung"],
-    ["Forecast documentation", "Prognosedokumentation"],
-    ["History documentation", "Dokumentation der historischen Daten"],
-    ["personal use", "private Nutzung"],
-    ["Previous ", "Vorherige "],
-    [" minutes", " Minuten"],
-    ["Weather data: ", "Wetterdaten: "],
-    ["All times: ", "Alle Zeiten: "],
-    ["D2 \u2192 EU \u2192 Global \xB7 up to 7.5 days", "D2 \u2192 EU \u2192 Global \xB7 bis zu 7,5 Tage"],
-    ["Global \xB7 up to 15 days", "Global \xB7 bis zu 15 Tage"],
-    ["Global \xB7 up to 16 days", "Global \xB7 bis zu 16 Tage"],
-    ["ICON weights: 0.50 / 0.40 / 0.25 for <48 / 48\u2013120 / \u2265120 hours. ECMWF: 0.30 before 48h, then 0.45. GFS: 0.20 before 48h, then 0.30. Available weights are normalized.", "ICON-Gewichte: 0,50 / 0,40 / 0,25 f\xFCr <48 / 48\u2013120 / \u2265120 Stunden. ECMWF: 0,30 vor 48 Stunden, danach 0,45. GFS: 0,20 vor 48 Stunden, danach 0,30. Die verf\xFCgbaren Gewichte werden normiert."],
-    ["No mature forecasts yet. Revisit after at least nine days; saved 24\u201348h forecasts need time to enter ERA5.", "Noch keine ausreichend alten Prognosen. Sieh in mindestens neun Tagen erneut nach; gespeicherte 24\u201348-Stunden-Prognosen brauchen Zeit, bis sie in ERA5 enthalten sind."],
-    ["No matching reanalysis hours available yet.", "Bisher sind keine passenden Reanalyse-Stunden verf\xFCgbar."],
-    ["ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ", "ERA5-N\xE4herung \xB7 24\u201348 Stunden Vorlauf \xB7 ausgewertet "],
-    ["N temp", "Anz. Temp."],
-    ["Temp MAE \xB0C", "Temp.-MAE \xB0C"],
-    ["Rain MAE mm", "Regen-MAE mm"],
-    ["Wet/dry %", "Nass/trocken %"],
-    ["Wind MAE km/h", "Wind-MAE km/h"],
-    ["Pressure MAE hPa", "Luftdruck-MAE hPa"],
-    ["Native metric units.", "Einheiten im metrischen System."],
-    ["Model", "Modell"],
-    ["Copy the selected text, then paste into the Scriptable widget Parameter field.", "Kopiere den markierten Text und f\xFCge ihn in Scriptable im Parameterfeld des Widgets ein."],
-    ["Copied. Paste into the Scriptable widget Parameter field.", "Kopiert. F\xFCge den Text im Parameterfeld des Scriptable-Widgets ein."],
-    ["Open Wettra again when online.", "\xD6ffne Wettra erneut, sobald du online bist."],
-    ["Language", "Sprache"],
-    ["Deutsch", "Deutsch"],
-    ["English", "English"]
-  ];
-  var de = new Map(pairs);
-  var en = new Map(pairs.map(([a, b]) => [b, a]));
-  var locale2 = () => settings.language === "en" ? "en" : "de";
-  function translate(value, lang = locale2()) {
-    let output = String(value);
-    const entries = [...lang === "de" ? de : en].sort((a, b) => b[0].length - a[0].length);
-    for (const [from, to] of entries) {
-      const left = /^[A-Za-z0-9_]/.test(from) ? "(^|[^A-Za-z0-9_])" : "";
-      const right = /[A-Za-z0-9_]$/.test(from) ? "(?![A-Za-z0-9_])" : "";
-      const expression = new RegExp(left + from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + right, "g");
-      output = output.replace(expression, (...match) => left ? match[1] + to : to);
-    }
-    return output;
-  }
-  function localizeDOM(root = document.body) {
-    const lang = locale2();
-    if (document.documentElement) document.documentElement.lang = lang;
-    if (!document.createTreeWalker || !root.querySelectorAll || typeof NodeFilter === "undefined") return;
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        return node.parentElement?.closest("script, style, textarea, code") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
-      }
-    });
-    while (walker.nextNode()) {
-      const node = walker.currentNode;
-      const value = translate(node.nodeValue, lang);
-      if (value !== node.nodeValue) node.nodeValue = value;
-    }
-    for (const element of root.querySelectorAll("[aria-label], [placeholder], [title], [alt]"))
-      for (const attr of ["aria-label", "placeholder", "title", "alt"])
-        if (element.hasAttribute(attr)) element.setAttribute(attr, translate(element.getAttribute(attr), lang));
-  }
-  function t(value) {
-    return translate(value);
-  }
-  var observer;
-  function watchLocalization() {
-    if (observer || !document.body) return;
-    observer = new MutationObserver((changes) => {
-      for (const change of changes) {
-        for (const added of change.addedNodes) {
-          if (added.nodeType === Node.ELEMENT_NODE) localizeDOM(added);
-          else if (added.nodeType === Node.TEXT_NODE) added.nodeValue = translate(added.nodeValue);
-        }
-      }
-    });
-    observer.observe(document.body, { subtree: true, childList: true });
-  }
-
   // src/ui/status.js
-  function status(message, error = false) {
-    $("status").textContent = t(message);
+  function status(message, error = false, params = {}) {
+    $("status").textContent = t(message, params);
     $("status").className = "status" + (error ? " error" : "");
   }
   function updated() {
-    if (state.error) return status(state.error, true);
+    if (state.error) {
+      if (typeof state.error === "string") return status(state.error, true);
+      return status(state.error.key, true, state.error.params);
+    }
     if (state.data) {
       const age = Date.now() - state.data.savedAt;
-      status(
-        (!navigator.onLine ? "Offline \xB7 " : age > settings.refresh * 6e4 ? "Cached \xB7 " : "") + "Updated " + time(state.data.savedAt / 1e3) + (age > 864e5 ? " \xB7 " + time(state.data.savedAt / 1e3, { day: "numeric", month: "short" }) : "") + (Store.blocked ? " \xB7 Device storage unavailable" : "")
-      );
+      const parts = [];
+      if (!navigator.onLine) parts.push(t("status.offline"));
+      else if (age > settings.refresh * 6e4) parts.push(t("status.cached"));
+      parts.push(t("status.updated", { time: time(state.data.savedAt / 1e3) }));
+      if (age > 864e5)
+        parts.push(
+          t("status.updated.date", {
+            date: time(state.data.savedAt / 1e3, {
+              day: "numeric",
+              month: "short"
+            })
+          })
+        );
+      if (Store.blocked) parts.push(t("status.storageUnavailable"));
+      status(parts.join(" \xB7 "));
     }
   }
 
@@ -2702,12 +3110,12 @@ label {
       return;
     }
     if (!navigator.onLine) {
-      state.error = cache ? "Offline \xB7 showing saved forecast" : "You\u2019re offline. Search saved locations or reconnect to load weather.";
+      state.error = cache ? { key: "forecast.offlineSaved" } : { key: "forecast.offline" };
       render();
       return;
     }
     state.busy = true;
-    status("Updating forecasts\u2026");
+    status("forecast.updating");
     $("refresh").disabled = true;
     const ids = ["best_match", ...MODELS.map((m) => m.id)];
     const results = await Promise.allSettled(
@@ -2726,7 +3134,9 @@ label {
     state.busy = false;
     $("refresh").disabled = false;
     if (!successes.length) {
-      state.error = (cache ? "Saved forecast retained. " : "") + "Could not reach weather services. Check connection; Safari may have blocked the request.";
+      state.error = {
+        key: cache ? "forecast.failureSaved" : "forecast.failure"
+      };
       render();
       return;
     }
@@ -2746,7 +3156,13 @@ label {
     prune("forecast:", 8);
     saveSnapshots(l, models, state.data.savedAt);
     if (state.data.failures.length)
-      state.error = "Updated with " + successes.length + " sources \xB7 " + state.data.failures.length + " unavailable. See Models.";
+      state.error = {
+        key: "forecast.partial",
+        params: {
+          available: successes.length,
+          unavailable: state.data.failures.length
+        }
+      };
     render();
   }
 
@@ -2817,10 +3233,10 @@ label {
   }
 
   // src/ui/locationHelp.js
-  function showLocationHelp(reason = "Follow these steps, then tap Try location again.") {
+  function showLocationHelp(reason = "location.help.default") {
     const dialog = $("locationHelp");
     if (!dialog || typeof dialog.showModal !== "function") return;
-    $("locationHelpReason").textContent = reason;
+    $("locationHelpReason").textContent = t(reason);
     if (!dialog.open) dialog.showModal();
   }
   function closeLocationHelp() {
@@ -2832,7 +3248,7 @@ label {
   var cancelGPS = null;
   function selectLocation(l) {
     if (!validLocation(l)) {
-      locationMessage("This location is invalid. Choose another place.");
+      locationMessage("location.invalid");
       return;
     }
     if (cancelGPS) {
@@ -2863,23 +3279,20 @@ label {
     loadWeather();
     if (state.radarOpened) radar();
   }
-  function locationMessage(text) {
-    state.gpsMessage = text;
-    status(text, true);
-    if ($("locationMessage")) $("locationMessage").textContent = text;
+  function locationMessage(messageKey, helpKey = messageKey) {
+    state.gpsMessage = helpKey;
+    const message = t(messageKey);
+    status(messageKey, true);
+    if ($("locationMessage")) $("locationMessage").textContent = message;
   }
   function gps() {
     closeLocationHelp();
     if (cancelGPS) cancelGPS();
     if (!navigator.geolocation || location.protocol === "file:") {
-      locationMessage(
-        "Location is unavailable here. Open the HTTPS app or search a town/postcode."
-      );
+      locationMessage("location.unavailable");
       return;
     }
-    locationMessage(
-      "Requesting your location\u2026 Allow the location prompt; this can take up to a minute."
-    );
+    locationMessage("location.requesting");
     const request = ++state.gpsRequest, epoch = state.locationEpoch;
     const current = () => request === state.gpsRequest && epoch === state.locationEpoch;
     let pending2 = true;
@@ -2901,11 +3314,10 @@ label {
         if (!current()) return;
         pending2 = false;
         cancelGPS = null;
-        const reason = e.code === 1 ? "Location permission is denied." : e.code === 3 ? "Location did not respond within a minute." : "Your device could not obtain a location.";
-        locationMessage(
-          reason + " Open Location help for iOS/Safari settings, or search a postcode."
-        );
-        showLocationHelp(reason);
+        const reason = e.code === 1 ? "denied" : e.code === 3 ? "timeout" : "failure";
+        locationMessage(`location.error.${reason}`, `location.${reason}`);
+        const reasonKey = `location.${reason}`;
+        showLocationHelp(reasonKey);
       }
     );
     cancelGPS = pending2 ? cancel : null;
@@ -2915,9 +3327,7 @@ label {
       if (document.hidden && cancelGPS) {
         cancelGPS();
         cancelGPS = null;
-        locationMessage(
-          "Location request paused when the app was hidden. Tap the location button to retry."
-        );
+        locationMessage("location.paused");
       }
     });
 
@@ -2951,12 +3361,12 @@ label {
             });
             return;
           }
-          $("searchMessage").textContent = "Coordinates must be latitude \u221290 to 90, longitude \u2212180 to 180.";
+          $("searchMessage").textContent = t("search.coordinatesInvalid");
           return;
         }
         const button = form.querySelector("button");
         button.disabled = true;
-        $("searchMessage").textContent = "Searching\u2026";
+        $("searchMessage").textContent = t("search.searching");
         const request = ++searchRequest, locationId = key(state.location);
         const current = () => request === searchRequest && $("searchForm") === form && locationId === key(state.location);
         try {
@@ -2970,11 +3380,11 @@ label {
           );
           if ($("searchResults")) {
             $("searchResults").innerHTML = searchResults();
-            $("searchMessage").textContent = state.search.length ? "" : "No locations found. Try a nearby town.";
+            $("searchMessage").textContent = state.search.length ? "" : t("search.none");
           }
         } catch (e2) {
           if (current() && $("searchMessage"))
-            $("searchMessage").textContent = "Search unavailable. Try a saved location.";
+            $("searchMessage").textContent = t("search.unavailable");
         } finally {
           button.disabled = false;
         }
@@ -3016,18 +3426,19 @@ label {
 
   // src/app/navigation.js
   var NAV = [
-    ["weather", "\u2600", "Weather"],
-    ["hourly", "\u25F7", "Hourly"],
-    ["history", "\u21B6", "History"],
-    ["models", "\u224B", "Models"],
-    ["locations", "\u2316", "Places"],
-    ["settings", "\u2699", "Settings"]
+    ["weather", "\u2600", "nav.weather"],
+    ["hourly", "\u25F7", "nav.hourly"],
+    ["history", "\u21B6", "nav.history"],
+    ["models", "\u224B", "nav.models"],
+    ["locations", "\u2316", "nav.places"],
+    ["settings", "\u2699", "nav.settings"]
   ];
   function render() {
     document.body.dataset.theme = settings.theme;
     $("locationTitle").textContent = state.location.name;
+    $("nav").setAttribute("aria-label", t("nav.main"));
     $("nav").innerHTML = NAV.map(
-      ([id, icon, title]) => '<button data-view="' + id + '" ' + (state.view === id ? 'aria-current="page"' : "") + '><span aria-hidden="true">' + icon + "</span>" + title + "</button>"
+      ([id, icon, title]) => '<button data-view="' + id + '" ' + (state.view === id ? 'aria-current="page"' : "") + '><span aria-hidden="true">' + icon + "</span>" + t(title) + "</button>"
     ).join("");
     $("main").innerHTML = {
       weather: weatherView,
@@ -3038,6 +3449,8 @@ label {
       settings: settingsView
     }[state.view]();
     localizeDOM(document.body);
+    if (state.gpsMessage && $("locationHelp")?.open)
+      $("locationHelpReason").textContent = t(state.gpsMessage);
     watchLocalization();
     $("refresh").disabled = state.busy;
     updated();
@@ -3134,9 +3547,7 @@ label {
       state.compare = null;
       status("Weather cache cleared. Current screen stays available.");
     }
-    if (a === "clear" && confirm(
-      "Erase all Wettra settings, locations, cached weather and local scores?"
-    )) {
+    if (a === "clear" && confirm(t("dialog.eraseAll"))) {
       Store.clear();
       location.reload();
     }
@@ -3192,7 +3603,8 @@ label {
     if (linked) {
       state.location = linked;
       const clean = new URL(location.href);
-      for (const key2 of ["lat", "lon", "name", "tz"]) clean.searchParams.delete(key2);
+      for (const key2 of ["lat", "lon", "name", "tz"])
+        clean.searchParams.delete(key2);
       try {
         history.replaceState(null, "", clean);
       } catch {
@@ -3200,7 +3612,8 @@ label {
     }
     loadWeather();
   }
-  if (!window.__ALPEN_TEST__ && new URLSearchParams(location.search).get("location-help") === "1") showLocationHelp();
+  if (!window.__ALPEN_TEST__ && new URLSearchParams(location.search).get("location-help") === "1")
+    showLocationHelp();
 })();
 
     </script>

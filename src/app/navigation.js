@@ -8,18 +8,19 @@ import { locationsView } from "../ui/locationsView.js";
 import { settingsView } from "../ui/settingsView.js";
 import { updated } from "../ui/status.js";
 import { bind } from "./events.js";
-import { localizeDOM, watchLocalization } from "../ui/i18n.js";
+import { localizeDOM, watchLocalization, t } from "../ui/i18n.js";
 export const NAV = [
-  ["weather", "☀", "Weather"],
-  ["hourly", "◷", "Hourly"],
-  ["history", "↶", "History"],
-  ["models", "≋", "Models"],
-  ["locations", "⌖", "Places"],
-  ["settings", "⚙", "Settings"],
+  ["weather", "☀", "nav.weather"],
+  ["hourly", "◷", "nav.hourly"],
+  ["history", "↶", "nav.history"],
+  ["models", "≋", "nav.models"],
+  ["locations", "⌖", "nav.places"],
+  ["settings", "⚙", "nav.settings"],
 ];
 export function render() {
   document.body.dataset.theme = settings.theme;
   $("locationTitle").textContent = state.location.name;
+  $("nav").setAttribute("aria-label", t("nav.main"));
   $("nav").innerHTML = NAV.map(
     ([id, icon, title]) =>
       '<button data-view="' +
@@ -29,7 +30,7 @@ export function render() {
       '><span aria-hidden="true">' +
       icon +
       "</span>" +
-      title +
+      t(title) +
       "</button>",
   ).join("");
   $("main").innerHTML = {
@@ -41,6 +42,8 @@ export function render() {
     settings: settingsView,
   }[state.view]();
   localizeDOM(document.body);
+  if (state.gpsMessage && $("locationHelp")?.open)
+    $("locationHelpReason").textContent = t(state.gpsMessage);
   watchLocalization();
   $("refresh").disabled = state.busy;
   updated();
