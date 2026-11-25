@@ -143,6 +143,7 @@ const pairs = [
   ["ERA5 proxy · 24–48h lead · evaluated ", "ERA5-Näherung · 24–48 Stunden Vorlauf · ausgewertet "],
   ["N temp", "Anz. Temp."], ["Temp MAE °C", "Temp.-MAE °C"], ["Rain MAE mm", "Regen-MAE mm"],
   ["Wet/dry %", "Nass/trocken %"], ["Wind MAE km/h", "Wind-MAE km/h"], ["Pressure MAE hPa", "Luftdruck-MAE hPa"],
+  ["Native metric units.", "Einheiten im metrischen System."],
   ["Model", "Modell"],
   ["Copy the selected text, then paste into the Scriptable widget Parameter field.", "Kopiere den markierten Text und füge ihn in Scriptable im Parameterfeld des Widgets ein."],
   ["Copied. Paste into the Scriptable widget Parameter field.", "Kopiert. Füge den Text im Parameterfeld des Scriptable-Widgets ein."],

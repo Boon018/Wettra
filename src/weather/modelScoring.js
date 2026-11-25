@@ -30,7 +30,7 @@ export function saveSnapshots(l, models, issued) {
 export function scoresHTML(s) {
   return (
     '<p class="footnote">ERA5 proxy · 24–48h lead · evaluated ' +
-    esc(new Date(s.savedAt).toLocaleDateString()) +
+    esc(time(s.savedAt / 1000, { day: "2-digit", month: "2-digit", year: "numeric" })) +
     '. Native metric units.</p><div class="scroll"><table><tr><th>Model</th><th>N temp</th><th>Temp MAE °C</th><th>Rain MAE mm</th><th>Wet/dry %</th><th>Wind MAE km/h</th><th>Pressure MAE hPa</th></tr>' +
     Object.entries(s.models)
       .map(

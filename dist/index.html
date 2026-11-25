@@ -633,7 +633,7 @@ label {
 #locationHelp details { margin: 16px 0; }
 
     </style>
-  <meta name="wettra-build" content="3849655d5ebc"></head>
+  <meta name="wettra-build" content="08d33c2e2e61"></head>
   <body data-theme="auto">
     <header>
       <div>
@@ -2133,7 +2133,7 @@ label {
     );
   }
   function scoresHTML(s) {
-    return '<p class="footnote">ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ' + esc(new Date(s.savedAt).toLocaleDateString()) + '. Native metric units.</p><div class="scroll"><table><tr><th>Model</th><th>N temp</th><th>Temp MAE \xB0C</th><th>Rain MAE mm</th><th>Wet/dry %</th><th>Wind MAE km/h</th><th>Pressure MAE hPa</th></tr>' + Object.entries(s.models).map(
+    return '<p class="footnote">ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ' + esc(time(s.savedAt / 1e3, { day: "2-digit", month: "2-digit", year: "numeric" })) + '. Native metric units.</p><div class="scroll"><table><tr><th>Model</th><th>N temp</th><th>Temp MAE \xB0C</th><th>Rain MAE mm</th><th>Wet/dry %</th><th>Wind MAE km/h</th><th>Pressure MAE hPa</th></tr>' + Object.entries(s.models).map(
       ([id, m]) => "<tr><td>" + esc(id) + "</td><td>" + m.temperature_2m.n + "</td><td>" + fmt(m.temperature_2m.sum / m.temperature_2m.n, 2) + "</td><td>" + fmt(m.precipitation.sum / m.precipitation.n, 2) + "</td><td>" + fmt(m.events.n ? 100 * m.events.correct / m.events.n : null) + "</td><td>" + fmt(m.wind_speed_10m.sum / m.wind_speed_10m.n, 2) + "</td><td>" + fmt(m.pressure_msl.sum / m.pressure_msl.n, 2) + "</td></tr>"
     ).join("") + "</table></div>";
   }
@@ -2606,6 +2606,7 @@ label {
     ["Wet/dry %", "Nass/trocken %"],
     ["Wind MAE km/h", "Wind-MAE km/h"],
     ["Pressure MAE hPa", "Luftdruck-MAE hPa"],
+    ["Native metric units.", "Einheiten im metrischen System."],
     ["Model", "Modell"],
     ["Copy the selected text, then paste into the Scriptable widget Parameter field.", "Kopiere den markierten Text und f\xFCge ihn in Scriptable im Parameterfeld des Widgets ein."],
     ["Copied. Paste into the Scriptable widget Parameter field.", "Kopiert. F\xFCge den Text im Parameterfeld des Scriptable-Widgets ein."],

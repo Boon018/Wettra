@@ -14,7 +14,8 @@ test("legacy data survives real browser startup and navigation", async ({
   await page.goto("./");
   await expect(page.locator(".temperature")).toBeVisible();
   await page.locator('[data-view="models"]').click();
-  await expect(page.locator("#scoreMessage")).toContainText("ERA5 proxy");
+  await expect(page.locator("#scoreMessage")).toContainText("ERA5-Näherung");
+  await expect(page.locator("#scoreMessage")).toContainText("Einheiten im metrischen System.");
   const saved = await page.evaluate(
     (keys) =>
       Object.fromEntries(
