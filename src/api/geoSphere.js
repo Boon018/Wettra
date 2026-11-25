@@ -2,7 +2,7 @@ import { Store } from "../storage/storage.js";
 import { key, $, finite, esc, time } from "../ui/format.js";
 import { json } from "./http.js";
 import { prune } from "../storage/cache.js";
-import { state } from "../app/state.js";
+import { settings, state } from "../app/state.js";
 import { render } from "../app/navigation.js";
 export async function loadWarnings(l, seq, force = false) {
   const cached = Store.get("warnings:" + key(l));
@@ -11,7 +11,7 @@ export async function loadWarnings(l, seq, force = false) {
   try {
     const raw = await json(
       "https://warnungen.zamg.at/wsapp/api/getWarningsForCoords",
-      { lat: l.latitude, lon: l.longitude, lang: "en" },
+      { lat: l.latitude, lon: l.longitude, lang: settings.language === "de" ? "de" : "en" },
     );
     if (!Array.isArray(raw.properties?.warnings))
       throw Error("Unknown warning response");

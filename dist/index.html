@@ -12,7 +12,7 @@
       name="description"
       content="Privates, lokales Wetter für Österreich. Prognosen, Modellvergleiche und Wetterrückblick."
     />
-    <meta name="wettra-version" content="1.4.0" />
+    <meta name="wettra-version" content="1.4.1" />
     <title>Wettra</title>
     <style>
       :root {
@@ -633,12 +633,12 @@ label {
 #locationHelp details { margin: 16px 0; }
 
     </style>
-  <meta name="wettra-build" content="ed22309b6cf6"></head>
+  <meta name="wettra-build" content="3849655d5ebc"></head>
   <body data-theme="auto">
     <header>
       <div>
         <div class="brand">
-          Wettra <span class="small">v1.4.0</span>
+          Wettra <span class="small">v1.4.1</span>
         </div>
         <h1 id="locationTitle">Graz</h1>
       </div>
@@ -911,7 +911,8 @@ label {
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
   );
   var key = (l) => Number(l.latitude).toFixed(3) + "," + Number(l.longitude).toFixed(3);
-  var fmt = (n, d = 0) => finite2(n) ? n.toLocaleString("en-GB", {
+  var locale = () => settings.language === "de" ? "de-AT" : "en-GB";
+  var fmt = (n, d = 0) => finite2(n) ? n.toLocaleString(locale(), {
     maximumFractionDigits: d,
     minimumFractionDigits: d
   }) : "\u2014";
@@ -930,7 +931,7 @@ label {
   var rain = (v) => fmt(unit(v, "precipitation"), settings.precipitation === "inch" ? 2 : 1) + " " + settings.precipitation;
   var direction = (v) => finite2(v) ? ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(v / 45) % 8] : "\u2014";
   function time(t2, opts = { hour: "2-digit", minute: "2-digit" }) {
-    return finite2(t2) ? new Intl.DateTimeFormat("en-GB", {
+    return finite2(t2) ? new Intl.DateTimeFormat(locale(), {
       ...opts,
       timeZone: state.data?.timezone || state.location.timezone || "Europe/Vienna"
     }).format(new Date(t2 * 1e3)) : "\u2014";
@@ -1210,7 +1211,7 @@ label {
     try {
       const raw = await json(
         "https://warnungen.zamg.at/wsapp/api/getWarningsForCoords",
-        { lat: l.latitude, lon: l.longitude, lang: "en" }
+        { lat: l.latitude, lon: l.longitude, lang: settings.language === "de" ? "de" : "en" }
       );
       if (!Array.isArray(raw.properties?.warnings))
         throw Error("Unknown warning response");
@@ -2003,7 +2004,7 @@ label {
       return json("https://geocoding-api.open-meteo.com/v1/search", {
         name: q,
         count: 12,
-        language: "en",
+        language: settings.language === "de" ? "de" : "en",
         format: "json"
       });
     },
@@ -2212,7 +2213,7 @@ label {
   }
 
   // src/app/version.js
-  var APP_VERSION = false ? "development" : "1.4.0";
+  var APP_VERSION = false ? "development" : "1.4.1";
 
   // src/weather/widgetConfig.js
   var WIDGET_DEFAULT = { name: "Graz", latitude: 47.0707, longitude: 15.4395, timezone: "Europe/Vienna" };
@@ -2518,6 +2519,94 @@ label {
     ["Download widget script", "Widget-Skript laden"],
     ["Copy widget configuration", "Widget-Konfiguration kopieren"],
     ["iPhone & iPad widget", "iPhone- & iPad-Widget"],
+    ["Use Scriptable to show Wettra on your Home Screen. Select a place in Weather first, then copy its configuration here.", "Mit Scriptable kannst du Wettra auf dem Home-Bildschirm anzeigen. W\xE4hle zuerst unter Wetter einen Ort aus und kopiere anschlie\xDFend hier dessen Konfiguration."],
+    ["Paste into Scriptable\u2019s widget Parameter field. Refresh target: 30 minutes; iOS may update later. The widget has its own local cache. Re-export to change its location or units; no automatic sync. Opening a widget location does not replace your saved default place.", "F\xFCge die Konfiguration in Scriptable in das Parameterfeld des Widgets ein. Aktualisierungsziel: 30 Minuten; iOS kann sp\xE4ter aktualisieren. Das Widget hat einen eigenen lokalen Cache. Exportiere die Konfiguration erneut, um Ort oder Einheiten zu \xE4ndern; eine automatische Synchronisierung gibt es nicht. Ein im Widget ge\xF6ffneter Ort ersetzt deinen gespeicherten Standardort nicht."],
+    ["Widget parameter for ", "Widget-Parameter f\xFCr "],
+    ["Paste into Scriptable", "In Scriptable einf\xFCgen"],
+    ["Retrieved ", "Abgerufen "],
+    [" \xB7 Only non-null hours contribute.", " \xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein."],
+    [" snapshots saved for this location. At most one per six hours; each retains the next 48 hours. Retention: 35 days, up to 36 snapshots.", " Prognosen f\xFCr diesen Ort gespeichert. H\xF6chstens eine alle sechs Stunden; jede enth\xE4lt die n\xE4chsten 48 Stunden. Aufbewahrung: 35 Tage, maximal 36 Prognosen."],
+    ["Scores need forecasts saved at least seven days ago. Evaluation uses ERA5 as a proxy, not independent station truth. No learned weights are applied.", "F\xFCr die Bewertung werden Prognosen ben\xF6tigt, die mindestens sieben Tage alt sind. ERA5 dient als N\xE4herung, nicht als unabh\xE4ngige Stationsmessung. Die Gewichte werden dadurch nicht angepasst."],
+    ["This is an experimental heuristic, not a proven improvement over any provider. Alpine terrain and thunderstorms can differ sharply within one model grid cell.", "Dies ist eine experimentelle Heuristik und keine nachgewiesene Verbesserung gegen\xFCber einem Anbieter. Im Alpenraum und bei Gewittern kann sich das Wetter innerhalb einer Modellgitterzelle stark unterscheiden."],
+    ["ICON gets the most influence in the first 48 hours. ECMWF takes the lead farther out. We renormalize weights whenever a model or variable is missing.", "ICON erh\xE4lt in den ersten 48 Stunden den gr\xF6\xDFten Einfluss. F\xFCr l\xE4ngere Zeitr\xE4ume wird ECMWF st\xE4rker gewichtet. Fehlt ein Modell oder Wetterwert, werden die \xFCbrigen Gewichte neu normiert."],
+    ["Temperature, pressure, wind speed and cloud cover use lead-time-weighted means. Hourly precipitation and gusts use weighted medians to limit single-model outliers. This can miss extremes; use official warnings for hazards.", "Temperatur, Luftdruck, Windgeschwindigkeit und Bew\xF6lkung verwenden nach Vorlaufzeit gewichtete Mittelwerte. F\xFCr st\xFCndlichen Niederschlag und B\xF6en werden gewichtete Mediane genutzt, um Ausrei\xDFer einzelner Modelle zu begrenzen. Extreme k\xF6nnen dabei untergehen; beachte bei Gefahren die offiziellen Warnungen."],
+    ["Rain probability, weather icons, feels-like, humidity, direction, rain/snow split, UV and visibility come from Best Match. These fields are not recomputed from the consensus and may differ. Current weather is a model estimate from Best Match, not a weather station.", "Regenwahrscheinlichkeit, Wettersymbole, gef\xFChlte Temperatur, Luftfeuchtigkeit, Windrichtung, Regen-/Schneeaufteilung, UV und Sichtweite stammen von Best Match. Diese Werte werden nicht aus dem Modellkonsens berechnet und k\xF6nnen davon abweichen. Das aktuelle Wetter ist eine Modellsch\xE4tzung von Best Match, keine Stationsmessung."],
+    ["Best Match is never an additional consensus vote. When all explicit models lack a variable, Best Match fills the gap. Daily totals and highs/lows are calculated from hourly consensus; daily rain chance is the highest hourly probability.", "Best Match z\xE4hlt nie als zus\xE4tzliche Stimme im Konsens. Fehlt ein Wert bei allen explizit ausgew\xE4hlten Modellen, erg\xE4nzt Best Match die L\xFCcke. Tagesmengen sowie H\xF6chst- und Tiefstwerte werden aus dem Stundenkonsens berechnet; die t\xE4gliche Regenwahrscheinlichkeit ist der h\xF6chste Stundenwert."],
+    ["Retrieval time is not model initialization time. The free forecast response does not expose a reliable run timestamp.", "Der Abrufzeitpunkt ist nicht der Modellstart. Die kostenlose Prognoseantwort enth\xE4lt keinen verl\xE4sslichen Zeitstempel des Modelllaufs."],
+    ["A small historical sample, not a 30-year climate normal. Uses ten daily ERA5 requests, cached locally.", "Eine kleine historische Stichprobe, kein 30-j\xE4hriges Klimamittel. Es werden zehn t\xE4gliche ERA5-Abfragen verwendet und lokal gespeichert."],
+    ["Slide to inspect \xB7 ", "Zum Pr\xFCfen verschieben \xB7 "],
+    [" \xB7 Missing values appear as gaps.", " \xB7 Fehlende Werte werden als L\xFCcken angezeigt."],
+    ["Total precipitation in the hour ending at this time", "Niederschlagssumme der Stunde bis zu dieser Uhrzeit"],
+    ["Chance \u2014", "Wahrscheinlichkeit \u2014"],
+    ["% chance", "% Wahrscheinlichkeit"],
+    ["Your weather, here", "Dein Wetter hier"],
+    ["Choose a location", "Ort ausw\xE4hlen"],
+    ["No active or upcoming warnings returned for this municipality at the last check.", "Bei der letzten Abfrage wurden f\xFCr diese Gemeinde keine aktuellen oder bevorstehenden Warnungen gemeldet."],
+    ["Current warning status unavailable. Check the official map.", "Der aktuelle Warnstatus ist nicht verf\xFCgbar. Pr\xFCfe die offizielle Karte."],
+    ["Official warnings", "Offizielle Warnungen"],
+    ["Weather warning", "Wetterwarnung"],
+    ["Severity:", "Warnstufe:"],
+    ["None", "Keine"],
+    ["Yellow", "Gelb"],
+    ["Orange", "Orange"],
+    ["Red", "Rot"],
+    ["Unspecified", "Nicht angegeben"],
+    ["Austria local time", "\xF6sterreichische Ortszeit"],
+    ["Open official warning map \u2197", "Offizielle Warnkarte \xF6ffnen \u2197"],
+    ["Local weather can change between checks. This feed is not a continuous alert service.", "Das lokale Wetter kann sich zwischen den Abfragen \xE4ndern. Dieser Dienst ist kein kontinuierlicher Warndienst."],
+    ["Use last selected", "Zuletzt ausgew\xE4hlten Ort verwenden"],
+    ["Last selected location", "Zuletzt ausgew\xE4hlter Ort"],
+    ["none yet", "noch keine"],
+    ["Approximate locality coordinates \xB7 Austrian postcodes:", "Ungef\xE4hre Ortskoordinaten \xB7 \xD6sterreichische Postleitzahlen:"],
+    ["day outlook", "Tage-Vorschau"],
+    ["Long-range trend: lower confidence. ", "Langfristiger Trend: geringere Sicherheit. "],
+    ["Partial day. ", "Unvollst\xE4ndiger Tag. "],
+    ["Daily rain chance is the maximum hourly probability.", "Die t\xE4gliche Regenwahrscheinlichkeit entspricht dem h\xF6chsten Stundenwert."],
+    ["ICON weights: ", "ICON-Gewichtung: "],
+    [" before 48h, then ", " vor 48 Stunden, danach "],
+    ["Available weights are normalized.", "Die verf\xFCgbaren Gewichte werden normiert."],
+    ["Today  \u2191 ", "Heute  \u2191 "],
+    [" / L ", " / T "],
+    ["Wind  ", "Wind  "],
+    [" \xB7 Gusts ", " \xB7 B\xF6en "],
+    ["snapshots saved", "Prognosen gespeichert"],
+    [" \xB7 Best Match", " \xB7 Best Match"],
+    [" hours", " Stunden"],
+    ["Open RainViewer radar map \u2197", "RainViewer-Radarkarte \xF6ffnen \u2197"],
+    ["Load recent precipitation around ", "Aktuelle Niederschl\xE4ge rund um "],
+    ["Map and radar providers receive tile requests only when you open this map.", "Karten- und Radardienste erhalten erst beim \xD6ffnen dieser Karte Kachelanfragen."],
+    ["Loading reanalysis\u2026", "Reanalyse wird geladen\u2026"],
+    ["Loading ten past years\u2026", "Daten der letzten zehn Jahre werden geladen\u2026"],
+    ["Comparing saved forecasts with ERA5\u2026", "Gespeicherte Prognosen werden mit ERA5 verglichen\u2026"],
+    ["No active or upcoming warnings returned for this municipality at the last check.", "Bei der letzten Abfrage wurden f\xFCr diese Gemeinde keine aktuellen oder bevorstehenden Warnungen gemeldet."],
+    ["Saved status, may be outdated \xB7 ", "Gespeicherter Status, m\xF6glicherweise veraltet \xB7 "],
+    ["Checked ", "Gepr\xFCft "],
+    ["\xB7 Only non-null hours contribute.", "\xB7 Nur Stunden mit g\xFCltigen Werten flie\xDFen ein."],
+    ["Forecast providers:", "Prognosemodelle:"],
+    ["Historical reanalysis:", "Historische Reanalyse:"],
+    ["Location names:", "Ortsnamen:"],
+    ["Free non-commercial usage terms", "Nutzungsbedingungen f\xFCr die kostenlose nicht-kommerzielle Nutzung"],
+    ["Forecast documentation", "Prognosedokumentation"],
+    ["History documentation", "Dokumentation der historischen Daten"],
+    ["personal use", "private Nutzung"],
+    ["Previous ", "Vorherige "],
+    [" minutes", " Minuten"],
+    ["Weather data: ", "Wetterdaten: "],
+    ["All times: ", "Alle Zeiten: "],
+    ["D2 \u2192 EU \u2192 Global \xB7 up to 7.5 days", "D2 \u2192 EU \u2192 Global \xB7 bis zu 7,5 Tage"],
+    ["Global \xB7 up to 15 days", "Global \xB7 bis zu 15 Tage"],
+    ["Global \xB7 up to 16 days", "Global \xB7 bis zu 16 Tage"],
+    ["ICON weights: 0.50 / 0.40 / 0.25 for <48 / 48\u2013120 / \u2265120 hours. ECMWF: 0.30 before 48h, then 0.45. GFS: 0.20 before 48h, then 0.30. Available weights are normalized.", "ICON-Gewichte: 0,50 / 0,40 / 0,25 f\xFCr <48 / 48\u2013120 / \u2265120 Stunden. ECMWF: 0,30 vor 48 Stunden, danach 0,45. GFS: 0,20 vor 48 Stunden, danach 0,30. Die verf\xFCgbaren Gewichte werden normiert."],
+    ["No mature forecasts yet. Revisit after at least nine days; saved 24\u201348h forecasts need time to enter ERA5.", "Noch keine ausreichend alten Prognosen. Sieh in mindestens neun Tagen erneut nach; gespeicherte 24\u201348-Stunden-Prognosen brauchen Zeit, bis sie in ERA5 enthalten sind."],
+    ["No matching reanalysis hours available yet.", "Bisher sind keine passenden Reanalyse-Stunden verf\xFCgbar."],
+    ["ERA5 proxy \xB7 24\u201348h lead \xB7 evaluated ", "ERA5-N\xE4herung \xB7 24\u201348 Stunden Vorlauf \xB7 ausgewertet "],
+    ["N temp", "Anz. Temp."],
+    ["Temp MAE \xB0C", "Temp.-MAE \xB0C"],
+    ["Rain MAE mm", "Regen-MAE mm"],
+    ["Wet/dry %", "Nass/trocken %"],
+    ["Wind MAE km/h", "Wind-MAE km/h"],
+    ["Pressure MAE hPa", "Luftdruck-MAE hPa"],
+    ["Model", "Modell"],
     ["Copy the selected text, then paste into the Scriptable widget Parameter field.", "Kopiere den markierten Text und f\xFCge ihn in Scriptable im Parameterfeld des Widgets ein."],
     ["Copied. Paste into the Scriptable widget Parameter field.", "Kopiert. F\xFCge den Text im Parameterfeld des Scriptable-Widgets ein."],
     ["Open Wettra again when online.", "\xD6ffne Wettra erneut, sobald du online bist."],
@@ -2527,8 +2616,8 @@ label {
   ];
   var de = new Map(pairs);
   var en = new Map(pairs.map(([a, b]) => [b, a]));
-  var locale = () => settings.language === "en" ? "en" : "de";
-  function translate(value, lang = locale()) {
+  var locale2 = () => settings.language === "en" ? "en" : "de";
+  function translate(value, lang = locale2()) {
     let output = String(value);
     const entries = [...lang === "de" ? de : en].sort((a, b) => b[0].length - a[0].length);
     for (const [from, to] of entries) {
@@ -2540,7 +2629,7 @@ label {
     return output;
   }
   function localizeDOM(root = document.body) {
-    const lang = locale();
+    const lang = locale2();
     if (document.documentElement) document.documentElement.lang = lang;
     if (!document.createTreeWalker || !root.querySelectorAll || typeof NodeFilter === "undefined") return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {

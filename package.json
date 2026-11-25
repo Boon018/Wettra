@@ -1,6 +1,6 @@
 {
   "name": "wettra",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "description": "Local-first weather application for Austria",
   "type": "module",

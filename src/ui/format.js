@@ -12,9 +12,10 @@ export const esc = (v) =>
   );
 export const key = (l) =>
   Number(l.latitude).toFixed(3) + "," + Number(l.longitude).toFixed(3);
+const locale = () => settings.language === "de" ? "de-AT" : "en-GB";
 export const fmt = (n, d = 0) =>
   finite(n)
-    ? n.toLocaleString("en-GB", {
+    ? n.toLocaleString(locale(), {
         maximumFractionDigits: d,
         minimumFractionDigits: d,
       })
@@ -48,7 +49,7 @@ export const direction = (v) =>
     : "—";
 export function time(t, opts = { hour: "2-digit", minute: "2-digit" }) {
   return finite(t)
-    ? new Intl.DateTimeFormat("en-GB", {
+    ? new Intl.DateTimeFormat(locale(), {
         ...opts,
         timeZone:
           state.data?.timezone || state.location.timezone || "Europe/Vienna",

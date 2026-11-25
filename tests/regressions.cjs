@@ -12,7 +12,7 @@ function boot(disk=new Map()){
 }
 (async()=>{
  let one=boot();await one.A.loadWeather(true);const savedAt=one.A.state.data.savedAt;assert(one.A.cacheDiagnostics().forecast);assert(one.A.cacheDiagnostics().write);assert(one.el('main').innerHTML.includes('id="searchForm"'));assert(one.el('main').innerHTML.includes('id="savedLocation"'));
- const strip=one.A.hourstrip([{time:NOW,temperature_2m:12,precipitation:2.5,precipitation_probability:70}]);assert(strip.includes('2.5 mm/h'));assert(strip.includes('70% chance'));
+ const strip=one.A.hourstrip([{time:NOW,temperature_2m:12,precipitation:2.5,precipitation_probability:70}]);assert(strip.includes('2,5 mm/h'));assert(strip.includes('70% chance'));
  // New JavaScript session, same disk: no memory map is shared.
  const two=boot(one.disk);two.ctx.navigator.onLine=false;await two.A.loadWeather(true);assert.equal(two.controls.count,0);assert.equal(two.A.state.data.savedAt,savedAt);assert(two.A.cacheDiagnostics().previousSession);
  two.ctx.navigator.onLine=true;two.controls.fail=true;await two.A.loadWeather(true);assert.equal(two.A.state.data.savedAt,savedAt);

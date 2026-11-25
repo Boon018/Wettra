@@ -1,6 +1,7 @@
 import { json } from "./http.js";
 import { austrianPostcodeSearch } from "./geocoding.js";
 import { forecastParams } from "./forecastSpec.js";
+import { settings } from "../app/state.js";
 export { CORE, EXTRA, MODELS } from "./forecastSpec.js";
 export const Provider = {
   async forecast(l, model) {
@@ -13,7 +14,7 @@ export const Provider = {
     return json("https://geocoding-api.open-meteo.com/v1/search", {
       name: q,
       count: 12,
-      language: "en",
+      language: settings.language === "de" ? "de" : "en",
       format: "json",
     });
   },
