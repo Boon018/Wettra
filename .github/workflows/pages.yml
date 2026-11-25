@@ -3,8 +3,6 @@ name: Test and deploy Wettra
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -48,17 +46,13 @@ jobs:
         run: npm run test:browser
 
       - name: Configure GitHub Pages
-        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
       - name: Package static site
-        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
       - name: Deploy to GitHub Pages
-        if: github.event_name != 'pull_request'
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Verify the public release
-        if: github.event_name != 'pull_request'
         run: node scripts/smoke-deployment.mjs "${{ steps.deployment.outputs.page_url }}"
